@@ -1,0 +1,110 @@
+-- Seed Products
+INSERT INTO public.products (id, name, detail, type, code, cost_price, sell_price, min_stock) OVERRIDING SYSTEM VALUE VALUES
+  (1, 'Samsung A15', '128GB', 'phone', 'A15', 780000, 900000, 5),
+  (2, 'Tecno Spark 20', '256GB', 'phone', 'SP', 410000, 480000, 5),
+  (3, 'iPhone 11', '64GB', 'phone', 'IP', 950000, 1150000, 3),
+  (4, 'Redmi 13', '128GB', 'phone', 'RM', 360000, 420000, 5),
+  (5, 'Screen protector A15', '', 'accessory', 'PR', 3000, 10000, 50),
+  (6, 'Charger 25W', '', 'accessory', 'CH', 18000, 35000, 20),
+  (7, 'Phone cover', '', 'accessory', 'CV', 5000, 15000, 30),
+  (8, 'Earbuds', '', 'accessory', 'EB', 25000, 45000, 10)
+ON CONFLICT (id) DO NOTHING;
+
+-- Seed Phone Units
+INSERT INTO public.inventory_units (imei, product_id, status) VALUES
+  ('359101000079197', 1, 'IN_SHOP'),
+  ('359101000158389', 1, 'IN_SHOP'),
+  ('359101000237571', 1, 'IN_SHOP'),
+  ('359101000316763', 1, 'IN_SHOP'),
+  ('359101000395957', 1, 'IN_SHOP'),
+  ('359101000475148', 1, 'IN_SHOP'),
+  ('359201000060070', 1, 'IN_STORE'),
+  ('359201000120148', 1, 'IN_STORE'),
+  ('359201000180217', 1, 'IN_STORE'),
+  ('359201000240284', 1, 'IN_STORE'),
+  ('359201000300351', 1, 'IN_STORE'),
+  ('359201000360421', 1, 'IN_STORE'),
+  ('359201000420498', 1, 'IN_STORE'),
+  ('359201000480567', 1, 'IN_STORE'),
+  ('359201000540634', 1, 'IN_STORE'),
+  ('359201000600701', 1, 'IN_STORE'),
+  ('359201000660770', 1, 'IN_STORE'),
+  ('359201000720848', 1, 'IN_STORE'),
+  ('359201000780917', 1, 'IN_STORE'),
+  ('359201000840984', 1, 'IN_STORE'),
+  ('359201000901059', 1, 'IN_STORE'),
+  ('359201000961129', 1, 'IN_STORE'),
+  ('359201001021196', 1, 'IN_STORE'),
+  ('359201001081265', 1, 'IN_STORE'),
+  ('359201001141333', 1, 'IN_STORE'),
+  ('359201001201400', 1, 'IN_STORE'),
+  ('359201001261479', 1, 'IN_STORE'),
+  ('359201001321547', 1, 'IN_STORE'),
+  ('359201001381616', 1, 'IN_STORE'),
+  ('359201001441683', 1, 'IN_STORE'),
+  ('359102000079195', 2, 'IN_SHOP'),
+  ('359102000158387', 2, 'IN_SHOP'),
+  ('359102000237579', 2, 'IN_SHOP'),
+  ('359102000316761', 2, 'IN_SHOP'),
+  ('359102000395955', 2, 'IN_SHOP'),
+  ('359102000475146', 2, 'IN_SHOP'),
+  ('359202000060078', 2, 'IN_STORE'),
+  ('359202000120146', 2, 'IN_STORE'),
+  ('359202000180215', 2, 'IN_STORE'),
+  ('359202000240282', 2, 'IN_STORE'),
+  ('359202000300359', 2, 'IN_STORE'),
+  ('359202000360429', 2, 'IN_STORE'),
+  ('359202000420496', 2, 'IN_STORE'),
+  ('359202000480565', 2, 'IN_STORE'),
+  ('359202000540632', 2, 'IN_STORE'),
+  ('359202000600709', 2, 'IN_STORE'),
+  ('359202000660778', 2, 'IN_STORE'),
+  ('359202000720846', 2, 'IN_STORE'),
+  ('359202000780915', 2, 'IN_STORE'),
+  ('359202000840982', 2, 'IN_STORE'),
+  ('359202000901057', 2, 'IN_STORE'),
+  ('359202000961127', 2, 'IN_STORE'),
+  ('359202001021194', 2, 'IN_STORE'),
+  ('359202001081263', 2, 'IN_STORE'),
+  ('359103000079193', 3, 'IN_SHOP'),
+  ('359203000060076', 3, 'IN_STORE'),
+  ('359203000120144', 3, 'IN_STORE'),
+  ('359104000079191', 4, 'IN_SHOP'),
+  ('359104000158383', 4, 'IN_SHOP'),
+  ('359104000237575', 4, 'IN_SHOP'),
+  ('359104000316767', 4, 'IN_SHOP'),
+  ('359204000060074', 4, 'IN_STORE'),
+  ('359204000120142', 4, 'IN_STORE'),
+  ('359204000180211', 4, 'IN_STORE'),
+  ('359204000240288', 4, 'IN_STORE'),
+  ('359204000300355', 4, 'IN_STORE'),
+  ('359204000360425', 4, 'IN_STORE'),
+  ('359204000420492', 4, 'IN_STORE'),
+  ('359204000480561', 4, 'IN_STORE'),
+  ('359204000540638', 4, 'IN_STORE'),
+  ('359204000600705', 4, 'IN_STORE')
+ON CONFLICT (imei) DO NOTHING;
+
+-- Seed Initial Stock Movements for Accessories
+INSERT INTO public.stock_movements (product_id, from_location, to_location, qty, type, unit_cost, ref_type, ref_id, user_name, note) VALUES
+  (5, NULL, 'STORE', 420, 'PURCHASE', 3000, 'seed', 1, 'Mmiliki Mkuu', 'Initial Store Stock'),
+  (5, NULL, 'SHOP', 37, 'PURCHASE', 3000, 'seed', 1, 'Mmiliki Mkuu', 'Initial Shop Stock'),
+  (6, NULL, 'STORE', 12, 'PURCHASE', 18000, 'seed', 1, 'Mmiliki Mkuu', 'Initial Store Stock'),
+  (6, NULL, 'SHOP', 18, 'PURCHASE', 18000, 'seed', 1, 'Mmiliki Mkuu', 'Initial Shop Stock'),
+  (7, NULL, 'STORE', 310, 'PURCHASE', 5000, 'seed', 1, 'Mmiliki Mkuu', 'Initial Store Stock'),
+  (7, NULL, 'SHOP', 42, 'PURCHASE', 5000, 'seed', 1, 'Mmiliki Mkuu', 'Initial Shop Stock'),
+  (8, NULL, 'SHOP', 9, 'PURCHASE', 25000, 'seed', 1, 'Mmiliki Mkuu', 'Initial Shop Stock');
+
+-- Seed Suppliers
+INSERT INTO public.suppliers (id, name, phone) OVERRIDING SYSTEM VALUE VALUES (1, 'Supplier A', ''), (2, 'Supplier B', ''), (3, 'Supplier C', ''), (4, 'Supplier D', '') ON CONFLICT (id) DO NOTHING;
+
+-- Seed Customers
+INSERT INTO public.customers (id, name, phone, area) OVERRIDING SYSTEM VALUE VALUES
+  (1, 'Juma Hassan', '255712345678', 'Kariakoo'),
+  (2, 'Amina Mussa', '255754221900', 'Mwenge'),
+  (3, 'Peter Kimaro', '255689112334', 'Sinza'),
+  (4, 'Saida Ngowi', '255745090122', 'Mbezi'),
+  (5, 'Grace Lyimo', '255716778410', 'Ubungo'),
+  (6, 'Hamisi Mrisho', '255782556001', 'Temeke'),
+  (7, 'Omari Juma', '255713000555', 'Kimara')
+ON CONFLICT (id) DO NOTHING;
