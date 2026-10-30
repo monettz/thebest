@@ -720,6 +720,7 @@ export const EN: Record<string, string> = {
   'Hariri bidhaa': 'Edit product',
   'Futa bidhaa': 'Delete product',
   'Una uhakika unataka kufuta {1}?': 'Are you sure you want to delete {1}?',
+  'Stock na mauzo yake yote yatafutwa kabisa, haiwezi kurudishwa.': 'Its stock and all its sales will be permanently deleted. This cannot be undone.',
   'Bidhaa imefutwa.': 'Product deleted.',
   'Bidhaa imesasishwa.': 'Product updated.',
   'Model / Maelezo (hiari)': 'Model / Specs (optional)',

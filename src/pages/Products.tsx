@@ -116,7 +116,7 @@ export default function Products() {
     onError: (err) => {
       const msg = (err as Error).message;
       setDeletingProduct(null);
-      showBanner('bad', /historia/i.test(msg) ? `${msg}. Tumia "Ficha" badala yake.` : msg);
+      showBanner('bad', msg);
     },
   });
 
@@ -900,6 +900,9 @@ export default function Products() {
               <h3 className="text-[16px] font-bold text-[#0F172A]">{tr('Futa bidhaa')}</h3>
               <p className="mt-2 text-[13.5px] text-[#64748B]">
                 {tr('Una uhakika unataka kufuta {1}?', { 1: deletingProduct.name })}
+              </p>
+              <p className="mt-1 text-[12.5px] font-semibold text-bad-fg">
+                {tr('Stock na mauzo yake yote yatafutwa kabisa, haiwezi kurudishwa.')}
               </p>
               <div className="mt-4 flex justify-end gap-2">
                 <Button variant="outline" onClick={() => setDeletingProduct(null)}>
