@@ -44,6 +44,16 @@ describe('IMEI', () => {
 });
 
 describe('checkout rules', () => {
+  it('the sale date can be today or a past day, never a future or malformed one', () => {
+    const line: CartLine = { productId: 1, name: 'Samsung A15', type: 'phone', unitPrice: 900_000, qty: 1 };
+    const sale = (soldOn?: string) => validateCheckout(base({ lines: [line], payments: [{ method: 'CASH', amount: 900_000 }], soldOn }), ctx);
+    expect(sale()).toMatchObject({ ok: true });
+    expect(sale('2026-10-29')).toMatchObject({ ok: true });
+    expect(sale('2026-10-20')).toMatchObject({ ok: true });
+    expect(errs(sale('2026-10-30'))).toMatch(/haiwezi kuwa ya kesho/);
+    expect(errs(sale('29/10/2026'))).toMatch(/Weka tarehe ya mauzo/);
+  });
+
   it('a phone can be sold without an IMEI, but only up to the quantity in the shop', () => {
     const noImei: CartLine = { productId: 1, name: 'Samsung A15', type: 'phone', unitPrice: 900_000, qty: 2 };
     expect(validateCheckout(base({ lines: [noImei], payments: [{ method: 'CASH', amount: 1_800_000 }] }), ctx)).toMatchObject({ ok: true, total: 1_800_000 });

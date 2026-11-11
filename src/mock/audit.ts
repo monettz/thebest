@@ -6,6 +6,7 @@ import { check, ensureFresh, isRemote, queueWrite } from './sync';
 export type AuditAction =
   | 'SALE_VOID'
   | 'SALE_RETURN'
+  | 'SALE_BACKDATED'
   | 'DISCOUNT_OVER_LIMIT'
   | 'SETTINGS_CHANGE'
   | 'PRODUCT_CREATE'
@@ -21,6 +22,7 @@ export type AuditAction =
 export const AUDIT_LABEL: Record<AuditAction, string> = {
   SALE_VOID: 'Kufuta mauzo',
   SALE_RETURN: 'Kurudisha bidhaa',
+  SALE_BACKDATED: 'Mauzo ya tarehe iliyopita',
   DISCOUNT_OVER_LIMIT: 'Punguzo kubwa',
   SETTINGS_CHANGE: 'Mipangilio',
   PRODUCT_CREATE: 'Bidhaa mpya',
@@ -47,6 +49,7 @@ export interface AuditEntry {
 const LOGGED_BY_DATABASE = new Set<AuditAction>([
   'SALE_VOID',
   'SALE_RETURN',
+  'SALE_BACKDATED',
   'DISCOUNT_OVER_LIMIT',
   'CASH_CLOSING',
   'STOCK_TAKE_APPROVED',

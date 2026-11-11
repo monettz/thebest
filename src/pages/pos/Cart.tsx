@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { PAYMENT_LABEL, POS_PAYMENT_METHODS, type PaymentMethod } from '@shared/constants';
 import { availableImeisForLine, lineTotal, type CartLine } from '@shared/sales';
-import { displayPhone, formatTZS } from '@/lib/format';
+import { displayPhone, formatDate, formatTZS } from '@/lib/format';
 import { useAuth } from '@/lib/auth';
 import { checkCustomerDuplicates, saveCustomer, searchCustomers, SimilarCustomerError, type Customer, type PosProduct } from '@/mock/sales';
 import { Button, cx } from '@/components/ui';
@@ -25,6 +25,7 @@ export interface CartState {
   mode: 'full' | 'debt';
   paid: string; // debt mode, single method
   dueDate: string;
+  soldOn: string; // yyyy-mm-dd
   discount: string;
   ownerPin: string;
 }
@@ -233,6 +234,37 @@ export function Cart(p: Props) {
             })}
           </ul>
         )}
+
+        {/* Sale date: today by default; pick an earlier day to record a past sale. */}
+        <div className="rounded-[10px] border border-[#E2E8F0] bg-[#F8FAFC]/60 p-3">
+          <div className="flex items-center justify-between gap-3">
+            <label htmlFor="sold-on" className="text-[12.5px] font-semibold text-[#0F172A]">
+              {tr('Tarehe ya mauzo')}
+            </label>
+            {s.soldOn !== p.today && (
+              <button
+                type="button"
+                onClick={() => patch({ soldOn: p.today })}
+                className="text-[12px] font-semibold text-[#2563EB] hover:underline"
+              >
+                {tr('Rudisha leo')}
+              </button>
+            )}
+          </div>
+          <input
+            id="sold-on"
+            type="date"
+            className="input mt-1.5 h-10 bg-white"
+            max={p.today}
+            value={s.soldOn}
+            onChange={(e) => patch({ soldOn: e.target.value || p.today })}
+          />
+          {s.soldOn !== p.today && (
+            <p className="mt-1.5 rounded-[8px] bg-warn-bg px-2.5 py-1.5 text-[12px] font-medium text-warn-fg">
+              {tr('Mauzo yataandikwa kwa tarehe {date}, si leo.', { date: formatDate(new Date(`${s.soldOn}T12:00:00`)) })}
+            </p>
+          )}
+        </div>
 
         <CustomerPicker value={s.customer} onChange={(customer) => patch({ customer })} required={s.mode === 'debt'} />
 

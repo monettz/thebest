@@ -28,6 +28,7 @@ export interface CheckoutInput {
   payments: PaymentInput[];
   customer?: CustomerInput | null;
   dueDate?: string | null; // yyyy-mm-dd
+  soldOn?: string; // yyyy-mm-dd, the sale date (today unless a past sale is being recorded)
 }
 
 export interface CheckoutContext {
@@ -135,9 +136,13 @@ export function changeLineImei(
 
 export function validateCheckout(input: CheckoutInput, ctx: CheckoutContext): CheckoutResult {
   const errors: string[] = [];
-  const { lines, discount, payments, customer, dueDate } = input;
+  const { lines, discount, payments, customer, dueDate, soldOn } = input;
 
   if (lines.length === 0) errors.push('Kikapu ni tupu');
+  if (soldOn !== undefined) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(soldOn)) errors.push('Weka tarehe ya mauzo');
+    else if (soldOn > ctx.today) errors.push('Tarehe ya mauzo haiwezi kuwa ya kesho');
+  }
 
   const seen = new Set<string>();
   // Kila bidhaa (simu au accessory) inakaguliwa kwa idadi iliyopo dukani; IMEI kwa simu ni hiari.

@@ -5,6 +5,12 @@
  * Customer-facing text (SMS, printed receipts) is deliberately NOT here: it stays Swahili.
  */
 export const EN: Record<string, string> = {
+  // ---------- sale date ----------
+  'Rudisha leo': 'Back to today',
+  'Mauzo yataandikwa kwa tarehe {date}, si leo.': 'The sale will be recorded for {date}, not today.',
+  'Weka tarehe ya mauzo': 'Enter the sale date',
+  'Tarehe ya mauzo haiwezi kuwa ya kesho': 'The sale date cannot be in the future',
+  'Mauzo ya tarehe iliyopita': 'Past-dated sale',
   // ---------- confirmation dialog ----------
   'Hongera, {name},': 'Well done, {name},',
   'Bidhaa imehifadhiwa!': 'Product saved!',

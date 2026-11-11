@@ -351,6 +351,11 @@ export interface CheckoutRequest extends CheckoutInput {
   ownerPin?: string;
 }
 
+/** A sale recorded for a past day is stamped at midday Dar es Salaam time; today's sales keep the real time. */
+export function soldAtOf(soldOn: string | undefined, today: string): string | null {
+  return soldOn && soldOn !== today ? `${soldOn}T12:00:00+03:00` : null;
+}
+
 export async function completeSale(
   user: { id: number; name: string; role: Role },
   req: CheckoutRequest,
@@ -382,6 +387,7 @@ export async function completeSale(
           customerId: customer?.id ?? null,
           discount: req.discount,
           dueDate: verdict.balance > 0 ? (req.dueDate ?? null) : null,
+          soldAt: soldAtOf(req.soldOn, todayDar()),
           ownerPin: req.ownerPin,
           lines: req.lines.map((l) => ({ productId: l.productId, qty: l.qty, unitPrice: l.unitPrice, imei: l.imei ?? null })),
           payments: req.payments.map((p) => ({ method: p.method, amount: p.amount })),
@@ -411,7 +417,7 @@ export async function completeSale(
   }
 
   const customer = resolveCustomer(req.customer, user.name);
-  const nowIso = new Date().toISOString();
+  const nowIso = soldAtOf(req.soldOn, todayDar()) ?? new Date().toISOString();
   const id = Math.max(0, ...sales.map((s) => s.id)) + 1;
   const record: SaleRecord = {
     id,

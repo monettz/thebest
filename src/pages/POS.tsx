@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { addDays } from '@shared/debts';
@@ -49,6 +50,7 @@ export default function POS() {
     mode: 'full',
     paid: '',
     dueDate: addDays(today, 14),
+    soldOn: today,
     discount: '',
     ownerPin: '',
   });
@@ -98,6 +100,7 @@ export default function POS() {
     payments: derived.payments,
     customer: customerInput,
     dueDate: cart.mode === 'debt' ? cart.dueDate : null,
+    soldOn: cart.soldOn,
     ownerPin: cart.ownerPin,
   };
 
@@ -451,8 +454,12 @@ export default function POS() {
         </div>
       </div>
 
-      {/* Bottom Cart Summary Bar */}
-      <div className="pb-safe fixed inset-x-0 bottom-0 z-30 border-t border-[#E2E8F0] bg-white px-4 py-3 shadow-[0_-4px_16px_rgba(15,23,42,0.06)]">
+      {/* Portalled to <body>: pages animate inside a transformed wrapper, which would otherwise pin these
+          fixed layers to the page box (backdrop cut short, bar floating mid-screen). Same reason as Modal. */}
+      {createPortal(
+        <>
+      {/* Bottom Cart Summary Bar (starts after the 256px sidebar on desktop) */}
+      <div className="pb-safe fixed inset-x-0 bottom-0 z-30 md:left-[256px] border-t border-[#E2E8F0] bg-white px-4 py-3 shadow-[0_-4px_16px_rgba(15,23,42,0.06)]">
         <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-3">
           <button
             type="button"
@@ -490,6 +497,10 @@ export default function POS() {
             <Cart {...cartProps} onClose={() => setSheetOpen(false)} />
           </div>
         </div>
+      )}
+
+        </>,
+        document.body,
       )}
 
       {scanOpen && (
