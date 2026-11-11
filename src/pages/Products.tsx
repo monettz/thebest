@@ -1223,6 +1223,7 @@ export function CreateProductForm({
 }) {
   const { user } = useAuth();
   const showSuccess = useSuccess();
+  const navigate = useNavigate();
   const [formImageError, setFormImageError] = useState('');
   const [imeiDraft, setImeiDraft] = useState('');
   const [imeiDraftError, setImeiDraftError] = useState('');
@@ -1267,7 +1268,9 @@ export function CreateProductForm({
       setImeiDraftError('');
       showSuccess({
         title: tr('Bidhaa imehifadhiwa!'),
-        message: tr('{name} imeongezwa kwenye orodha ya bidhaa.', { name: parsed.name }),
+        message: tr('{name} imeongezwa kwenye orodha. Ingiza stock ili ianze kuuzwa.', { name: parsed.name }),
+        primary: { label: tr('Ingiza stock'), onClick: () => navigate('/stock-in') },
+        secondary: { label: tr('Ongeza bidhaa nyingine') },
       });
       onCreated(createdId, parsed);
     },

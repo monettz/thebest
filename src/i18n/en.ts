@@ -8,7 +8,8 @@ export const EN: Record<string, string> = {
   // ---------- confirmation dialog ----------
   'Hongera, {name},': 'Well done, {name},',
   'Bidhaa imehifadhiwa!': 'Product saved!',
-  '{name} imeongezwa kwenye orodha ya bidhaa.': '{name} was added to the product list.',
+  '{name} imeongezwa kwenye orodha. Ingiza stock ili ianze kuuzwa.': '{name} was added to the list. Add stock so it can be sold.',
+  'Ongeza bidhaa nyingine': 'Add another product',
   'Mauzo yamehifadhiwa': 'Sale saved',
   'Kuna deni': 'Has a balance',
   'Lipa kabla ya': 'Pay by',
