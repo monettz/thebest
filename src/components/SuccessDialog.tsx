@@ -58,7 +58,7 @@ function SuccessDialog({ opts, onClose }: { opts: SuccessOptions; onClose: () =>
         aria-modal="true"
         aria-labelledby="success-title"
         onClick={(e) => e.stopPropagation()}
-        className="pb-safe max-h-[94dvh] w-full animate-sheet overflow-y-auto rounded-t-[28px] bg-white px-5 pb-6 pt-9 text-center sm:max-w-[400px] sm:rounded-[28px]"
+        className="max-h-[94dvh] w-full animate-sheet overflow-y-auto rounded-t-[28px] bg-white px-5 pb-[max(1.75rem,env(safe-area-inset-bottom))] pt-9 text-center sm:max-w-[400px] sm:rounded-[28px] sm:pb-7"
       >
         <svg className={cx('success-pop mx-auto h-20 w-20', debt ? 'text-amber-600' : 'text-primary')} viewBox="0 0 80 80" fill="none" aria-hidden>
           <circle className="success-ring" cx="40" cy="40" r="38" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
