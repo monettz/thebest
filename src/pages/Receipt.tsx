@@ -1,6 +1,6 @@
 import { tr } from '@/i18n';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
-import { Link, Navigate, useParams, useSearchParams } from 'react-router-dom';
+import { Link, Navigate, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { PAYMENT_LABEL } from '@shared/constants';
 import { useAuth } from '@/lib/auth';
@@ -9,6 +9,7 @@ import { getSettings } from '@/mock/api';
 import { getPaymentReceipt, getReceipt, type PaymentReceiptView, type ReceiptView } from '@/mock/sales';
 import type { Settings } from '@/mock/seed';
 import { Button, Spinner, cx } from '@/components/ui';
+import { useSuccess } from '@/components/SuccessDialog';
 import { ChevronRight, CloseIcon, DownloadIcon, FileIcon, PrinterIcon, ShareIcon } from '@/components/ui/icons';
 import { canShareFiles, downloadBlob, shareFile } from '@/lib/saveFile';
 import {
@@ -48,7 +49,6 @@ function ReceiptShell({
   build,
   text,
   phone,
-  justDone,
   links,
 }: {
   article: ReactNode;
@@ -56,7 +56,6 @@ function ReceiptShell({
   build: () => Promise<Blob>;
   text: string;
   phone?: string;
-  justDone?: boolean;
   links: ReactNode;
 }) {
   const [sheet, setSheet] = useState(false);
@@ -111,12 +110,6 @@ function ReceiptShell({
 
   return (
     <div className="min-h-screen bg-app py-6 print:bg-white print:py-0">
-      {justDone && (
-        <div className="mx-auto mb-3 max-w-[360px] rounded-field bg-ok-bg px-4 py-3 text-[13.5px] font-semibold text-ok-fg print:hidden">
-          {tr('Mauzo yamekamilika!')} <span className="font-normal">{tr('Shiriki risiti kwa mteja au ichapishe.')}</span>
-        </div>
-      )}
-
       <div className="mx-auto mb-4 flex max-w-[360px] flex-wrap gap-2 px-4 print:hidden">
         <Button onClick={() => setSheet(true)} className="min-w-[120px] flex-1 gap-2">
           <ShareIcon width={18} height={18} /> {tr('Shiriki')}
@@ -257,10 +250,46 @@ function PaymentReceipt() {
 
 function SaleReceipt() {
   const { saleId } = useParams();
-  const [params] = useSearchParams();
+  const [params, setParams] = useSearchParams();
+  const navigate = useNavigate();
+  const showSuccess = useSuccess();
   const { data: r, isLoading } = useQuery({ queryKey: ['receipt', saleId], queryFn: () => getReceipt(Number(saleId)) });
   const { data: settings } = useQuery({ queryKey: ['settings'], queryFn: getSettings });
   useAutoPrint(!!r && !!settings);
+
+  // Right after checkout (?done=1) show the confirmation once; dropping the flag keeps a reload from showing it again.
+  const announced = useRef(false);
+  useEffect(() => {
+    if (!r || params.get('done') !== '1' || announced.current) return;
+    announced.current = true;
+    const debt = r.balance > 0;
+    showSuccess({
+      title: debt ? tr('Mauzo yamehifadhiwa') : tr('Mauzo yamekamilika!'),
+      tone: debt ? 'debt' : 'ok',
+      badge: debt ? tr('Kuna deni') : undefined,
+      message: `${tr('Risiti')} ${r.receiptNo}`,
+      rows: [
+        ...(r.customer ? [{ label: tr('Mteja'), value: r.customer.name }] : []),
+        { label: tr('Jumla'), value: formatTZS(r.total) },
+        ...(debt
+          ? [
+              { label: tr('Amelipa'), value: formatTZS(r.paid) },
+              { label: tr('Deni linabaki'), value: formatTZS(r.balance), highlight: true },
+              ...(r.dueDate ? [{ label: tr('Lipa kabla ya'), value: formatDate(new Date(r.dueDate)) }] : []),
+            ]
+          : []),
+      ],
+      primary: { label: tr('Chapisha risiti'), onClick: () => window.print() },
+      secondary: { label: tr('Uza tena'), onClick: () => navigate('/pos') },
+    });
+    setParams(
+      (p) => {
+        p.delete('done');
+        return p;
+      },
+      { replace: true },
+    );
+  }, [r, params, setParams, showSuccess, navigate]);
 
   if (isLoading || !settings) return <Spinner />;
   if (!r) return <p className="p-8 text-center text-muted">{tr('Risiti haikupatikana.')}</p>;
@@ -272,7 +301,6 @@ function SaleReceipt() {
       build={() => buildSaleReceiptPdf(r, settings)}
       text={saleReceiptText(r, settings)}
       phone={r.customer?.phone}
-      justDone={params.get('done') === '1'}
       links={
         <>
           <Link to="/pos" className={linkClass}>

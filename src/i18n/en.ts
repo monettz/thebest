@@ -5,6 +5,14 @@
  * Customer-facing text (SMS, printed receipts) is deliberately NOT here: it stays Swahili.
  */
 export const EN: Record<string, string> = {
+  // ---------- confirmation dialog ----------
+  'Hongera, {name},': 'Well done, {name},',
+  'Bidhaa imehifadhiwa!': 'Product saved!',
+  '{name} imeongezwa kwenye orodha ya bidhaa.': '{name} was added to the product list.',
+  'Mauzo yamehifadhiwa': 'Sale saved',
+  'Kuna deni': 'Has a balance',
+  'Lipa kabla ya': 'Pay by',
+  'Uza tena': 'Sell again',
   // ---------- shell, navigation ----------
   'THE BEST': 'THE BEST',
   'Habari za jioni': 'Good evening',

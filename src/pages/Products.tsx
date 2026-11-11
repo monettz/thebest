@@ -1,6 +1,7 @@
 import { type ChangeEvent, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
+import { useSuccess } from '@/components/SuccessDialog';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -1221,6 +1222,7 @@ export function CreateProductForm({
   location?: 'SHOP' | 'STORE';
 }) {
   const { user } = useAuth();
+  const showSuccess = useSuccess();
   const [formImageError, setFormImageError] = useState('');
   const [imeiDraft, setImeiDraft] = useState('');
   const [imeiDraftError, setImeiDraftError] = useState('');
@@ -1263,6 +1265,10 @@ export function CreateProductForm({
       setFormImageError('');
       setImeiDraft('');
       setImeiDraftError('');
+      showSuccess({
+        title: tr('Bidhaa imehifadhiwa!'),
+        message: tr('{name} imeongezwa kwenye orodha ya bidhaa.', { name: parsed.name }),
+      });
       onCreated(createdId, parsed);
     },
   });
