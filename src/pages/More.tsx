@@ -4,6 +4,7 @@ import { useAuth } from '@/lib/auth';
 import { LanguageSwitch } from '@/components/LanguageSwitch';
 import { Avatar, Button, Card, cx } from '@/components/ui';
 import { ChevronRight, LogoutIcon } from '@/components/ui/icons';
+import { LANG_PILL } from '@/components/layout/Sidebar';
 import { tr } from '@/i18n';
 
 interface Entry { to: string; code: string; title: string; sub: string; ownerOnly?: boolean }
@@ -46,12 +47,12 @@ export default function More() {
 
   return (
     <div className="mx-auto max-w-xl">
-      <h1 className="mb-4 text-[28px] font-extrabold">{tr('Zaidi')}</h1>
-      <div className="mb-6 flex items-center gap-4 rounded-[22px] bg-gradient-to-br from-navy to-slate-800 p-5 text-white shadow-md">
-        <Avatar name={user!.name} size={56} dark />
-        <div>
-          <p className="text-[18px] font-extrabold">{user!.name}</p>
-          <p className="text-[13.5px] text-slate-300">{tr(ROLE_LABEL[user!.role])} · THE BEST</p>
+      <h1 className="mb-4 text-[24px] font-bold tracking-[-0.02em]">{tr('Zaidi')}</h1>
+      <div className="mb-6 flex items-center gap-3.5 rounded-full bg-white p-2 pr-5">
+        <Avatar name={user!.name} size={52} />
+        <div className="min-w-0">
+          <p className="truncate text-[16px] font-bold text-ink">{user!.name}</p>
+          <p className="text-[12.5px] text-muted">{tr(ROLE_LABEL[user!.role])} · THE BEST</p>
         </div>
       </div>
 
@@ -60,20 +61,20 @@ export default function More() {
         if (!items.length) return null;
         return (
           <section key={sec.title} className="mb-6">
-            <h2 className="mb-2 px-1 text-[11.5px] font-bold uppercase tracking-wider text-slate-400">{tr(sec.title)}</h2>
+            <h2 className="mb-2 px-3.5 text-[11px] font-semibold uppercase tracking-[0.08em] text-muted">{tr(sec.title)}</h2>
             <Card className="overflow-hidden divide-y divide-line-soft">
               {items.map((it) => (
-                <Link key={it.to} to={it.to} className="flex min-h-[64px] items-center gap-3.5 px-4 py-3 hover:bg-slate-50/70 transition-colors">
+                <Link key={it.to} to={it.to} className="flex min-h-[64px] items-center gap-3.5 px-4 py-3 transition-colors hover:bg-app">
                   <span
                     className={cx(
-                      'flex h-11 w-11 shrink-0 items-center justify-center rounded-[13px] text-[13px] font-extrabold',
-                      sec.dark ? 'bg-navy text-white' : 'bg-primary-tint text-primary-link',
+                      'flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-[12.5px] font-bold',
+                      sec.dark ? 'bg-ink text-white' : 'bg-app text-ink',
                     )}
                   >
                     {it.code}
                   </span>
                   <span className="min-w-0 flex-1">
-                    <span className="block text-[16px] font-bold">{tr(it.title)}</span>
+                    <span className="block text-[15px] font-semibold text-ink">{tr(it.title)}</span>
                     <span className="block text-[13px] text-muted">{tr(it.sub)}</span>
                   </span>
                   <ChevronRight className="text-muted" />
@@ -85,11 +86,11 @@ export default function More() {
       })}
 
       <section className="mb-5">
-        <h2 className="mb-2 px-1 text-[14px] font-semibold text-muted">Language / Lugha</h2>
-        <LanguageSwitch className="w-full" />
+        <h2 className="mb-2 px-3.5 text-[11px] font-semibold uppercase tracking-[0.08em] text-muted">Language / Lugha</h2>
+        <LanguageSwitch className={LANG_PILL} />
       </section>
 
-      <Button variant="outline" block onClick={logout}><LogoutIcon width={18} height={18} /> {tr('Toka')}</Button>
+      <Button variant="outline" block onClick={logout} className="rounded-full border-0"><LogoutIcon width={18} height={18} /> {tr('Toka')}</Button>
     </div>
   );
 }

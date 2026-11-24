@@ -301,14 +301,14 @@ export default function POS() {
   };
 
   return (
-    <div className="pb-20">
+    <div className="pb-28">
       <div className="min-w-0">
         <div className="mb-3 flex items-center gap-2.5 md:hidden">
           <button
             type="button"
             aria-label={tr('Rudi')}
             onClick={() => navigate('/')}
-            className="flex h-10 w-10 items-center justify-center rounded-[10px] border border-line bg-white"
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white text-ink"
           >
             <ChevronRight className="rotate-180" />
           </button>
@@ -459,7 +459,11 @@ export default function POS() {
       {createPortal(
         <>
       {/* Bottom Cart Summary Bar (starts after the 256px sidebar on desktop) */}
-      <div className="pb-safe fixed inset-x-0 bottom-0 z-30 md:left-[248px] border-t border-line bg-white px-4 py-3 shadow-[0_-4px_16px_rgba(15,23,42,0.06)]">
+      {/* A floating white card on the canvas, inset from the edges like the rest of the app. */}
+      <div
+        className="fixed inset-x-3 z-30 rounded-[22px] bg-white px-4 py-3 shadow-[0_12px_32px_-12px_rgba(20,18,23,0.25)] md:left-[280px] md:right-8 lg:right-10"
+        style={{ bottom: 'max(12px, env(safe-area-inset-bottom))' }}
+      >
         <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-3">
           <button
             type="button"
@@ -474,7 +478,7 @@ export default function POS() {
                 {formatTZS(derived.total)}
               </span>
             </span>
-            <span className="inline-flex min-h-[42px] items-center gap-2 rounded-[10px] bg-primary px-4 text-[13.5px] font-semibold text-white">
+            <span className="inline-flex min-h-[44px] items-center gap-2 rounded-full bg-primary px-5 text-[13.5px] font-semibold text-white">
               {tr('Kikapu')} <ChevronRight width={16} height={16} />
             </span>
           </button>

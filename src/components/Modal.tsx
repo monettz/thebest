@@ -33,6 +33,8 @@ export default function Modal({
           wide ? 'sm:max-w-3xl' : 'sm:max-w-md',
         )}
       >
+        {/* Grab handle: on phones the dialog is a sheet from the bottom. */}
+        <div aria-hidden className="mx-auto -mt-1 mb-3 h-1.5 w-12 rounded-full bg-line sm:hidden" />
         {children}
       </div>
     </div>,
