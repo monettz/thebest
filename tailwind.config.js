@@ -3,7 +3,7 @@ export default {
   content: ['./index.html', './src/**/*.{ts,tsx}'],
   theme: {
     extend: {
-      fontFamily: { sans: ['"Inter Variable"', 'Inter', 'system-ui', 'sans-serif'] },
+      fontFamily: { sans: ['"Montserrat Variable"', 'Montserrat', 'system-ui', 'sans-serif'] },
       screens: { wide: '1440px' },
       keyframes: {
         'fade-in': { from: { opacity: '0' }, to: { opacity: '1' } },
@@ -21,12 +21,13 @@ export default {
       colors: {
         primary: { DEFAULT: '#2563EB', link: '#1D4ED8', tint: '#EEF3FF' },
         bar: { 1: '#93B4F5', 2: '#C7D7FB', 3: '#DCE6FB' },
-        navy: '#0F172A',
-        ink: '#0F172A',
-        body: '#334155',
-        muted: '#5B6577',
-        line: { DEFAULT: '#E5E8EE', soft: '#EEF0F4' },
-        app: '#F1F3F7',
+        // OrderX-style neutrals: near-black text, warm greys, a grey-green canvas. The brand colour stays `primary`.
+        navy: '#141217',
+        ink: '#141217',
+        body: '#3A3B42',
+        muted: '#5F6168',
+        line: { DEFAULT: '#DFE5E2', soft: '#EAEFEC' },
+        app: '#F0F5F3',
         ok: { bg: '#DCFCE7', fg: '#166534' },
         warn: { bg: '#FEF3C7', fg: '#92400E' },
         bad: { bg: '#FEE2E2', fg: '#991B1B' },

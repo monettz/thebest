@@ -1,10 +1,11 @@
-/* Inter, latin subset only (covers Swahili and English), served from our own origin so it works offline. */
+/* Montserrat (the interface font), latin subset only (covers Swahili and English), served from our own
+   origin so it works offline. Numbers use tabular figures where amounts line up (tabular-nums). */
 @font-face {
-  font-family: 'Inter Variable';
+  font-family: 'Montserrat Variable';
   font-style: normal;
   font-display: swap;
   font-weight: 100 900;
-  src: url('../node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2') format('woff2-variations');
+  src: url('../node_modules/@fontsource-variable/montserrat/files/montserrat-latin-wght-normal.woff2') format('woff2-variations');
 }
 
 @tailwind base;
@@ -22,7 +23,6 @@
   body {
     @apply bg-app font-sans text-ink antialiased;
     -webkit-tap-highlight-color: transparent;
-    font-feature-settings: 'cv02' 1, 'cv03' 1, 'cv04' 1, 'cv11' 1;
   }
   input,
   select,
@@ -53,10 +53,11 @@
     @apply mb-1.5 block text-[12.5px] font-medium text-body;
   }
   .card-hover {
-    @apply transition duration-150 hover:border-slate-300 hover:shadow-md active:scale-[0.995];
+    @apply transition duration-150 hover:border-line hover:shadow-[0_6px_20px_-8px_rgba(20,18,23,0.12)] active:scale-[0.995];
   }
+  /* White panel straight on the grey-green canvas: large radius, no shadow, a barely-there edge. */
   .card {
-    @apply rounded-2xl border border-line bg-white shadow-[0_1px_3px_0_rgba(15,23,42,0.03),0_1px_2px_-1px_rgba(15,23,42,0.02)];
+    @apply rounded-[20px] border border-line-soft bg-white;
   }
 }
 

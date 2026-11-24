@@ -67,11 +67,11 @@ export function Cart(p: Props) {
   return (
     <div className="flex h-full min-h-0 w-full flex-col overflow-hidden bg-white">
       {/* 1. HEADER: Cart title and Clear all action */}
-      <header className="flex shrink-0 items-center justify-between gap-3 border-b border-[#E2E8F0] bg-white px-4 py-3.5">
+      <header className="flex shrink-0 items-center justify-between gap-3 border-b border-line bg-white px-4 py-3.5">
         <div className="flex min-w-0 items-center gap-2">
-          <h2 className="text-[17px] font-bold leading-tight text-[#0F172A]">{tr('Kikapu')}</h2>
+          <h2 className="text-[17px] font-bold leading-tight text-ink">{tr('Kikapu')}</h2>
           {itemCount > 0 && (
-            <span className="inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-[#2563EB] px-1.5 text-[11px] font-bold text-white">
+            <span className="inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-primary px-1.5 text-[11px] font-bold text-white">
               {itemCount}
             </span>
           )}
@@ -91,7 +91,7 @@ export function Cart(p: Props) {
               type="button"
               onClick={p.onClose}
               aria-label={tr('Funga')}
-              className="inline-flex h-8 items-center justify-center rounded-[8px] border border-[#E2E8F0] bg-[#F8FAFC] px-2.5 text-[12.5px] font-semibold text-[#64748B] hover:bg-slate-100 hover:text-[#0F172A]"
+              className="inline-flex h-8 items-center justify-center rounded-[8px] border border-line bg-app px-2.5 text-[12.5px] font-semibold text-muted hover:bg-slate-100 hover:text-ink"
             >
               {tr('Funga')}
             </button>
@@ -102,7 +102,7 @@ export function Cart(p: Props) {
       {/* 2. SCROLLABLE CONTENT: Cart items, customer, payment methods, checkout fields */}
       <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden px-4 py-4 space-y-4">
         {s.lines.length === 0 ? (
-          <p className="rounded-[10px] border border-[#E2E8F0] bg-[#F8FAFC] p-4 text-center text-[13px] text-[#64748B]">
+          <p className="rounded-[10px] border border-line bg-app p-4 text-center text-[13px] text-muted">
             {tr('Chagua bidhaa au scan IMEI.')}
           </p>
         ) : (
@@ -116,29 +116,29 @@ export function Cart(p: Props) {
               return (
                 <li
                   key={`${l.productId}-${l.imei ?? i}`}
-                  className="rounded-[10px] border border-[#E2E8F0] bg-[#F8FAFC]/60 p-3"
+                  className="rounded-[10px] border border-line bg-app/60 p-3"
                 >
                   {/* Product name and price aligned on the same row */}
                   <div className="flex items-center justify-between gap-3">
-                    <p className="min-w-0 truncate text-[13.5px] font-semibold leading-snug text-[#0F172A]">
+                    <p className="min-w-0 truncate text-[13.5px] font-semibold leading-snug text-ink">
                       {l.name}
                     </p>
-                    <p className="shrink-0 text-[13.5px] font-bold tabular-nums leading-snug text-[#0F172A]">
+                    <p className="shrink-0 text-[13.5px] font-bold tabular-nums leading-snug text-ink">
                       {formatTZS(lineTotal(l))}
                     </p>
                   </div>
 
                   {/* Secondary detail: IMEI or unit price */}
                   {l.type === 'phone' && l.imei ? (
-                    <p className="mt-0.5 truncate font-mono text-[11.5px] font-medium text-[#64748B]">
-                      IMEI: <span className="text-[#0F172A]">{l.imei}</span>
+                    <p className="mt-0.5 truncate font-mono text-[11.5px] font-medium text-muted">
+                      IMEI: <span className="text-ink">{l.imei}</span>
                     </p>
                   ) : l.type === 'phone' ? (
-                    <p className="mt-0.5 text-[11.5px] text-[#64748B]">
+                    <p className="mt-0.5 text-[11.5px] text-muted">
                       {tr('Bila IMEI')} · {formatTZS(l.unitPrice)} {tr('kila moja')}
                     </p>
                   ) : (
-                    <p className="mt-0.5 text-[11.5px] text-[#64748B]">
+                    <p className="mt-0.5 text-[11.5px] text-muted">
                       {formatTZS(l.unitPrice)} {tr('kila moja')}
                     </p>
                   )}
@@ -152,7 +152,7 @@ export function Cart(p: Props) {
                           <button
                             type="button"
                             onClick={() => setOpenImeiIndex(isEditingImei ? null : i)}
-                            className="text-[12px] font-semibold text-[#2563EB] hover:underline"
+                            className="text-[12px] font-semibold text-primary hover:underline"
                           >
                             {tr('Weka IMEI')}
                           </button>
@@ -163,7 +163,7 @@ export function Cart(p: Props) {
                         <button
                           type="button"
                           onClick={() => setOpenImeiIndex(isEditingImei ? null : i)}
-                          className="text-[12px] font-semibold text-[#2563EB] hover:underline"
+                          className="text-[12px] font-semibold text-primary hover:underline"
                         >
                           {tr('Badilisha IMEI')}
                         </button>
@@ -171,7 +171,7 @@ export function Cart(p: Props) {
                           <button
                             type="button"
                             onClick={() => p.onAddPhoneUnit?.(l.productId)}
-                            className="text-[12px] font-semibold text-[#64748B] hover:text-[#0F172A]"
+                            className="text-[12px] font-semibold text-muted hover:text-ink"
                           >
                             + {tr('Ongeza')}
                           </button>
@@ -194,21 +194,21 @@ export function Cart(p: Props) {
                   </div>
 
                   {l.type === 'phone' && isEditingImei && (
-                    <div className="mt-2.5 rounded-[8px] border border-[#E2E8F0] bg-white p-2.5">
+                    <div className="mt-2.5 rounded-[8px] border border-line bg-white p-2.5">
                       <div className="mb-1.5 flex items-center justify-between">
-                        <span className="text-[11px] font-semibold text-[#64748B]">
+                        <span className="text-[11px] font-semibold text-muted">
                           {tr('Chagua IMEI ({n} zinapatikana)', { n: availableForLine.length })}
                         </span>
                         <button
                           type="button"
                           onClick={() => setOpenImeiIndex(null)}
-                          className="text-[11px] font-semibold text-[#64748B] hover:text-[#0F172A]"
+                          className="text-[11px] font-semibold text-muted hover:text-ink"
                         >
                           {tr('Funga')}
                         </button>
                       </div>
                       {availableForLine.length <= (l.imei ? 1 : 0) ? (
-                        <p className="text-[11.5px] text-[#64748B]">{tr('Hakuna IMEI nyingine inayopatikana.')}</p>
+                        <p className="text-[11.5px] text-muted">{tr('Hakuna IMEI nyingine inayopatikana.')}</p>
                       ) : (
                         <select
                           aria-label={tr('Badilisha IMEI')}
@@ -217,7 +217,7 @@ export function Cart(p: Props) {
                             if (e.target.value) p.onChangeImei?.(i, e.target.value);
                             setOpenImeiIndex(null);
                           }}
-                          className="h-8 w-full rounded-[6px] border border-[#E2E8F0] bg-white px-2 font-mono text-[12px] text-[#0F172A] outline-none focus:border-[#2563EB]"
+                          className="h-8 w-full rounded-[6px] border border-line bg-white px-2 font-mono text-[12px] text-ink outline-none focus:border-primary"
                         >
                           {!l.imei && <option value="">{tr('Chagua IMEI')}</option>}
                           {availableForLine.map((imei) => (
@@ -236,16 +236,16 @@ export function Cart(p: Props) {
         )}
 
         {/* Sale date: today by default; pick an earlier day to record a past sale. */}
-        <div className="rounded-[10px] border border-[#E2E8F0] bg-[#F8FAFC]/60 p-3">
+        <div className="rounded-[10px] border border-line bg-app/60 p-3">
           <div className="flex items-center justify-between gap-3">
-            <label htmlFor="sold-on" className="text-[12.5px] font-semibold text-[#0F172A]">
+            <label htmlFor="sold-on" className="text-[12.5px] font-semibold text-ink">
               {tr('Tarehe ya mauzo')}
             </label>
             {s.soldOn !== p.today && (
               <button
                 type="button"
                 onClick={() => patch({ soldOn: p.today })}
-                className="text-[12px] font-semibold text-[#2563EB] hover:underline"
+                className="text-[12px] font-semibold text-primary hover:underline"
               >
                 {tr('Rudisha leo')}
               </button>
@@ -270,9 +270,9 @@ export function Cart(p: Props) {
 
         {/* Payment Method: Cash, Lipa Namba, Bank */}
         <div>
-          <p className="mb-1.5 text-[12.5px] font-semibold text-[#0F172A]">
+          <p className="mb-1.5 text-[12.5px] font-semibold text-ink">
             {tr('Njia ya malipo')}{' '}
-            {multi && <span className="font-normal text-[#64748B]">{tr('(gawanya kiasi)')}</span>}
+            {multi && <span className="font-normal text-muted">{tr('(gawanya kiasi)')}</span>}
           </p>
           <div className="grid grid-cols-3 gap-2">
             {POS_PAYMENT_METHODS.map((m) => {
@@ -286,8 +286,8 @@ export function Cart(p: Props) {
                   className={cx(
                     'flex min-h-[38px] items-center justify-center rounded-[10px] border px-2.5 text-[13px] font-semibold transition-colors',
                     active
-                      ? 'border-[#2563EB] bg-blue-50/80 text-[#2563EB]'
-                      : 'border-[#E2E8F0] bg-white text-[#0F172A] hover:border-slate-300',
+                      ? 'border-primary bg-blue-50/80 text-primary'
+                      : 'border-line bg-white text-ink hover:border-slate-300',
                   )}
                 >
                   {tr(PAYMENT_LABEL[m])}
@@ -299,7 +299,7 @@ export function Cart(p: Props) {
 
         {/* Payment Type: Full payment vs Debt */}
         <div
-          className="grid grid-cols-2 gap-1 rounded-[10px] border border-[#E2E8F0] bg-[#F8FAFC] p-1"
+          className="grid grid-cols-2 gap-1 rounded-[10px] border border-line bg-app p-1"
           role="tablist"
         >
           {(['full', 'debt'] as const).map((m) => (
@@ -311,7 +311,7 @@ export function Cart(p: Props) {
               onClick={() => patch({ mode: m, paid: m === 'full' ? '' : s.paid })}
               className={cx(
                 'min-h-[36px] rounded-[8px] text-[13px] font-semibold transition-colors',
-                s.mode === m ? 'bg-white text-[#0F172A] shadow-sm' : 'text-[#64748B] hover:text-[#0F172A]',
+                s.mode === m ? 'bg-white text-ink shadow-sm' : 'text-muted hover:text-ink',
               )}
             >
               {m === 'full' ? tr('Malipo kamili') : tr('Deni (sehemu)')}
@@ -323,7 +323,7 @@ export function Cart(p: Props) {
           <div className="space-y-2">
             {s.methods.map((m) => (
               <label key={m} className="flex items-center gap-3">
-                <span className="w-[88px] shrink-0 text-[12.5px] font-medium text-[#0F172A]">
+                <span className="w-[88px] shrink-0 text-[12.5px] font-medium text-ink">
                   {tr(PAYMENT_LABEL[m])}
                 </span>
                 <input
@@ -342,7 +342,7 @@ export function Cart(p: Props) {
         <div className={cx('grid gap-3', !multi ? 'grid-cols-2' : 'grid-cols-1')}>
           {!multi && (
             <label className="block min-w-0">
-              <span className="mb-1.5 block text-[12.5px] font-semibold text-[#0F172A]">{tr('Amelipa (TSh)')}</span>
+              <span className="mb-1.5 block text-[12.5px] font-semibold text-ink">{tr('Amelipa (TSh)')}</span>
               <input
                 className="input h-10"
                 inputMode="numeric"
@@ -353,7 +353,7 @@ export function Cart(p: Props) {
             </label>
           )}
           <label className="block min-w-0">
-            <span className="mb-1.5 block text-[12.5px] font-semibold text-[#0F172A]">{tr('Punguzo (TSh)')}</span>
+            <span className="mb-1.5 block text-[12.5px] font-semibold text-ink">{tr('Punguzo (TSh)')}</span>
             <input
               className="input h-10"
               inputMode="numeric"
@@ -366,7 +366,7 @@ export function Cart(p: Props) {
 
         {s.mode === 'debt' && (
           <label className="block min-w-0">
-            <span className="mb-1.5 block text-[12.5px] font-semibold text-[#0F172A]">{tr('Tarehe ya kumaliza')}</span>
+            <span className="mb-1.5 block text-[12.5px] font-semibold text-ink">{tr('Tarehe ya kumaliza')}</span>
             <input
               type="date"
               className="input h-10"
@@ -379,7 +379,7 @@ export function Cart(p: Props) {
 
         {p.needsOwnerPin && (
           <label className="block">
-            <span className="mb-1.5 block text-[12.5px] font-semibold text-[#0F172A]">
+            <span className="mb-1.5 block text-[12.5px] font-semibold text-ink">
               {tr('PIN ya mmiliki (punguzo kubwa)')}
             </span>
             <input
@@ -406,7 +406,7 @@ export function Cart(p: Props) {
       </div>
 
       {/* 3. FIXED FOOTER: Final total and Complete Sale button */}
-      <footer className="shrink-0 border-t border-[#E2E8F0] bg-white px-4 py-3.5 pb-safe">
+      <footer className="shrink-0 border-t border-line bg-white px-4 py-3.5 pb-safe">
         <dl className="mb-3 space-y-1 text-[13px]">
           {p.discount > 0 && (
             <>
@@ -417,8 +417,8 @@ export function Cart(p: Props) {
           {p.balance > 0 && s.lines.length > 0 && <Row label="Deni linabaki" value={formatTZS(p.balance)} tone="warn" />}
           {p.balance < 0 && s.lines.length > 0 && <Row label="Zaidi ya jumla" value={formatTZS(-p.balance)} tone="bad" />}
           <div className="flex items-baseline justify-between pt-0.5">
-            <dt className="text-[14px] font-bold text-[#0F172A]">{tr('Jumla')}</dt>
-            <dd className="text-[20px] font-extrabold tabular-nums text-[#0F172A]">{formatTZS(p.total)}</dd>
+            <dt className="text-[14px] font-bold text-ink">{tr('Jumla')}</dt>
+            <dd className="text-[20px] font-extrabold tabular-nums text-ink">{formatTZS(p.total)}</dd>
           </div>
         </dl>
 
@@ -459,7 +459,7 @@ export function Stepper({
   return (
     <div
       className={cx(
-        'inline-flex items-center rounded-[8px] border border-[#E2E8F0] bg-[#F8FAFC]',
+        'inline-flex items-center rounded-[8px] border border-line bg-app',
         compact ? 'gap-0.5 p-0.5' : 'gap-1 p-1',
       )}
       onClick={(e) => e.stopPropagation()}
@@ -472,7 +472,7 @@ export function Stepper({
           onMinus();
         }}
         className={cx(
-          'flex items-center justify-center rounded-[6px] bg-white font-bold text-[#0F172A] border border-[#E2E8F0] hover:bg-slate-50',
+          'flex items-center justify-center rounded-[6px] bg-white font-bold text-ink border border-line hover:bg-slate-50',
           compact ? 'h-6 w-6 text-[14px]' : 'h-8 w-8 text-[16px]',
         )}
       >
@@ -480,7 +480,7 @@ export function Stepper({
       </button>
       <span
         className={cx(
-          'text-center font-bold tabular-nums text-[#0F172A]',
+          'text-center font-bold tabular-nums text-ink',
           compact ? 'min-w-[22px] px-1 text-[12.5px]' : 'w-7 text-[13.5px]',
         )}
       >
@@ -494,7 +494,7 @@ export function Stepper({
           onPlus();
         }}
         className={cx(
-          'flex items-center justify-center rounded-[6px] bg-[#2563EB] font-bold text-white hover:bg-blue-700',
+          'flex items-center justify-center rounded-[6px] bg-primary font-bold text-white hover:bg-blue-700',
           compact ? 'h-6 w-6 text-[14px]' : 'h-8 w-8 text-[16px]',
         )}
       >
@@ -548,30 +548,30 @@ function CustomerPicker({
 
   return (
     <div>
-      <p className="mb-1.5 text-[12.5px] font-semibold text-[#0F172A]">
+      <p className="mb-1.5 text-[12.5px] font-semibold text-ink">
         {tr('Mteja')}{' '}
         {required ? (
           <span className="font-normal text-bad-fg">{tr('(lazima kwa deni)')}</span>
         ) : (
-          <span className="font-normal text-[#64748B]">{tr('(si lazima)')}</span>
+          <span className="font-normal text-muted">{tr('(si lazima)')}</span>
         )}
       </p>
       {value.selected ? (
-        <div className="flex h-10 items-center justify-between gap-2 rounded-[10px] border border-[#E2E8F0] bg-[#F8FAFC]/60 px-3">
-          <span className="min-w-0 truncate text-[13.5px] font-medium text-[#0F172A]">
+        <div className="flex h-10 items-center justify-between gap-2 rounded-[10px] border border-line bg-app/60 px-3">
+          <span className="min-w-0 truncate text-[13.5px] font-medium text-ink">
             {value.selected.name}
             {value.selected.phone && ` · ${displayPhone(value.selected.phone)}`}
           </span>
           <button
             type="button"
-            className="shrink-0 text-[12.5px] font-semibold text-[#2563EB] hover:underline"
+            className="shrink-0 text-[12.5px] font-semibold text-primary hover:underline"
             onClick={() => onChange({ ...value, selected: null })}
           >
             {tr('Badilisha')}
           </button>
         </div>
       ) : value.creating ? (
-        <div className="space-y-2 rounded-[10px] border border-[#E2E8F0] bg-[#F8FAFC]/60 p-2.5">
+        <div className="space-y-2 rounded-[10px] border border-line bg-app/60 p-2.5">
           <input
             className="input h-10"
             placeholder={tr('Jina la mteja')}
@@ -626,7 +626,7 @@ function CustomerPicker({
           <div className="flex items-center justify-between gap-2">
             <button
               type="button"
-              className="text-[12.5px] font-semibold text-[#2563EB] hover:underline"
+              className="text-[12.5px] font-semibold text-primary hover:underline"
               onClick={() => {
                 setError('');
                 register.reset();
@@ -653,7 +653,7 @@ function CustomerPicker({
             onChange={(e) => setQ(e.target.value)}
           />
           {q.trim() && (
-            <ul className="absolute z-10 mt-1 w-full overflow-hidden rounded-[10px] border border-[#E2E8F0] bg-white shadow-lg">
+            <ul className="absolute z-10 mt-1 w-full overflow-hidden rounded-[10px] border border-line bg-white shadow-lg">
               {results.map((c) => (
                 <li key={c.id}>
                   <button
@@ -661,15 +661,15 @@ function CustomerPicker({
                     className="flex min-h-[40px] w-full items-center justify-between gap-2 px-3 text-left text-[13.5px] hover:bg-slate-50"
                     onClick={() => pick(c)}
                   >
-                    <span className="truncate font-medium text-[#0F172A]">{c.name}</span>
-                    <span className="shrink-0 text-[#64748B]">{c.phone ? displayPhone(c.phone) : ''}</span>
+                    <span className="truncate font-medium text-ink">{c.name}</span>
+                    <span className="shrink-0 text-muted">{c.phone ? displayPhone(c.phone) : ''}</span>
                   </button>
                 </li>
               ))}
               <li>
                 <button
                   type="button"
-                  className="min-h-[40px] w-full border-t border-[#E2E8F0] px-3 text-left text-[13.5px] font-semibold text-[#2563EB] hover:bg-slate-50"
+                  className="min-h-[40px] w-full border-t border-line px-3 text-left text-[13.5px] font-semibold text-primary hover:bg-slate-50"
                   onClick={() => {
                     const isPhone = /^[\d\s+]+$/.test(q);
                     onChange({ ...value, creating: true, name: isPhone ? '' : q, phone: isPhone ? q : '' });

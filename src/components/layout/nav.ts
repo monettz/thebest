@@ -40,6 +40,23 @@ export const STORE_NAV: NavItem[] = [
   { to: '/store/movements', label: 'Ripoti za stock', icon: 'chart', section: 'Udhibiti' },
 ];
 
+/** Screens reached from inside other screens rather than from the menu, for the top bar's page label. */
+const OTHER_PAGES: Pick<NavItem, 'to' | 'label' | 'icon'>[] = [
+  { to: '/sales', label: 'Historia ya mauzo', icon: 'bag' },
+  { to: '/audit', label: 'Kumbukumbu za mabadiliko', icon: 'clipboard' },
+  { to: '/more', label: 'Zaidi', icon: 'grid' },
+  { to: '/store/suppliers', label: 'Suppliers', icon: 'inbox' },
+];
+
+/** The label and icon of the screen at `pathname` (the longest matching menu path wins). */
+export function pageMeta(pathname: string, code: LocationCode): Pick<NavItem, 'label' | 'icon'> {
+  const pool = [...(code === 'STORE' ? STORE_NAV : SHOP_NAV), ...(code === 'STORE' ? SHOP_NAV : STORE_NAV), ...OTHER_PAGES];
+  const hit = pool
+    .filter((i) => (i.to === '/' || i.to === '/store' ? pathname === i.to : pathname === i.to || pathname.startsWith(`${i.to}/`)))
+    .sort((a, b) => b.to.length - a.to.length)[0];
+  return hit ?? { label: 'THE BEST', icon: 'grid' };
+}
+
 /** Consecutive items that share a `section`, in menu order. */
 export function sectionsOf(items: NavItem[]): { title: string; items: NavItem[] }[] {
   const out: { title: string; items: NavItem[] }[] = [];

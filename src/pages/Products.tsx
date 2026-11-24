@@ -252,68 +252,68 @@ export default function Products() {
 
         {/* 1. Four Summary Cards: 2-column grid on mobile/tablet, 4-column on desktop */}
         <div className="mb-5 grid grid-cols-2 gap-2.5 sm:gap-3 md:mb-6 lg:grid-cols-4">
-          <div className="flex min-h-[96px] flex-col justify-between rounded-[14px] border border-[#E2E8F0] bg-white p-3.5 shadow-2xs sm:p-4">
-            <p className="text-[11px] font-semibold uppercase tracking-wide text-[#64748B] sm:text-[12px]">
+          <div className="flex min-h-[96px] flex-col justify-between rounded-[14px] border border-line bg-white p-3.5 shadow-2xs sm:p-4">
+            <p className="text-[11px] font-semibold uppercase tracking-wide text-muted sm:text-[12px]">
               {tr('Aina za bidhaa')}
             </p>
-            <p className="mt-1.5 text-[21px] font-extrabold leading-tight tracking-tight tabular-nums text-[#0F172A] sm:text-[24px]">
+            <p className="mt-1.5 text-[21px] font-extrabold leading-tight tracking-tight tabular-nums text-ink sm:text-[24px]">
               {String(live.length)}
             </p>
-            <p className="mt-1.5 text-[12px] leading-snug text-[#64748B]">{tr('kwenye orodha ya duka')}</p>
+            <p className="mt-1.5 text-[12px] leading-snug text-muted">{tr('kwenye orodha ya duka')}</p>
           </div>
 
           {isOwner ? (
             <>
-              <div className="flex min-h-[96px] flex-col justify-between rounded-[14px] border border-[#E2E8F0] bg-white p-3.5 shadow-2xs sm:p-4">
-                <p className="text-[11px] font-semibold uppercase tracking-wide text-[#64748B] sm:text-[12px]">
+              <div className="flex min-h-[96px] flex-col justify-between rounded-[14px] border border-line bg-white p-3.5 shadow-2xs sm:p-4">
+                <p className="text-[11px] font-semibold uppercase tracking-wide text-muted sm:text-[12px]">
                   {tr('Thamani store')}
                 </p>
-                <p className="mt-1.5 text-[20px] font-extrabold leading-tight tracking-tight tabular-nums text-[#0F172A] sm:text-[24px]">
+                <p className="mt-1.5 text-[20px] font-extrabold leading-tight tracking-tight tabular-nums text-ink sm:text-[24px]">
                   {formatTZSCompact(storeValue)}
                 </p>
-                <p className="mt-1.5 text-[12px] leading-snug text-[#64748B]">{tr('kwa bei ya kununua')}</p>
+                <p className="mt-1.5 text-[12px] leading-snug text-muted">{tr('kwa bei ya kununua')}</p>
               </div>
-              <div className="flex min-h-[96px] flex-col justify-between rounded-[14px] border border-[#E2E8F0] bg-white p-3.5 shadow-2xs sm:p-4">
-                <p className="text-[11px] font-semibold uppercase tracking-wide text-[#64748B] sm:text-[12px]">
+              <div className="flex min-h-[96px] flex-col justify-between rounded-[14px] border border-line bg-white p-3.5 shadow-2xs sm:p-4">
+                <p className="text-[11px] font-semibold uppercase tracking-wide text-muted sm:text-[12px]">
                   {tr('Thamani dukani')}
                 </p>
-                <p className="mt-1.5 text-[20px] font-extrabold leading-tight tracking-tight tabular-nums text-[#0F172A] sm:text-[24px]">
+                <p className="mt-1.5 text-[20px] font-extrabold leading-tight tracking-tight tabular-nums text-ink sm:text-[24px]">
                   {formatTZSCompact(shopValue)}
                 </p>
-                <p className="mt-1.5 text-[12px] leading-snug text-[#64748B]">{tr('kwa bei ya kununua')}</p>
+                <p className="mt-1.5 text-[12px] leading-snug text-muted">{tr('kwa bei ya kununua')}</p>
               </div>
             </>
           ) : (
             <>
-              <div className="flex min-h-[96px] flex-col justify-between rounded-[14px] border border-[#E2E8F0] bg-white p-3.5 shadow-2xs sm:p-4">
-                <p className="text-[11px] font-semibold uppercase tracking-wide text-[#64748B] sm:text-[12px]">
+              <div className="flex min-h-[96px] flex-col justify-between rounded-[14px] border border-line bg-white p-3.5 shadow-2xs sm:p-4">
+                <p className="text-[11px] font-semibold uppercase tracking-wide text-muted sm:text-[12px]">
                   {tr('Store')}
                 </p>
-                <p className="mt-1.5 text-[21px] font-extrabold leading-tight tracking-tight tabular-nums text-[#0F172A] sm:text-[24px]">
+                <p className="mt-1.5 text-[21px] font-extrabold leading-tight tracking-tight tabular-nums text-ink sm:text-[24px]">
                   {formatNumber(live.reduce((s, p) => s + p.storeQty, 0))}
                 </p>
-                <p className="mt-1.5 text-[12px] leading-snug text-[#64748B]">{tr('jumla ya vifaa store')}</p>
+                <p className="mt-1.5 text-[12px] leading-snug text-muted">{tr('jumla ya vifaa store')}</p>
               </div>
-              <div className="flex min-h-[96px] flex-col justify-between rounded-[14px] border border-[#E2E8F0] bg-white p-3.5 shadow-2xs sm:p-4">
-                <p className="text-[11px] font-semibold uppercase tracking-wide text-[#64748B] sm:text-[12px]">
+              <div className="flex min-h-[96px] flex-col justify-between rounded-[14px] border border-line bg-white p-3.5 shadow-2xs sm:p-4">
+                <p className="text-[11px] font-semibold uppercase tracking-wide text-muted sm:text-[12px]">
                   {tr('Dukani')}
                 </p>
-                <p className="mt-1.5 text-[21px] font-extrabold leading-tight tracking-tight tabular-nums text-[#0F172A] sm:text-[24px]">
+                <p className="mt-1.5 text-[21px] font-extrabold leading-tight tracking-tight tabular-nums text-ink sm:text-[24px]">
                   {formatNumber(live.reduce((s, p) => s + p.shopQty, 0))}
                 </p>
-                <p className="mt-1.5 text-[12px] leading-snug text-[#64748B]">{tr('jumla ya vifaa dukani')}</p>
+                <p className="mt-1.5 text-[12px] leading-snug text-muted">{tr('jumla ya vifaa dukani')}</p>
               </div>
             </>
           )}
 
-          <div className="flex min-h-[96px] flex-col justify-between rounded-[14px] border border-[#E2E8F0] bg-white p-3.5 shadow-2xs sm:p-4">
-            <p className="text-[11px] font-semibold uppercase tracking-wide text-[#64748B] sm:text-[12px]">
+          <div className="flex min-h-[96px] flex-col justify-between rounded-[14px] border border-line bg-white p-3.5 shadow-2xs sm:p-4">
+            <p className="text-[11px] font-semibold uppercase tracking-wide text-muted sm:text-[12px]">
               {tr('Chini ya kiwango')}
             </p>
             <p className="mt-1.5 text-[21px] font-extrabold leading-tight tracking-tight tabular-nums text-warn-fg sm:text-[24px]">
               {String(lowCount)}
             </p>
-            <p className="mt-1.5 text-[12px] leading-snug text-[#64748B]">
+            <p className="mt-1.5 text-[12px] leading-snug text-muted">
               {outCount > 0 ? tr('{n} zimeisha', { n: outCount }) : tr('zinazohitaji kuagizwa')}
             </p>
           </div>
@@ -341,7 +341,7 @@ export default function Products() {
                 onClick={() => setShowArchived((v) => !v)}
                 className={cx(
                   'min-h-[36px] rounded-[10px] border px-3 text-[12.5px] font-semibold',
-                  showArchived ? 'border-[#2563EB] bg-[#EFF6FF] text-[#2563EB]' : 'border-[#E2E8F0] bg-white text-[#64748B]',
+                  showArchived ? 'border-primary bg-primary-tint text-primary' : 'border-line bg-white text-muted',
                 )}
               >
                 {showArchived ? tr('Rudi kwenye bidhaa zinazotumika') : tr('Zilizofichwa ({n})', { n: archivedCount })}
@@ -349,9 +349,9 @@ export default function Products() {
             )}
           </div>
           <div className="relative w-full md:max-w-[320px]">
-            <SearchIcon width={16} height={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#64748B]" />
+            <SearchIcon width={16} height={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted" />
             <input
-              className="h-[42px] w-full rounded-[12px] border border-[#E2E8F0] bg-white pl-10 pr-3.5 text-[14px] text-[#0F172A] shadow-2xs outline-none placeholder:text-[#64748B] focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/15"
+              className="h-[42px] w-full rounded-[12px] border border-line bg-white pl-10 pr-3.5 text-[14px] text-ink shadow-2xs outline-none placeholder:text-muted focus:border-primary focus:ring-2 focus:ring-primary/15"
               placeholder={tr('Tafuta bidhaa, model, SKU, barcode au IMEI…')}
               value={q}
               onChange={(e) => setQ(e.target.value)}
@@ -360,10 +360,10 @@ export default function Products() {
         </div>
 
         {/* 2. Desktop/Tablet Products Table */}
-        <Card className="mt-4 hidden overflow-x-auto border-[#E2E8F0] md:block">
+        <Card className="mt-4 hidden overflow-x-auto border-line md:block">
           <table className="w-full min-w-[700px] text-[13.5px]">
             <thead>
-              <tr className="border-b border-[#E2E8F0] bg-[#F8FAFC] text-left text-[11.5px] font-bold uppercase tracking-wider text-[#64748B]">
+              <tr className="border-b border-line bg-app text-left text-[11.5px] font-bold uppercase tracking-wider text-muted">
                 <th className="px-4 py-3">{tr('Bidhaa')}</th>
                 {isOwner && <th className="px-3 py-3 text-right">{tr('Bei ya kununua')}</th>}
                 <th className="px-3 py-3 text-right">{tr('Bei ya kuuza')}</th>
@@ -373,7 +373,7 @@ export default function Products() {
                 <th className="px-4 py-3 text-right">{tr('Hatua')}</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#E2E8F0]">
+            <tbody className="divide-y divide-line">
               {rows.map((p) => {
                 const status = locStatus(p);
                 const specText =
@@ -384,7 +384,7 @@ export default function Products() {
                       : tr('Kwa idadi');
 
                 return (
-                  <tr key={p.id} className="transition-colors hover:bg-[#F8FAFC]/80">
+                  <tr key={p.id} className="transition-colors hover:bg-app/80">
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
                         {/* Product Thumbnail or Neutral Placeholder */}
@@ -395,7 +395,7 @@ export default function Products() {
                               isOwner ? triggerAddImageForProduct(p, false) : setDetailProduct(p)
                             }
                             title={isOwner ? tr('Badilisha picha') : p.name}
-                            className="group relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-[8px] border border-[#E2E8F0] bg-[#F8FAFC] transition hover:border-[#2563EB]"
+                            className="group relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-[8px] border border-line bg-app transition hover:border-primary"
                           >
                             <img
                               src={p.imageUrl}
@@ -404,7 +404,7 @@ export default function Products() {
                             />
                           </button>
                         ) : (
-                          <span className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-[8px] border border-[#E2E8F0] bg-[#F8FAFC] text-[#64748B]">
+                          <span className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-[8px] border border-line bg-app text-muted">
                             {p.type === 'phone' ? (
                               <PhoneIcon width={18} height={18} />
                             ) : (
@@ -414,8 +414,8 @@ export default function Products() {
                         )}
 
                         <div className="min-w-0">
-                          <p className="truncate font-semibold text-[#0F172A]">{p.name}</p>
-                          <div className="mt-0.5 flex flex-wrap items-center gap-1.5 text-[12px] text-[#64748B]">
+                          <p className="truncate font-semibold text-ink">{p.name}</p>
+                          <div className="mt-0.5 flex flex-wrap items-center gap-1.5 text-[12px] text-muted">
                             <span>{specText}</span>
                             {isOwner &&
                               (p.imageUrl ? (
@@ -425,7 +425,7 @@ export default function Products() {
                                     type="button"
                                     onClick={() => triggerAddImageForProduct(p, false)}
                                     title={tr('Badilisha picha')}
-                                    className="inline-flex items-center gap-1 rounded border border-[#E2E8F0] bg-white px-1.5 py-0.5 text-[11px] font-medium text-[#0F172A] hover:border-[#2563EB]"
+                                    className="inline-flex items-center gap-1 rounded border border-line bg-white px-1.5 py-0.5 text-[11px] font-medium text-ink hover:border-primary"
                                   >
                                     <img
                                       src={p.imageUrl}
@@ -441,7 +441,7 @@ export default function Products() {
                                   <button
                                     type="button"
                                     onClick={() => triggerAddImageForProduct(p, true)}
-                                    className="font-semibold text-[#2563EB] hover:underline"
+                                    className="font-semibold text-primary hover:underline"
                                   >
                                     {tr('Weka picha')}
                                   </button>
@@ -452,17 +452,17 @@ export default function Products() {
                       </div>
                     </td>
                     {isOwner && (
-                      <td className="px-3 py-3 text-right tabular-nums text-[#64748B]">
+                      <td className="px-3 py-3 text-right tabular-nums text-muted">
                         TSh {formatNumber(p.costPrice ?? 0)}
                       </td>
                     )}
-                    <td className="px-3 py-3 text-right font-bold tabular-nums text-[#0F172A]">
+                    <td className="px-3 py-3 text-right font-bold tabular-nums text-ink">
                       TSh {formatNumber(p.sellPrice)}
                     </td>
                     <td
                       className={cx(
                         'px-3 py-3 text-right tabular-nums',
-                        storeView ? 'font-bold text-[#0F172A]' : 'text-[#64748B]',
+                        storeView ? 'font-bold text-ink' : 'text-muted',
                       )}
                     >
                       {formatNumber(p.storeQty)}
@@ -470,7 +470,7 @@ export default function Products() {
                     <td
                       className={cx(
                         'px-3 py-3 text-right tabular-nums',
-                        !storeView ? 'font-bold text-[#0F172A]' : 'text-[#64748B]',
+                        !storeView ? 'font-bold text-ink' : 'text-muted',
                       )}
                     >
                       {formatNumber(p.shopQty)}
@@ -483,7 +483,7 @@ export default function Products() {
                         <button
                           type="button"
                           onClick={() => setDetailProduct(p)}
-                          className="text-[12.5px] font-semibold text-[#2563EB] hover:underline"
+                          className="text-[12.5px] font-semibold text-primary hover:underline"
                         >
                           {tr('Angalia')}
                         </button>
@@ -492,7 +492,7 @@ export default function Products() {
                             <button
                               type="button"
                               onClick={() => setEditingProduct(p)}
-                              className="text-[12.5px] font-semibold text-[#0F172A] hover:text-[#2563EB] hover:underline"
+                              className="text-[12.5px] font-semibold text-ink hover:text-primary hover:underline"
                             >
                               {tr('Hariri')}
                             </button>
@@ -500,7 +500,7 @@ export default function Products() {
                               type="button"
                               disabled={toggleArchive.isPending}
                               onClick={() => toggleArchive.mutate({ id: p.id, name: p.name, archived: !p.archived })}
-                              className="text-[12.5px] font-semibold text-[#64748B] hover:text-[#0F172A] hover:underline"
+                              className="text-[12.5px] font-semibold text-muted hover:text-ink hover:underline"
                             >
                               {p.archived ? tr('Weka tena') : tr('Ficha')}
                             </button>
@@ -520,7 +520,7 @@ export default function Products() {
               })}
               {rows.length === 0 && (
                 <tr>
-                  <td colSpan={isOwner ? 7 : 6} className="p-8 text-center text-[#64748B]">
+                  <td colSpan={isOwner ? 7 : 6} className="p-8 text-center text-muted">
                     {tr('Hakuna bidhaa iliyopatikana.')}
                   </td>
                 </tr>
@@ -543,7 +543,7 @@ export default function Products() {
             return (
               <div
                 key={p.id}
-                className="rounded-[14px] border border-[#E2E8F0] bg-white p-3.5 shadow-[0_1px_2px_rgba(15,23,42,0.03)]"
+                className="rounded-[14px] border border-line bg-white p-3.5 shadow-[0_1px_2px_rgba(15,23,42,0.03)]"
               >
                 {/* Top Row: Thumbnail on left, Name & Specs beside thumbnail, Stock status badge visible */}
                 <div className="flex items-start justify-between gap-3">
@@ -555,18 +555,18 @@ export default function Products() {
                           isOwner ? triggerAddImageForProduct(p, false) : setDetailProduct(p)
                         }
                         title={isOwner ? tr('Badilisha picha') : p.name}
-                        className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-[10px] border border-[#E2E8F0] bg-[#F8FAFC] p-1 transition hover:border-[#2563EB]"
+                        className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-[10px] border border-line bg-app p-1 transition hover:border-primary"
                       >
                         <img src={p.imageUrl} alt={p.name} className="h-full w-full object-contain" />
                       </button>
                     ) : (
-                      <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[10px] border border-[#E2E8F0] bg-[#F8FAFC] text-[#64748B]">
+                      <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[10px] border border-line bg-app text-muted">
                         {p.type === 'phone' ? <PhoneIcon width={20} height={20} /> : <BoxIcon width={20} height={20} />}
                       </span>
                     )}
                     <div className="min-w-0 flex-1">
-                      <p className="break-words text-[15px] font-bold leading-snug text-[#0F172A]">{p.name}</p>
-                      <div className="mt-1 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-[12.5px] leading-snug text-[#64748B]">
+                      <p className="break-words text-[15px] font-bold leading-snug text-ink">{p.name}</p>
+                      <div className="mt-1 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-[12.5px] leading-snug text-muted">
                         <span>{specText}</span>
                         {isOwner &&
                           (p.imageUrl ? (
@@ -575,7 +575,7 @@ export default function Products() {
                               <button
                                 type="button"
                                 onClick={() => triggerAddImageForProduct(p, false)}
-                                className="font-semibold text-[#2563EB] hover:underline"
+                                className="font-semibold text-primary hover:underline"
                               >
                                 {tr('Badilisha picha')}
                               </button>
@@ -586,7 +586,7 @@ export default function Products() {
                               <button
                                 type="button"
                                 onClick={() => triggerAddImageForProduct(p, true)}
-                                className="font-semibold text-[#2563EB] hover:underline"
+                                className="font-semibold text-primary hover:underline"
                               >
                                 {tr('Weka picha')}
                               </button>
@@ -601,23 +601,23 @@ export default function Products() {
                 </div>
 
                 {/* Middle Section: Prominent Selling Price, Secondary Buying Price, Aligned Store & Shop Quantities */}
-                <div className="mt-3 rounded-[10px] border border-[#E2E8F0]/80 bg-[#F8FAFC] p-3">
-                  <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-[#E2E8F0] pb-2.5">
+                <div className="mt-3 rounded-[10px] border border-line/80 bg-app p-3">
+                  <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-line pb-2.5">
                     <div>
-                      <span className="block text-[12px] font-medium text-[#64748B]">{tr('Bei ya kuuza')}</span>
-                      <span className="text-[16px] font-bold tabular-nums text-[#0F172A]">{formatTZS(p.sellPrice)}</span>
+                      <span className="block text-[12px] font-medium text-muted">{tr('Bei ya kuuza')}</span>
+                      <span className="text-[16px] font-bold tabular-nums text-ink">{formatTZS(p.sellPrice)}</span>
                     </div>
                     {isOwner ? (
                       <div className="text-right">
-                        <span className="block text-[12px] text-[#64748B]">{tr('Bei ya kununua')}</span>
-                        <span className="text-[13px] font-semibold tabular-nums text-[#334155]">
+                        <span className="block text-[12px] text-muted">{tr('Bei ya kununua')}</span>
+                        <span className="text-[13px] font-semibold tabular-nums text-body">
                           {formatTZS(p.costPrice ?? 0)}
                         </span>
                       </div>
                     ) : (
                       <div className="text-right">
-                        <span className="block text-[12px] text-[#64748B]">{tr('Jumla ya stock')}</span>
-                        <span className="text-[13px] font-semibold tabular-nums text-[#334155]">
+                        <span className="block text-[12px] text-muted">{tr('Jumla ya stock')}</span>
+                        <span className="text-[13px] font-semibold tabular-nums text-body">
                           {formatNumber(p.storeQty + p.shopQty)}
                         </span>
                       </div>
@@ -630,11 +630,11 @@ export default function Products() {
                         'flex items-center justify-between rounded-[8px] border px-2.5 py-1.5',
                         storeView
                           ? 'border-blue-200 bg-blue-50/70'
-                          : 'border-[#E2E8F0] bg-white',
+                          : 'border-line bg-white',
                       )}
                     >
-                      <span className="text-[12.5px] font-medium text-[#64748B]">{tr('Store')}</span>
-                      <span className="text-[14px] font-bold tabular-nums text-[#0F172A]">
+                      <span className="text-[12.5px] font-medium text-muted">{tr('Store')}</span>
+                      <span className="text-[14px] font-bold tabular-nums text-ink">
                         {formatNumber(p.storeQty)}
                       </span>
                     </div>
@@ -643,11 +643,11 @@ export default function Products() {
                         'flex items-center justify-between rounded-[8px] border px-2.5 py-1.5',
                         !storeView
                           ? 'border-blue-200 bg-blue-50/70'
-                          : 'border-[#E2E8F0] bg-white',
+                          : 'border-line bg-white',
                       )}
                     >
-                      <span className="text-[12.5px] font-medium text-[#64748B]">{tr('Dukani')}</span>
-                      <span className="text-[14px] font-bold tabular-nums text-[#0F172A]">
+                      <span className="text-[12.5px] font-medium text-muted">{tr('Dukani')}</span>
+                      <span className="text-[14px] font-bold tabular-nums text-ink">
                         {formatNumber(p.shopQty)}
                       </span>
                     </div>
@@ -659,7 +659,7 @@ export default function Products() {
                   <button
                     type="button"
                     onClick={() => setDetailProduct(p)}
-                    className="inline-flex min-h-[42px] items-center justify-center rounded-[10px] border border-[#E2E8F0] bg-white px-2 text-[13px] font-semibold text-[#2563EB] transition hover:bg-blue-50/50 active:scale-[0.98]"
+                    className="inline-flex min-h-[42px] items-center justify-center rounded-[10px] border border-line bg-white px-2 text-[13px] font-semibold text-primary transition hover:bg-blue-50/50 active:scale-[0.98]"
                   >
                     {tr('Angalia')}
                   </button>
@@ -668,7 +668,7 @@ export default function Products() {
                       <button
                         type="button"
                         onClick={() => setEditingProduct(p)}
-                        className="inline-flex min-h-[42px] items-center justify-center rounded-[10px] border border-[#E2E8F0] bg-white px-2 text-[13px] font-semibold text-[#0F172A] transition hover:bg-slate-50 active:scale-[0.98]"
+                        className="inline-flex min-h-[42px] items-center justify-center rounded-[10px] border border-line bg-white px-2 text-[13px] font-semibold text-ink transition hover:bg-slate-50 active:scale-[0.98]"
                       >
                         {tr('Hariri')}
                       </button>
@@ -676,7 +676,7 @@ export default function Products() {
                         type="button"
                         disabled={toggleArchive.isPending}
                         onClick={() => toggleArchive.mutate({ id: p.id, name: p.name, archived: !p.archived })}
-                        className="inline-flex min-h-[42px] items-center justify-center rounded-[10px] border border-[#E2E8F0] bg-white px-2 text-[13px] font-semibold text-[#64748B] transition hover:bg-slate-50 active:scale-[0.98]"
+                        className="inline-flex min-h-[42px] items-center justify-center rounded-[10px] border border-line bg-white px-2 text-[13px] font-semibold text-muted transition hover:bg-slate-50 active:scale-[0.98]"
                       >
                         {p.archived ? tr('Weka tena') : tr('Ficha')}
                       </button>
@@ -694,14 +694,14 @@ export default function Products() {
             );
           })}
           {rows.length === 0 && (
-            <p className="rounded-[14px] border border-[#E2E8F0] bg-white p-6 text-center text-[13.5px] text-[#64748B]">
+            <p className="rounded-[14px] border border-line bg-white p-6 text-center text-[13.5px] text-muted">
               {tr('Hakuna bidhaa iliyopatikana.')}
             </p>
           )}
         </div>
 
         {!isOwner && (
-          <p className="mt-3 text-[12.5px] text-[#64748B]">
+          <p className="mt-3 text-[12.5px] text-muted">
             <Badge tone="blue" className="mr-2">
               {tr('Muuzaji')}
             </Badge>
@@ -723,27 +723,27 @@ export default function Products() {
             <div
               role="dialog"
               aria-label={`${tr('Picha ya bidhaa')}: ${imageModalProduct.name}`}
-              className="flex h-[100dvh] w-full flex-col justify-between overflow-y-auto bg-white p-4 shadow-xl sm:h-auto sm:max-w-md sm:rounded-[16px] sm:border sm:border-[#E2E8F0] sm:p-5"
+              className="flex h-[100dvh] w-full flex-col justify-between overflow-y-auto bg-white p-4 shadow-xl sm:h-auto sm:max-w-md sm:rounded-[16px] sm:border sm:border-line sm:p-5"
               onClick={(e) => e.stopPropagation()}
             >
               <div>
-                <div className="mb-4 flex items-center justify-between gap-2 border-b border-[#E2E8F0] pb-3">
+                <div className="mb-4 flex items-center justify-between gap-2 border-b border-line pb-3">
                   <div>
-                    <h3 className="text-[17px] font-bold text-[#0F172A]">{imageModalProduct.name}</h3>
-                    <p className="text-[12.5px] text-[#64748B]">{tr('Hakiki picha kabla ya kuhifadhi')}</p>
+                    <h3 className="text-[17px] font-bold text-ink">{imageModalProduct.name}</h3>
+                    <p className="text-[12.5px] text-muted">{tr('Hakiki picha kabla ya kuhifadhi')}</p>
                   </div>
                   <button
                     type="button"
                     onClick={() => setImageModalProduct(null)}
-                    className="min-h-[38px] rounded-[8px] border border-[#E2E8F0] bg-[#F8FAFC] px-3 text-[13px] font-semibold text-[#64748B] hover:text-[#0F172A]"
+                    className="min-h-[38px] rounded-[8px] border border-line bg-app px-3 text-[13px] font-semibold text-muted hover:text-ink"
                   >
                     {tr('Ghairi')}
                   </button>
                 </div>
 
                 {/* Image Preview Box */}
-                <div className="flex flex-col items-center justify-center rounded-[12px] border border-[#E2E8F0] bg-[#F8FAFC] p-4">
-                  <div className="flex h-48 w-full items-center justify-center overflow-hidden rounded-[8px] border border-[#E2E8F0]/70 bg-white p-2 sm:h-36">
+                <div className="flex flex-col items-center justify-center rounded-[12px] border border-line bg-app p-4">
+                  <div className="flex h-48 w-full items-center justify-center overflow-hidden rounded-[8px] border border-line/70 bg-white p-2 sm:h-36">
                     {imagePreview.trim() ? (
                       <img
                         src={imagePreview}
@@ -751,28 +751,28 @@ export default function Products() {
                         className="h-full w-full object-contain"
                       />
                     ) : imageModalProduct.type === 'phone' ? (
-                      <PhoneIcon width={40} height={40} className="text-[#64748B]" />
+                      <PhoneIcon width={40} height={40} className="text-muted" />
                     ) : (
-                      <BoxIcon width={40} height={40} className="text-[#64748B]" />
+                      <BoxIcon width={40} height={40} className="text-muted" />
                     )}
                   </div>
                   {imageFileName && (
-                    <p className="mt-2 truncate text-[12.5px] font-medium text-[#0F172A]">{imageFileName}</p>
+                    <p className="mt-2 truncate text-[12.5px] font-medium text-ink">{imageFileName}</p>
                   )}
-                  <p className="mt-1 text-[12px] text-[#64748B]">
+                  <p className="mt-1 text-[12px] text-muted">
                     {tr('JPG, PNG au WEBP (kiwango cha juu MB 5)')}
                   </p>
                 </div>
 
                 {uploadProgress !== null && (
                   <div className="mt-3 space-y-1">
-                    <div className="flex justify-between text-[12px] font-medium text-[#2563EB]">
+                    <div className="flex justify-between text-[12px] font-medium text-primary">
                       <span>{tr('Inapakia picha…')}</span>
                       <span>{uploadProgress}%</span>
                     </div>
                     <div className="h-2 w-full overflow-hidden rounded-full bg-blue-100">
                       <div
-                        className="h-full rounded-full bg-[#2563EB] transition-all duration-150"
+                        className="h-full rounded-full bg-primary transition-all duration-150"
                         style={{ width: `${uploadProgress}%` }}
                       />
                     </div>
@@ -813,12 +813,12 @@ export default function Products() {
                   </div>
                 </div>
               ) : (
-                <div className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-[#E2E8F0] pt-3">
+                <div className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-line pt-3">
                   <div className="flex items-center gap-2">
                     <button
                       type="button"
                       onClick={() => rowFileInputRef.current?.click()}
-                      className="inline-flex min-h-[42px] items-center rounded-[10px] border border-[#E2E8F0] bg-white px-3.5 text-[13px] font-semibold text-[#0F172A] hover:bg-slate-50"
+                      className="inline-flex min-h-[42px] items-center rounded-[10px] border border-line bg-white px-3.5 text-[13px] font-semibold text-ink hover:bg-slate-50"
                     >
                       {tr(imagePreview ? 'Chagua picha mpya' : 'Chagua picha')}
                     </button>
@@ -895,11 +895,11 @@ export default function Products() {
             <div
               role="dialog"
               aria-label={tr('Futa bidhaa')}
-              className="w-full max-w-sm rounded-[16px] border border-[#E2E8F0] bg-white p-5 shadow-xl"
+              className="w-full max-w-sm rounded-[16px] border border-line bg-white p-5 shadow-xl"
               onClick={(e) => e.stopPropagation()}
             >
-              <h3 className="text-[16px] font-bold text-[#0F172A]">{tr('Futa bidhaa')}</h3>
-              <p className="mt-2 text-[13.5px] text-[#64748B]">
+              <h3 className="text-[16px] font-bold text-ink">{tr('Futa bidhaa')}</h3>
+              <p className="mt-2 text-[13.5px] text-muted">
                 {tr('Una uhakika unataka kufuta {1}?', { 1: deletingProduct.name })}
               </p>
               <p className="mt-1 text-[12.5px] font-semibold text-bad-fg">
@@ -942,15 +942,15 @@ function ProductDetailsModal({
       <div
         role="dialog"
         aria-label={`${tr('Maelezo ya bidhaa')}: ${p.name}`}
-        className="flex h-[100dvh] w-full flex-col overflow-hidden bg-white shadow-xl sm:h-auto sm:max-h-[88dvh] sm:max-w-lg sm:rounded-[16px] sm:border sm:border-[#E2E8F0]"
+        className="flex h-[100dvh] w-full flex-col overflow-hidden bg-white shadow-xl sm:h-auto sm:max-h-[88dvh] sm:max-w-lg sm:rounded-[16px] sm:border sm:border-line"
         onClick={(e) => e.stopPropagation()}
       >
-        <header className="flex shrink-0 items-center justify-between border-b border-[#E2E8F0] px-4 py-3.5 sm:px-5">
-          <h3 className="text-[17px] font-bold text-[#0F172A]">{tr('Maelezo ya bidhaa')}</h3>
+        <header className="flex shrink-0 items-center justify-between border-b border-line px-4 py-3.5 sm:px-5">
+          <h3 className="text-[17px] font-bold text-ink">{tr('Maelezo ya bidhaa')}</h3>
           <button
             type="button"
             onClick={onClose}
-            className="min-h-[38px] rounded-[8px] border border-[#E2E8F0] bg-[#F8FAFC] px-3 text-[13px] font-semibold text-[#64748B] hover:text-[#0F172A]"
+            className="min-h-[38px] rounded-[8px] border border-line bg-app px-3 text-[13px] font-semibold text-muted hover:text-ink"
           >
             {tr('Funga')}
           </button>
@@ -958,7 +958,7 @@ function ProductDetailsModal({
 
         <div className="flex-1 overflow-y-auto p-4 space-y-4 sm:p-5">
           <div className="flex items-center gap-4">
-            <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-[12px] border border-[#E2E8F0] bg-[#F8FAFC] text-[#64748B]">
+            <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-[12px] border border-line bg-app text-muted">
               {p.imageUrl ? (
                 <img src={p.imageUrl} alt={p.name} className="h-full w-full object-contain p-1" />
               ) : p.type === 'phone' ? (
@@ -968,8 +968,8 @@ function ProductDetailsModal({
               )}
             </div>
             <div className="min-w-0 flex-1">
-              <h4 className="break-words text-[18px] font-bold leading-snug text-[#0F172A]">{p.name}</h4>
-              <p className="mt-0.5 text-[13px] text-[#64748B]">
+              <h4 className="break-words text-[18px] font-bold leading-snug text-ink">{p.name}</h4>
+              <p className="mt-0.5 text-[13px] text-muted">
                 {p.type === 'phone' ? tr('Simu') : tr('Accessory')}
                 {p.detail ? ` · ${p.detail}` : ''} · {tr('SKU / Msimbo')}: {p.code}
                 {p.barcode ? ` · ${tr('Barcode')}: ${p.barcode}` : ''}
@@ -977,39 +977,39 @@ function ProductDetailsModal({
             </div>
           </div>
 
-          <div className="grid grid-cols-3 gap-2.5 rounded-[12px] border border-[#E2E8F0] bg-[#F8FAFC] p-3 text-[13px]">
+          <div className="grid grid-cols-3 gap-2.5 rounded-[12px] border border-line bg-app p-3 text-[13px]">
             <div>
-              <span className="block text-[12px] text-[#64748B]">{tr('Store')}</span>
-              <span className="text-[17px] font-bold tabular-nums text-[#0F172A]">{formatNumber(p.storeQty)}</span>
+              <span className="block text-[12px] text-muted">{tr('Store')}</span>
+              <span className="text-[17px] font-bold tabular-nums text-ink">{formatNumber(p.storeQty)}</span>
               <div className="mt-1">
                 <StockBadge status={p.storeStatus} />
               </div>
             </div>
             <div>
-              <span className="block text-[12px] text-[#64748B]">{tr('Dukani')}</span>
-              <span className="text-[17px] font-bold tabular-nums text-[#0F172A]">{formatNumber(p.shopQty)}</span>
+              <span className="block text-[12px] text-muted">{tr('Dukani')}</span>
+              <span className="text-[17px] font-bold tabular-nums text-ink">{formatNumber(p.shopQty)}</span>
               <div className="mt-1">
                 <StockBadge status={p.shopStatus} />
               </div>
             </div>
             <div>
-              <span className="block text-[12px] text-[#64748B]">{tr('Jumla ya stock')}</span>
-              <span className="text-[17px] font-bold tabular-nums text-[#0F172A]">{formatNumber(p.storeQty + p.shopQty)}</span>
-              <p className="mt-1 text-[11.5px] text-[#64748B]">
+              <span className="block text-[12px] text-muted">{tr('Jumla ya stock')}</span>
+              <span className="text-[17px] font-bold tabular-nums text-ink">{formatNumber(p.storeQty + p.shopQty)}</span>
+              <p className="mt-1 text-[11.5px] text-muted">
                 {tr('Kiwango cha chini')}: {p.minStock}
               </p>
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3 rounded-[12px] border border-[#E2E8F0] p-3.5 text-[13px]">
+          <div className="grid grid-cols-2 gap-3 rounded-[12px] border border-line p-3.5 text-[13px]">
             <div>
-              <span className="block text-[12px] text-[#64748B]">{tr('Bei ya kuuza')}</span>
-              <span className="text-[16px] font-bold tabular-nums text-[#0F172A]">{formatTZS(p.sellPrice)}</span>
+              <span className="block text-[12px] text-muted">{tr('Bei ya kuuza')}</span>
+              <span className="text-[16px] font-bold tabular-nums text-ink">{formatTZS(p.sellPrice)}</span>
             </div>
             {isOwner && (
               <div>
-                <span className="block text-[12px] text-[#64748B]">{tr('Bei ya kununua')}</span>
-                <span className="text-[16px] font-bold tabular-nums text-[#0F172A]">{formatTZS(p.costPrice ?? 0)}</span>
+                <span className="block text-[12px] text-muted">{tr('Bei ya kununua')}</span>
+                <span className="text-[16px] font-bold tabular-nums text-ink">{formatTZS(p.costPrice ?? 0)}</span>
               </div>
             )}
           </div>
@@ -1017,49 +1017,49 @@ function ProductDetailsModal({
           {p.type === 'phone' && (
             <div className="space-y-3">
               <div>
-                <p className="mb-1.5 text-[13px] font-semibold text-[#0F172A]">
+                <p className="mb-1.5 text-[13px] font-semibold text-ink">
                   {tr('IMEI zilizopo dukani ({n})', { n: p.shopImeis.length })}
                 </p>
                 {p.shopImeis.length > 0 ? (
-                  <div className="flex max-h-36 flex-wrap gap-1.5 overflow-y-auto rounded-[10px] border border-[#E2E8F0] bg-[#F8FAFC] p-2.5">
+                  <div className="flex max-h-36 flex-wrap gap-1.5 overflow-y-auto rounded-[10px] border border-line bg-app p-2.5">
                     {p.shopImeis.map((imei) => (
                       <span
                         key={imei}
-                        className="rounded border border-[#E2E8F0] bg-white px-2 py-1 font-mono text-[12px] text-[#0F172A]"
+                        className="rounded border border-line bg-white px-2 py-1 font-mono text-[12px] text-ink"
                       >
                         {imei}
                       </span>
                     ))}
                   </div>
                 ) : (
-                  <p className="text-[12.5px] text-[#64748B]">{tr('Imeisha')}</p>
+                  <p className="text-[12.5px] text-muted">{tr('Imeisha')}</p>
                 )}
               </div>
 
               <div>
-                <p className="mb-1.5 text-[13px] font-semibold text-[#0F172A]">
+                <p className="mb-1.5 text-[13px] font-semibold text-ink">
                   {tr('IMEI zilizopo store ({n})', { n: p.storeImeis.length })}
                 </p>
                 {p.storeImeis.length > 0 ? (
-                  <div className="flex max-h-36 flex-wrap gap-1.5 overflow-y-auto rounded-[10px] border border-[#E2E8F0] bg-[#F8FAFC] p-2.5">
+                  <div className="flex max-h-36 flex-wrap gap-1.5 overflow-y-auto rounded-[10px] border border-line bg-app p-2.5">
                     {p.storeImeis.map((imei) => (
                       <span
                         key={imei}
-                        className="rounded border border-[#E2E8F0] bg-white px-2 py-1 font-mono text-[12px] text-[#0F172A]"
+                        className="rounded border border-line bg-white px-2 py-1 font-mono text-[12px] text-ink"
                       >
                         {imei}
                       </span>
                     ))}
                   </div>
                 ) : (
-                  <p className="text-[12.5px] text-[#64748B]">{tr('Imeisha')}</p>
+                  <p className="text-[12.5px] text-muted">{tr('Imeisha')}</p>
                 )}
               </div>
             </div>
           )}
         </div>
 
-        <footer className="shrink-0 border-t border-[#E2E8F0] bg-white p-4 sm:hidden">
+        <footer className="shrink-0 border-t border-line bg-white p-4 sm:hidden">
           <Button variant="outline" block className="min-h-[44px]" onClick={onClose}>
             {tr('Funga')}
           </Button>
@@ -1115,15 +1115,15 @@ function EditProductModal({
       <div
         role="dialog"
         aria-label={`${tr('Hariri bidhaa')}: ${p.name}`}
-        className="flex h-[100dvh] w-full flex-col overflow-y-auto bg-white p-4 shadow-xl sm:h-auto sm:max-w-md sm:rounded-[16px] sm:border sm:border-[#E2E8F0] sm:p-5"
+        className="flex h-[100dvh] w-full flex-col overflow-y-auto bg-white p-4 shadow-xl sm:h-auto sm:max-w-md sm:rounded-[16px] sm:border sm:border-line sm:p-5"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="mb-4 flex items-center justify-between border-b border-[#E2E8F0] pb-3">
-          <h3 className="text-[17px] font-bold text-[#0F172A]">{tr('Hariri bidhaa')}</h3>
+        <div className="mb-4 flex items-center justify-between border-b border-line pb-3">
+          <h3 className="text-[17px] font-bold text-ink">{tr('Hariri bidhaa')}</h3>
           <button
             type="button"
             onClick={onClose}
-            className="min-h-[38px] rounded-[8px] border border-[#E2E8F0] bg-[#F8FAFC] px-3 text-[13px] font-semibold text-[#64748B] hover:text-[#0F172A]"
+            className="min-h-[38px] rounded-[8px] border border-line bg-app px-3 text-[13px] font-semibold text-muted hover:text-ink"
           >
             {tr('Funga')}
           </button>
@@ -1140,7 +1140,7 @@ function EditProductModal({
 
             <div>
               <span className="label">{tr('Aina')}</span>
-              <div className="grid grid-cols-2 gap-1 rounded-[10px] border border-[#E2E8F0] bg-[#F8FAFC] p-1">
+              <div className="grid grid-cols-2 gap-1 rounded-[10px] border border-line bg-app p-1">
                 {(['phone', 'accessory'] as const).map((t) => (
                   <button
                     key={t}
@@ -1148,7 +1148,7 @@ function EditProductModal({
                     onClick={() => setValue('type', t)}
                     className={cx(
                       'min-h-[40px] rounded-[8px] text-[13.5px] font-semibold',
-                      type === t ? 'bg-white text-[#0F172A] shadow-sm' : 'text-[#64748B]',
+                      type === t ? 'bg-white text-ink shadow-sm' : 'text-muted',
                     )}
                   >
                     {t === 'phone' ? tr('Simu') : tr('Accessory')}
@@ -1168,7 +1168,7 @@ function EditProductModal({
 
             <Field label="Tahadhari ya stock chini ikifika" error={errors.minStock?.message}>
               <input className="input h-11" inputMode="numeric" {...register('minStock')} />
-              <span className="mt-1 block text-[11.5px] leading-snug text-[#64748B]">
+              <span className="mt-1 block text-[11.5px] leading-snug text-muted">
                 {tr('Onyesha tahadhari idadi ya stock ikifika au kushuka chini ya kiwango hiki.')}
               </span>
             </Field>
@@ -1188,7 +1188,7 @@ function EditProductModal({
             )}
           </div>
 
-          <div className="flex justify-end gap-2 border-t border-[#E2E8F0] pt-3.5">
+          <div className="flex justify-end gap-2 border-t border-line pt-3.5">
             <Button variant="outline" className="min-h-[44px] flex-1 sm:flex-initial" onClick={onClose}>
               {tr('Ghairi')}
             </Button>
@@ -1338,7 +1338,7 @@ export function CreateProductForm({
 
   return (
     <form onSubmit={handleSubmit((v) => add.mutate(v))} className="space-y-4" noValidate>
-      {!hideHeading && <h2 className="text-[18px] font-extrabold text-[#0F172A]">{tr('Ongeza bidhaa mpya')}</h2>}
+      {!hideHeading && <h2 className="text-[18px] font-extrabold text-ink">{tr('Ongeza bidhaa mpya')}</h2>}
 
       <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
         <Field label="Jina la bidhaa" error={errors.name?.message}>
@@ -1351,7 +1351,7 @@ export function CreateProductForm({
 
       <div>
         <span className="label">{tr('Aina')}</span>
-        <div className="grid grid-cols-2 gap-1 rounded-[10px] border border-[#E2E8F0] bg-[#F8FAFC] p-1">
+        <div className="grid grid-cols-2 gap-1 rounded-[10px] border border-line bg-app p-1">
           {(['phone', 'accessory'] as const).map((t) => (
             <button
               key={t}
@@ -1362,7 +1362,7 @@ export function CreateProductForm({
               }}
               className={cx(
                 'min-h-[40px] rounded-[8px] text-[13.5px] font-semibold transition-colors',
-                type === t ? 'bg-white text-[#0F172A] shadow-sm' : 'text-[#64748B]',
+                type === t ? 'bg-white text-ink shadow-sm' : 'text-muted',
               )}
             >
               {t === 'phone' ? tr('Simu') : tr('Accessory')}
@@ -1391,19 +1391,19 @@ export function CreateProductForm({
           placeholder={tr('Weka idadi ya vipande (mfano 5)')}
           {...register('initialShopQty')}
         />
-        <span className="mt-1 block text-[11.5px] leading-snug text-[#64748B]">
+        <span className="mt-1 block text-[11.5px] leading-snug text-muted">
           {location === 'STORE' ? tr('Idadi ya vipande vinavyoingia Store (Dukani haibadiliki).') : tr('Idadi ya vipande vinavyoingia moja kwa moja Dukani (Store haibadiliki).')}
         </span>
       </Field>
 
       {/* IMEI Registration for IMEI-tracked phones */}
       {type === 'phone' && (
-        <div className="rounded-[12px] border border-[#E2E8F0] bg-[#F8FAFC] p-3.5 space-y-2.5">
+        <div className="rounded-[12px] border border-line bg-app p-3.5 space-y-2.5">
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <span className="text-[13px] font-bold text-[#0F172A]">
+            <span className="text-[13px] font-bold text-ink">
               {tr('IMEI za simu (hiari) ({a}/{b})', { a: imeis.length, b: targetQty })}
             </span>
-            <span className="text-[11.5px] text-[#64748B]">
+            <span className="text-[11.5px] text-muted">
               {tr('Weka IMEI unazozijua tu; simu zisizo na IMEI zinahesabiwa kwa idadi.')}
             </span>
           </div>
@@ -1427,7 +1427,7 @@ export function CreateProductForm({
                   handleAddImeis(imeiDraft);
                 }
               }}
-              className="h-[40px] flex-1 rounded-[8px] border border-[#E2E8F0] bg-white px-3 font-mono text-[13px] text-[#0F172A] outline-none focus:border-[#2563EB]"
+              className="h-[40px] flex-1 rounded-[8px] border border-line bg-white px-3 font-mono text-[13px] text-ink outline-none focus:border-primary"
             />
             <Button
               type="button"
@@ -1453,7 +1453,7 @@ export function CreateProductForm({
                   type="button"
                   title={tr('Bonyeza kuondoa')}
                   onClick={() => removeImei(imei)}
-                  className="inline-flex items-center gap-1.5 rounded-[7px] border border-[#E2E8F0] bg-white px-2.5 py-1 font-mono text-[12px] text-[#0F172A] hover:border-red-300 hover:bg-bad-bg/40"
+                  className="inline-flex items-center gap-1.5 rounded-[7px] border border-line bg-white px-2.5 py-1 font-mono text-[12px] text-ink hover:border-red-300 hover:bg-bad-bg/40"
                 >
                   <span>{imei}</span>
                   <span className="font-sans font-bold text-bad-fg">×</span>
@@ -1466,7 +1466,7 @@ export function CreateProductForm({
 
       <Field label="Tahadhari ya stock chini ikifika" error={errors.minStock?.message}>
         <input className="input h-11" inputMode="numeric" {...register('minStock')} />
-        <span className="mt-1 block text-[11.5px] leading-snug text-[#64748B]">
+        <span className="mt-1 block text-[11.5px] leading-snug text-muted">
           {tr('Onyesha tahadhari idadi ya stock ikifika au kushuka chini ya kiwango hiki.')}
         </span>
       </Field>
@@ -1474,7 +1474,7 @@ export function CreateProductForm({
       <Field label="Picha ya bidhaa (hiari)" error={formImageError || undefined}>
         <div className="space-y-2">
           <div className="flex flex-wrap items-center gap-2">
-            <label className="inline-flex min-h-[38px] cursor-pointer items-center rounded-[8px] border border-[#E2E8F0] bg-white px-3 py-1.5 text-[12.5px] font-semibold text-[#0F172A] hover:bg-slate-50">
+            <label className="inline-flex min-h-[38px] cursor-pointer items-center rounded-[8px] border border-line bg-white px-3 py-1.5 text-[12.5px] font-semibold text-ink hover:bg-slate-50">
               {tr('Chagua picha')}
               <input
                 type="file"
@@ -1483,13 +1483,13 @@ export function CreateProductForm({
                 onChange={handleFile}
               />
             </label>
-            <span className="text-[11.5px] text-[#64748B]">
+            <span className="text-[11.5px] text-muted">
               {tr('JPG, PNG au WEBP (kiwango cha juu MB 5)')}
             </span>
           </div>
           {formImageUrl && (
-            <div className="flex items-center gap-3 rounded-[8px] border border-[#E2E8F0] bg-[#F8FAFC] p-2">
-              <span className="inline-flex h-10 w-12 items-center justify-center overflow-hidden rounded border border-[#E2E8F0] bg-white">
+            <div className="flex items-center gap-3 rounded-[8px] border border-line bg-app p-2">
+              <span className="inline-flex h-10 w-12 items-center justify-center overflow-hidden rounded border border-line bg-white">
                 <img src={formImageUrl} alt="" className="h-full w-full object-contain p-0.5" />
               </span>
               <button
@@ -1503,7 +1503,7 @@ export function CreateProductForm({
           )}
         </div>
       </Field>
-      <p className="text-[12.5px] text-[#64748B]">{tr('Bei ya kununua inaonekana kwa mmiliki tu.')}</p>
+      <p className="text-[12.5px] text-muted">{tr('Bei ya kununua inaonekana kwa mmiliki tu.')}</p>
 
       {add.isError && (
         <div role="alert" className="rounded-[10px] border border-red-200 bg-bad-bg px-3.5 py-2.5 text-[13px] font-medium text-bad-fg space-y-1.5">
@@ -1512,7 +1512,7 @@ export function CreateProductForm({
             <button
               type="button"
               onClick={onSwitchToStore}
-              className="text-[12.5px] font-bold text-[#2563EB] underline"
+              className="text-[12.5px] font-bold text-primary underline"
             >
               {tr('Nenda kwenye "Kutoka Store" kuhamisha stock iliyopo')}
             </button>
@@ -1535,7 +1535,7 @@ export function CreateProductForm({
           {add.isPending ? tr('Inahifadhi…') : tr('Hifadhi bidhaa')}
         </Button>
       </div>
-      <p className="text-center text-[12px] text-[#64748B]">{tr('Mfano wa bei: {p}', { p: formatTZS(900000) })}</p>
+      <p className="text-center text-[12px] text-muted">{tr('Mfano wa bei: {p}', { p: formatTZS(900000) })}</p>
     </form>
   );
 }

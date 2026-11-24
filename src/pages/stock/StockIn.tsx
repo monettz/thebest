@@ -240,7 +240,7 @@ export default function StockIn() {
       {/* 2. STEP 1 — SELECT STOCK SOURCE */}
       {!storeSide && (
       <section aria-labelledby="step-source-heading">
-        <h2 id="step-source-heading" className="mb-3 text-[15px] font-bold text-[#0F172A]">
+        <h2 id="step-source-heading" className="mb-3 text-[15px] font-bold text-ink">
           {tr('1. Chagua chanzo cha stock')}
         </h2>
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
@@ -255,27 +255,27 @@ export default function StockIn() {
             className={cx(
               'flex h-full items-start gap-3.5 rounded-[14px] border-2 p-4 text-left transition-all',
               source === 'store'
-                ? 'border-[#2563EB] bg-[#EEF3FF]/70 shadow-xs'
-                : 'border-[#E2E8F0] bg-white hover:border-slate-300 hover:bg-[#F8FAFC]',
+                ? 'border-primary bg-primary-tint/70 shadow-xs'
+                : 'border-line bg-white hover:border-slate-300 hover:bg-app',
             )}
           >
             <span
               className={cx(
                 'flex h-11 w-11 shrink-0 items-center justify-center rounded-[12px] transition-colors',
-                source === 'store' ? 'bg-[#2563EB] text-white' : 'bg-[#F8FAFC] text-[#64748B] border border-[#E2E8F0]',
+                source === 'store' ? 'bg-primary text-white' : 'bg-app text-muted border border-line',
               )}
             >
               <WarehouseIcon width={22} height={22} />
             </span>
             <div className="min-w-0 flex-1">
               <div className="flex items-center justify-between gap-2">
-                <span className="text-[15.5px] font-bold text-[#0F172A]">{tr('Kutoka Store')}</span>
+                <span className="text-[15.5px] font-bold text-ink">{tr('Kutoka Store')}</span>
                 {source === 'store' && <Badge tone="blue">{tr('Imechaguliwa')}</Badge>}
               </div>
-              <p className="mt-0.5 text-[13px] font-medium text-[#334155]">
+              <p className="mt-0.5 text-[13px] font-medium text-body">
                 {tr('Hamisha stock iliyopo kutoka Store kwenda Dukani.')}
               </p>
-              <p className="mt-1 text-[12px] text-[#64748B]">
+              <p className="mt-1 text-[12px] text-muted">
                 {tr('Idadi ya Store inapungua na idadi ya Dukani inaongezeka.')}
               </p>
             </div>
@@ -292,27 +292,27 @@ export default function StockIn() {
             className={cx(
               'flex h-full items-start gap-3.5 rounded-[14px] border-2 p-4 text-left transition-all',
               source === 'new'
-                ? 'border-[#2563EB] bg-[#EEF3FF]/70 shadow-xs'
-                : 'border-[#E2E8F0] bg-white hover:border-slate-300 hover:bg-[#F8FAFC]',
+                ? 'border-primary bg-primary-tint/70 shadow-xs'
+                : 'border-line bg-white hover:border-slate-300 hover:bg-app',
             )}
           >
             <span
               className={cx(
                 'flex h-11 w-11 shrink-0 items-center justify-center rounded-[12px] transition-colors',
-                source === 'new' ? 'bg-[#2563EB] text-white' : 'bg-[#F8FAFC] text-[#64748B] border border-[#E2E8F0]',
+                source === 'new' ? 'bg-primary text-white' : 'bg-app text-muted border border-line',
               )}
             >
               <BoxIcon width={22} height={22} />
             </span>
             <div className="min-w-0 flex-1">
               <div className="flex items-center justify-between gap-2">
-                <span className="text-[15.5px] font-bold text-[#0F172A]">{tr('Ongeza Stock Mpya')}</span>
+                <span className="text-[15.5px] font-bold text-ink">{tr('Ongeza Stock Mpya')}</span>
                 {source === 'new' && <Badge tone="blue">{tr('Imechaguliwa')}</Badge>}
               </div>
-              <p className="mt-0.5 text-[13px] font-medium text-[#334155]">
+              <p className="mt-0.5 text-[13px] font-medium text-body">
                 {tr('Ongeza stock mpya moja kwa moja Dukani.')}
               </p>
-              <p className="mt-1 text-[12px] text-[#64748B]">
+              <p className="mt-1 text-[12px] text-muted">
                 {tr('Idadi ya Dukani inaongezeka bila kubadilisha stock ya Store.')}
               </p>
             </div>
@@ -324,10 +324,10 @@ export default function StockIn() {
       {/* WORKFLOW 1: FROM STORE — Transfer Existing Products Only */}
       {source === 'store' ? (
         <>
-          <Card className="border-[#E2E8F0] p-4 sm:p-5">
-            <div className="border-b border-[#E2E8F0] pb-3">
-              <h2 className="text-[15.5px] font-bold text-[#0F172A]">{tr('Bidhaa za kuhamisha kutoka Store')}</h2>
-              <p className="text-[12.5px] text-[#64748B]">
+          <Card className="border-line p-4 sm:p-5">
+            <div className="border-b border-line pb-3">
+              <h2 className="text-[15.5px] font-bold text-ink">{tr('Bidhaa za kuhamisha kutoka Store')}</h2>
+              <p className="text-[12.5px] text-muted">
                 {tr('Chagua bidhaa zenye stock Store ili kuzihamishia Dukani.')}
               </p>
             </div>
@@ -335,10 +335,10 @@ export default function StockIn() {
             {/* Searchable Store Product Selector */}
             <div className="mt-3.5 flex flex-col gap-2.5 sm:flex-row">
               <div className="relative flex-1">
-                <SearchIcon width={16} height={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#64748B]" />
+                <SearchIcon width={16} height={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted" />
                 <input
                   type="text"
-                  className="h-[42px] w-full rounded-[10px] border border-[#E2E8F0] bg-white pl-10 pr-3.5 text-[13.5px] text-[#0F172A] outline-none placeholder:text-[#64748B] focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/15"
+                  className="h-[42px] w-full rounded-[10px] border border-line bg-white pl-10 pr-3.5 text-[13.5px] text-ink outline-none placeholder:text-muted focus:border-primary focus:ring-2 focus:ring-primary/15"
                   placeholder={tr('Tafuta bidhaa kwa jina, model, SKU, barcode au IMEI...')}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
@@ -354,7 +354,7 @@ export default function StockIn() {
               <div className="flex gap-2">
                 <select
                   aria-label={tr('Bidhaa za kuhamisha kutoka Store')}
-                  className="h-[42px] min-w-[180px] flex-1 rounded-[10px] border border-[#E2E8F0] bg-white px-3 text-[13.5px] font-medium text-[#0F172A] outline-none focus:border-[#2563EB] sm:max-w-[260px]"
+                  className="h-[42px] min-w-[180px] flex-1 rounded-[10px] border border-line bg-white px-3 text-[13.5px] font-medium text-ink outline-none focus:border-primary sm:max-w-[260px]"
                   value={selectedDropdownId}
                   onChange={(e) => {
                     const val = e.target.value;
@@ -386,9 +386,9 @@ export default function StockIn() {
             </div>
 
             {/* Filtered Store Products List */}
-            <div className="mt-3 max-h-48 overflow-y-auto rounded-[10px] border border-[#E2E8F0] bg-[#F8FAFC] p-2">
+            <div className="mt-3 max-h-48 overflow-y-auto rounded-[10px] border border-line bg-app p-2">
               {filteredStoreProducts.length === 0 ? (
-                <div className="px-2 py-3 text-[13px] text-[#64748B]">
+                <div className="px-2 py-3 text-[13px] text-muted">
                   {tr('Hakuna bidhaa yenye stock Store inayolingana na utafutaji.')}
                 </div>
               ) : (
@@ -401,12 +401,12 @@ export default function StockIn() {
                         className={cx(
                           'flex items-center justify-between gap-2 rounded-[8px] border px-2.5 py-2 transition',
                           added
-                            ? 'border-blue-200 bg-[#EEF3FF]/60'
-                            : 'border-[#E2E8F0] bg-white hover:border-[#2563EB]',
+                            ? 'border-blue-200 bg-primary-tint/60'
+                            : 'border-line bg-white hover:border-primary',
                         )}
                       >
                         <div className="flex min-w-0 items-center gap-2">
-                          <span className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-[6px] border border-[#E2E8F0] bg-[#F8FAFC] text-[#64748B]">
+                          <span className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-[6px] border border-line bg-app text-muted">
                             {p.imageUrl ? (
                               <img src={p.imageUrl} alt={p.name} className="h-full w-full object-contain p-0.5" />
                             ) : p.type === 'phone' ? (
@@ -416,8 +416,8 @@ export default function StockIn() {
                             )}
                           </span>
                           <div className="min-w-0">
-                            <p className="truncate text-[13px] font-semibold text-[#0F172A]">{p.name}</p>
-                            <p className="truncate text-[11.5px] text-[#64748B]">
+                            <p className="truncate text-[13px] font-semibold text-ink">{p.name}</p>
+                            <p className="truncate text-[11.5px] text-muted">
                               {p.detail ? `${p.detail} · ` : ''}
                               {tr('Store')}: {formatNumber(p.storeQty)}
                             </p>
@@ -431,8 +431,8 @@ export default function StockIn() {
                           className={cx(
                             'shrink-0 rounded-[7px] px-2.5 py-1 text-[12px] font-semibold transition',
                             added
-                              ? 'cursor-default bg-blue-100 text-[#2563EB]'
-                              : 'bg-[#2563EB] text-white hover:bg-[#1D4ED8]',
+                              ? 'cursor-default bg-blue-100 text-primary'
+                              : 'bg-primary text-white hover:bg-primary-link',
                           )}
                         >
                           {added ? tr('Imeongezwa') : tr('+ Ongeza')}
@@ -447,14 +447,14 @@ export default function StockIn() {
             {/* Selected Products & Transfer Quantities */}
             <div className="mt-5">
               <div className="mb-2.5 flex items-center justify-between">
-                <h3 className="text-[14px] font-bold text-[#0F172A]">
+                <h3 className="text-[14px] font-bold text-ink">
                   {tr('Bidhaa zilizochaguliwa ({n})', { n: storeLines.length })}
                 </h3>
                 {storeLines.length > 0 && (
                   <button
                     type="button"
                     onClick={() => setStoreLines([])}
-                    className="text-[12.5px] font-semibold text-[#64748B] hover:text-bad-fg"
+                    className="text-[12.5px] font-semibold text-muted hover:text-bad-fg"
                   >
                     {tr('Futa yote')}
                   </button>
@@ -462,7 +462,7 @@ export default function StockIn() {
               </div>
 
               {storeLines.length === 0 ? (
-                <div className="rounded-[12px] border border-dashed border-[#E2E8F0] bg-[#F8FAFC] p-6 text-center text-[13.5px] text-[#64748B]">
+                <div className="rounded-[12px] border border-dashed border-line bg-app p-6 text-center text-[13.5px] text-muted">
                   {tr('Hakuna bidhaa iliyochaguliwa bado. Tafuta au chagua bidhaa hapo juu ili kuhamisha kutoka Store.')}
                 </div>
               ) : (
@@ -480,12 +480,12 @@ export default function StockIn() {
                         key={l.productId}
                         className={cx(
                           'rounded-[12px] border bg-white p-3.5 transition',
-                          rowErrors.length > 0 ? 'border-red-300' : 'border-[#E2E8F0]',
+                          rowErrors.length > 0 ? 'border-red-300' : 'border-line',
                         )}
                       >
                         <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
                           <div className="flex min-w-0 items-start gap-3">
-                            <span className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-[8px] border border-[#E2E8F0] bg-[#F8FAFC] text-[#64748B]">
+                            <span className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-[8px] border border-line bg-app text-muted">
                               {p.imageUrl ? (
                                 <img src={p.imageUrl} alt={p.name} className="h-full w-full object-contain p-0.5" />
                               ) : p.type === 'phone' ? (
@@ -496,31 +496,31 @@ export default function StockIn() {
                             </span>
                             <div className="min-w-0 flex-1">
                               <div className="flex flex-wrap items-center gap-2">
-                                <p className="text-[14.5px] font-bold text-[#0F172A]">{p.name}</p>
+                                <p className="text-[14.5px] font-bold text-ink">{p.name}</p>
                                 <StockBadge status={p.shopStatus} />
                               </div>
-                              <p className="mt-0.5 text-[12.5px] text-[#64748B]">
+                              <p className="mt-0.5 text-[12.5px] text-muted">
                                 {p.detail ? `${p.detail} · ` : ''}
                                 {p.type === 'phone' ? 'IMEI' : tr('Kwa idadi')}
                                 {' · '}
-                                <span className="font-semibold text-[#0F172A]">
+                                <span className="font-semibold text-ink">
                                   {tr('Zilizopo store')}: {formatNumber(p.storeQty)}
                                 </span>
                               </p>
                             </div>
                           </div>
 
-                          <div className="flex flex-wrap items-center justify-between gap-3 border-t border-[#E2E8F0] pt-3 lg:border-t-0 lg:pt-0">
+                          <div className="flex flex-wrap items-center justify-between gap-3 border-t border-line pt-3 lg:border-t-0 lg:pt-0">
                             <div>
-                              <span className="mb-1 block text-[11.5px] font-medium text-[#64748B]">
+                              <span className="mb-1 block text-[11.5px] font-medium text-muted">
                                 {tr('Idadi ya kuhamisha')}
                               </span>
-                              <div className="inline-flex items-center rounded-[10px] border border-[#E2E8F0] bg-[#F8FAFC] p-0.5">
+                              <div className="inline-flex items-center rounded-[10px] border border-line bg-app p-0.5">
                                 <button
                                   type="button"
                                   aria-label={tr('Punguza')}
                                   onClick={() => handleStoreQtyChange(l, Math.max(1, l.qty - 1))}
-                                  className="flex h-9 w-9 items-center justify-center rounded-[8px] bg-white text-[16px] font-bold text-[#0F172A] shadow-2xs hover:bg-slate-50"
+                                  className="flex h-9 w-9 items-center justify-center rounded-[8px] bg-white text-[16px] font-bold text-ink shadow-2xs hover:bg-slate-50"
                                 >
                                   −
                                 </button>
@@ -531,14 +531,14 @@ export default function StockIn() {
                                   aria-label={`${tr('Idadi')} ${p.name}`}
                                   value={l.qty || ''}
                                   onChange={(e) => handleStoreQtyChange(l, Number(e.target.value))}
-                                  className="h-9 w-14 bg-transparent text-center text-[14px] font-bold tabular-nums text-[#0F172A] outline-none"
+                                  className="h-9 w-14 bg-transparent text-center text-[14px] font-bold tabular-nums text-ink outline-none"
                                 />
                                 <button
                                   type="button"
                                   aria-label={tr('Ongeza')}
                                   disabled={l.qty >= p.storeQty}
                                   onClick={() => handleStoreQtyChange(l, l.qty + 1)}
-                                  className="flex h-9 w-9 items-center justify-center rounded-[8px] bg-[#2563EB] text-[16px] font-bold text-white shadow-2xs hover:bg-[#1D4ED8] disabled:bg-slate-200 disabled:text-slate-400"
+                                  className="flex h-9 w-9 items-center justify-center rounded-[8px] bg-primary text-[16px] font-bold text-white shadow-2xs hover:bg-primary-link disabled:bg-slate-200 disabled:text-slate-400"
                                 >
                                   +
                                 </button>
@@ -548,14 +548,14 @@ export default function StockIn() {
                             {isOwner && (
                               <div className="flex items-center gap-3">
                                 <div className="text-right">
-                                  <span className="block text-[11.5px] text-[#64748B]">{tr('Bei ya kununua')}</span>
-                                  <span className="text-[13.5px] font-semibold tabular-nums text-[#334155]">
+                                  <span className="block text-[11.5px] text-muted">{tr('Bei ya kununua')}</span>
+                                  <span className="text-[13.5px] font-semibold tabular-nums text-body">
                                     {formatTZS(p.costPrice ?? 0)}
                                   </span>
                                 </div>
                                 <div className="min-w-[96px] text-right">
-                                  <span className="block text-[11.5px] text-[#64748B]">{tr('Jumla ndogo')}</span>
-                                  <span className="text-[14px] font-bold tabular-nums text-[#0F172A]">
+                                  <span className="block text-[11.5px] text-muted">{tr('Jumla ndogo')}</span>
+                                  <span className="text-[14px] font-bold tabular-nums text-ink">
                                     {formatTZS(lineSubtotal)}
                                   </span>
                                 </div>
@@ -574,16 +574,16 @@ export default function StockIn() {
 
                         {/* Store IMEI Selection for Phones */}
                         {p.type === 'phone' && (
-                          <div className="mt-3 rounded-[10px] border border-[#E2E8F0] bg-[#F8FAFC] p-3">
+                          <div className="mt-3 rounded-[10px] border border-line bg-app p-3">
                             <div className="flex flex-wrap items-center justify-between gap-2">
-                              <p className="text-[12.5px] font-semibold text-[#0F172A]">
+                              <p className="text-[12.5px] font-semibold text-ink">
                                 {tr('IMEI za {name} zinazohamia dukani ({a}/{b})', {
                                   name: p.name,
                                   a: l.imeis.length,
                                   b: l.qty,
                                 })}
                               </p>
-                              <span className="text-[11.5px] text-[#64748B]">
+                              <span className="text-[11.5px] text-muted">
                                 {tr('Bonyeza IMEI kuchagua au kubadilisha kifaa')}
                               </span>
                             </div>
@@ -599,8 +599,8 @@ export default function StockIn() {
                                     className={cx(
                                       'rounded-[7px] border px-2.5 py-1 font-mono text-[12px] font-medium transition',
                                       picked
-                                        ? 'border-[#2563EB] bg-[#2563EB] text-white'
-                                        : 'border-[#E2E8F0] bg-white text-[#334155] hover:border-[#2563EB]',
+                                        ? 'border-primary bg-primary text-white'
+                                        : 'border-line bg-white text-body hover:border-primary',
                                     )}
                                   >
                                     {imei}
@@ -627,26 +627,26 @@ export default function StockIn() {
           </Card>
 
           {/* Store Transfer Summary & Actions */}
-          <Card className="border-[#E2E8F0] p-4 sm:p-5">
+          <Card className="border-line p-4 sm:p-5">
             <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
               <div className="space-y-1.5">
-                <h2 className="text-[15px] font-bold text-[#0F172A]">{tr('Muhtasari wa stock')}</h2>
+                <h2 className="text-[15px] font-bold text-ink">{tr('Muhtasari wa stock')}</h2>
                 {storeLines.length === 0 ? (
-                  <p className="text-[13px] text-[#64748B]">{tr('Chagua angalau bidhaa moja ili kuona muhtasari.')}</p>
+                  <p className="text-[13px] text-muted">{tr('Chagua angalau bidhaa moja ili kuona muhtasari.')}</p>
                 ) : (
                   <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[13.5px]">
-                    <span className="text-[#334155]">
-                      {tr('Aina za bidhaa')}: <b className="text-[#0F172A]">{totalProductTypes}</b>
+                    <span className="text-body">
+                      {tr('Aina za bidhaa')}: <b className="text-ink">{totalProductTypes}</b>
                     </span>
-                    <span className="text-[#334155]">
-                      {tr('Jumla ya vipande')}: <b className="text-[#0F172A]">{formatNumber(totalUnits)}</b>
+                    <span className="text-body">
+                      {tr('Jumla ya vipande')}: <b className="text-ink">{formatNumber(totalUnits)}</b>
                     </span>
                     {isOwner && totalValue > 0 && (
-                      <span className="text-[#334155]">
-                        {tr('Thamani ya stock')}: <b className="text-[#0F172A]">{formatTZS(totalValue)}</b>
+                      <span className="text-body">
+                        {tr('Thamani ya stock')}: <b className="text-ink">{formatTZS(totalValue)}</b>
                       </span>
                     )}
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-[#EEF3FF] px-3 py-1 text-[12.5px] font-bold text-[#2563EB]">
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-primary-tint px-3 py-1 text-[12.5px] font-bold text-primary">
                       Store: -{formatNumber(totalUnits)} → {tr('Duka')}: +{formatNumber(totalUnits)}
                     </span>
                   </div>
@@ -686,11 +686,11 @@ export default function StockIn() {
         </>
       ) : (
         /* WORKFLOW 2: ADD NEW STOCK — Create New Products Only (No Existing Catalogue Listed) */
-        <Card className="border-[#E2E8F0] p-4 sm:p-5">
-          <div className="flex flex-col gap-3 border-b border-[#E2E8F0] pb-4 sm:flex-row sm:items-center sm:justify-between">
+        <Card className="border-line p-4 sm:p-5">
+          <div className="flex flex-col gap-3 border-b border-line pb-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="min-w-0">
-              <h2 className="text-[16px] font-bold text-[#0F172A]">{tr('Sajili bidhaa mpya dukani')}</h2>
-              <p className="mt-0.5 text-[13px] text-[#64748B]">
+              <h2 className="text-[16px] font-bold text-ink">{tr('Sajili bidhaa mpya dukani')}</h2>
+              <p className="mt-0.5 text-[13px] text-muted">
                 {tr('Chaguo hili ni kwa ajili ya kusajili bidhaa mpya ambazo hazipo kwenye mfumo na kuweka idadi yake ya awali moja kwa moja Dukani.')}
               </p>
             </div>
@@ -708,12 +708,12 @@ export default function StockIn() {
           </div>
 
           {!showCreateProductForm ? (
-            <div className="mt-4 flex flex-col items-center justify-center rounded-[12px] border border-dashed border-[#E2E8F0] bg-[#F8FAFC] px-4 py-8 text-center">
-              <span className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-[#EEF3FF] text-[#2563EB]">
+            <div className="mt-4 flex flex-col items-center justify-center rounded-[12px] border border-dashed border-line bg-app px-4 py-8 text-center">
+              <span className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-primary-tint text-primary">
                 <BoxIcon width={24} height={24} />
               </span>
-              <h3 className="text-[15px] font-bold text-[#0F172A]">{tr('Bidhaa mpya pekee')}</h3>
-              <p className="mt-1 max-w-md text-[13px] text-[#64748B]">
+              <h3 className="text-[15px] font-bold text-ink">{tr('Bidhaa mpya pekee')}</h3>
+              <p className="mt-1 max-w-md text-[13px] text-muted">
                 {tr('Bonyeza "+ Unda bidhaa mpya" kusajili bidhaa mpya na kuingiza idadi yake ya awali moja kwa moja Dukani (stock ya Store haibadiliki).')}
               </p>
               <Button
@@ -730,7 +730,7 @@ export default function StockIn() {
             </div>
           ) : (
             <div className="mt-4 max-h-[75dvh] overflow-y-auto pr-0.5 sm:max-h-none sm:overflow-visible">
-              <div className="mx-auto max-w-2xl rounded-[12px] border border-[#E2E8F0] bg-white p-3.5 sm:p-5">
+              <div className="mx-auto max-w-2xl rounded-[12px] border border-line bg-white p-3.5 sm:p-5">
                 <CreateProductForm
                   hideHeading
                   onCancel={() => setShowCreateProductForm(false)}

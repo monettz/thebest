@@ -13,12 +13,17 @@ export function LocationSwitch({
   onChange: (v: LocationCode) => void;
   className?: string;
   compact?: boolean;
-  /** `soft`: the desktop sidebar's white-on-grey segmented look. */
-  variant?: 'solid' | 'soft';
+  /** `soft`: white-on-grey segments. `pill`: rounded white track on the canvas, the chosen place in dark. */
+  variant?: 'solid' | 'soft' | 'pill';
 }) {
-  if (variant === 'soft') {
+  if (variant === 'soft' || variant === 'pill') {
+    const pill = variant === 'pill';
     return (
-      <div className={cx('grid grid-cols-2 gap-1 rounded-[12px] bg-[#F1F5F9] p-1', className)} role="tablist" aria-label={tr('Eneo')}>
+      <div
+        className={cx('grid grid-cols-2 gap-1 p-1', pill ? 'rounded-full bg-white' : 'rounded-[12px] bg-app', className)}
+        role="tablist"
+        aria-label={tr('Eneo')}
+      >
         {LOCATIONS.map((l) => {
           const active = value === l;
           return (
@@ -29,8 +34,13 @@ export function LocationSwitch({
               aria-selected={active}
               onClick={() => onChange(l)}
               className={cx(
-                'min-h-[36px] rounded-[9px] px-3 text-[13px] transition-all duration-150',
-                active ? 'bg-white font-semibold text-ink shadow-[0_1px_2px_rgba(15,23,42,0.08)]' : 'font-medium text-[#64748B] hover:text-ink',
+                'min-h-[36px] px-3 text-[13px] transition-all duration-150',
+                pill ? 'rounded-full' : 'rounded-[9px]',
+                active
+                  ? pill
+                    ? 'bg-ink font-semibold text-white'
+                    : 'bg-white font-semibold text-ink shadow-[0_1px_2px_rgba(15,23,42,0.08)]'
+                  : 'font-medium text-muted hover:text-ink',
               )}
             >
               {tr(LOCATION_LABEL[l])}
@@ -43,7 +53,7 @@ export function LocationSwitch({
   return (
     <div
       className={cx(
-        'grid grid-cols-2 gap-1 rounded-[12px] border border-[#E2E8F0] bg-[#F1F5F9] p-1',
+        'grid grid-cols-2 gap-1 rounded-[12px] border border-line bg-app p-1',
         className,
       )}
       role="tablist"
@@ -62,8 +72,8 @@ export function LocationSwitch({
               'inline-flex items-center justify-center gap-1.5 rounded-[9px] px-3 text-[13.5px] font-bold transition-all duration-150',
               compact ? 'min-h-[40px]' : 'min-h-[42px]',
               active
-                ? 'bg-[#2563EB] text-white shadow-sm'
-                : 'text-[#475569] hover:text-[#0F172A]',
+                ? 'bg-primary text-white shadow-sm'
+                : 'text-body hover:text-ink',
             )}
           >
             <span

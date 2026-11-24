@@ -1,5 +1,5 @@
 import type { ReactElement } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import type { LocationCode, Role } from '@shared/constants';
 import { ROLE_LABEL } from '@shared/constants';
@@ -27,7 +27,7 @@ import { getDebtOverview } from '@/mock/sales';
 import type { SessionUser } from '@/mock/auth';
 import { LocationSwitch } from './LocationSwitch';
 import { NotificationBell } from './NotificationBell';
-import { navFor, sectionsOf, type NavIcon, type NavItem } from './nav';
+import { navFor, pageMeta, sectionsOf, type NavIcon, type NavItem } from './nav';
 import { tr } from '@/i18n';
 
 const ICON: Record<NavIcon, (p: { width: number; height: number }) => ReactElement> = {
@@ -46,7 +46,8 @@ const ICON: Record<NavIcon, (p: { width: number; height: number }) => ReactEleme
 };
 
 /**
- * Section headings (KUU, BIDHAA…) with one row per screen: icon, label, optional count.
+ * Section headings (KUU, BIDHAA…) with one rounded row per screen: icon, label, optional count. The current
+ * screen is a filled pill in the brand colour. Drawn on the grey-green canvas, so hover lifts a row to white.
  * Shared by the desktop sidebar and the phone drawer so both look the same.
  */
 export function NavSections({
@@ -63,11 +64,11 @@ export function NavSections({
   return (
     <>
       {sections.map((s, si) => (
-        <div key={s.title || si} className="flex shrink-0 flex-col gap-0.5">
+        <div key={s.title || si} className="flex shrink-0 flex-col gap-1">
           {s.title && (
             <span
               className={cx(
-                'px-2.5 pb-1.5 text-[11px] font-semibold uppercase tracking-[0.08em] text-muted',
+                'px-3.5 pb-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-muted',
                 si > 0 && 'pt-4 [@media(max-height:860px)]:pt-2.5 [@media(max-height:740px)]:pt-1.5',
               )}
             >
@@ -85,8 +86,8 @@ export function NavSections({
                 className={({ isActive }) =>
                   cx(
                     row,
-                    'flex min-w-0 shrink-0 items-center gap-3 rounded-[10px] px-2.5 text-[14px] transition-colors',
-                    isActive ? 'bg-primary-tint font-semibold text-primary-link' : 'font-medium text-body hover:bg-app',
+                    'flex min-w-0 shrink-0 items-center gap-3 rounded-full px-3.5 text-[13.5px] transition-colors',
+                    isActive ? 'bg-primary font-semibold text-white' : 'font-medium text-body hover:bg-white hover:text-ink',
                   )
                 }
               >
@@ -114,6 +115,10 @@ export function useNavCounts(role: Role | undefined) {
   return (it: NavItem) => (it.badge === 'debts' ? debts : it.badge === 'lowStock' ? low : 0);
 }
 
+/** SW / EN as white pills on the canvas; the chosen one is dark. */
+export const LANG_PILL =
+  'w-full !gap-1 !rounded-full !bg-white !p-1 [&>button]:!rounded-full [&>button]:!shadow-none [&>[aria-checked=true]]:!bg-ink [&>[aria-checked=true]]:!text-white';
+
 // Row heights step down on short screens so the whole menu always fits without scrolling.
 const ROW = 'min-h-[40px] [@media(max-height:860px)]:min-h-[36px] [@media(max-height:740px)]:min-h-[32px]';
 
@@ -128,31 +133,22 @@ export function Sidebar({
 }) {
   const role: Role = user.role;
   const { logout } = useAuth();
-  const { pathname } = useLocation();
-  const { data: debts = 0 } = useQuery({ queryKey: ['debts'], queryFn: getDebtOverview, select: (d) => d.debtorCount });
-  const { data: products } = useQuery({ queryKey: ['products', role], queryFn: () => listProducts(role) });
-  const low = products?.filter((p) => p.storeStatus !== 'IPO').length ?? 0;
+  const countOf = useNavCounts(role);
   const sections = sectionsOf(navFor(code, role));
 
-  const countOf = (it: NavItem) => (it.badge === 'debts' ? debts : it.badge === 'lowStock' ? low : 0);
-
   return (
-    // Fixed to the viewport height: header and footer never move, the menu in between is sized to fit.
     // Fixed, not sticky: index.css sets overflow-x:hidden on html/body/#root, which stops sticky from ever
-    // sticking, so on long pages the menu scrolled away and left an empty white band under it.
-    // AppShell keeps a 248px spacer beside it so content is never covered.
-    <aside className="hidden w-[248px] flex-col overflow-hidden border-r border-line bg-white md:fixed md:inset-y-0 md:left-0 md:z-30 md:flex md:h-dvh [&_*]:box-border">
-      <div className="shrink-0 space-y-5 px-4 pb-3 pt-5 [@media(max-height:740px)]:space-y-3 [@media(max-height:740px)]:pt-3">
-        <div className="flex min-w-0 items-center gap-2.5 px-1.5">
-          <BrandMark size={36} />
+    // sticking. AppShell keeps a 248px spacer beside it so content is never covered.
+    <aside className="hidden w-[248px] flex-col overflow-hidden bg-app md:fixed md:inset-y-0 md:left-0 md:z-30 md:flex md:h-dvh [&_*]:box-border">
+      <div className="shrink-0 space-y-4 px-4 pb-3 pt-5 [@media(max-height:740px)]:space-y-3 [@media(max-height:740px)]:pt-3">
+        <Link to={code === 'STORE' ? '/store' : '/'} className="flex min-w-0 items-center gap-3 rounded-full bg-white p-1.5 pr-4">
+          <BrandMark size={40} className="!rounded-full" />
           <span className="min-w-0 flex-1 leading-tight">
-            <span className="block truncate text-[15px] font-extrabold tracking-[0.02em] text-ink">{tr('THE BEST')}</span>
-            <span className="block truncate text-[12px] text-muted">{tr('Msaidizi wako wa POS')}</span>
+            <span className="block truncate text-[14px] font-bold tracking-[0.02em] text-ink">{tr('THE BEST')}</span>
+            <span className="block truncate text-[11.5px] text-muted">{tr('Msaidizi wako wa POS')}</span>
           </span>
-          {/* The dashboard has the bell in its own header. */}
-          {pathname !== '/' && <NotificationBell />}
-        </div>
-        <LocationSwitch value={code} onChange={onSwitch} variant="soft" />
+        </Link>
+        <LocationSwitch value={code} onChange={onSwitch} variant="pill" />
       </div>
 
       <nav
@@ -162,25 +158,46 @@ export function Sidebar({
         <NavSections sections={sections} countOf={countOf} row={ROW} />
       </nav>
 
-      <div className="shrink-0 space-y-2.5 border-t border-line-soft px-4 pb-4 pt-3 [@media(max-height:740px)]:space-y-2 [@media(max-height:740px)]:pb-3">
-        <LanguageSwitch compact className="w-full !rounded-[10px] !bg-[#F1F5F9] [&>button]:!min-h-[30px] [&>button]:!text-[12px]" />
-        <div className="flex min-w-0 items-center gap-2.5 rounded-[12px] border border-line p-2.5">
-          <Avatar name={user.name} size={36} />
-          <div className="min-w-0 flex-1">
-            <p className="truncate text-[13.5px] font-bold text-ink" title={user.name}>{user.name}</p>
-            <p className="truncate text-[12px] text-muted">{tr(ROLE_LABEL[role])}</p>
-          </div>
-          <button
-            type="button"
-            onClick={logout}
-            aria-label={tr('Toka')}
-            title={tr('Toka')}
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-muted transition hover:bg-app hover:text-bad-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
-          >
-            <LogoutIcon width={18} height={18} />
-          </button>
-        </div>
+      <div className="shrink-0 space-y-2 px-4 pb-4 pt-3 [@media(max-height:740px)]:pb-3">
+        <LanguageSwitch compact className={cx(LANG_PILL, '[&>button]:!min-h-[32px] [&>button]:!text-[12px]')} />
+        <button
+          type="button"
+          onClick={logout}
+          className="flex min-h-[40px] w-full items-center gap-3 rounded-full px-3.5 text-[13.5px] font-medium text-body transition-colors hover:bg-white hover:text-bad-fg"
+        >
+          <LogoutIcon width={18} height={18} />
+          {tr('Toka')}
+        </button>
       </div>
     </aside>
+  );
+}
+
+/**
+ * Desktop top bar: a white pill naming the current screen on the left; notifications and the signed-in
+ * person on the right. Every screen gets it, so the bell is in one place.
+ */
+export function TopBar({ code, user }: { code: LocationCode; user: SessionUser }) {
+  const { pathname } = useLocation();
+  const page = pageMeta(pathname, code);
+  return (
+    <div className="hidden items-center gap-3 px-8 pt-6 md:flex lg:px-10">
+      <div className="flex h-12 min-w-0 items-center gap-2.5 rounded-full bg-white pl-1.5 pr-5">
+        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-app text-ink">
+          {ICON[page.icon]({ width: 17, height: 17 })}
+        </span>
+        <span className="truncate text-[14px] font-semibold text-ink">{tr(page.label)}</span>
+      </div>
+      <div className="ml-auto flex items-center gap-3">
+        <NotificationBell className="!h-12 !w-12 !border-0 !bg-white !shadow-none hover:!bg-white/70" />
+        <div className="flex h-12 min-w-0 max-w-[260px] items-center gap-2.5 rounded-full bg-white pl-1.5 pr-5">
+          <Avatar name={user.name} size={36} />
+          <span className="min-w-0 leading-tight">
+            <span className="block truncate text-[13px] font-semibold text-ink" title={user.name}>{user.name}</span>
+            <span className="block truncate text-[11.5px] text-muted">{tr(ROLE_LABEL[user.role])}</span>
+          </span>
+        </div>
+      </div>
+    </div>
   );
 }

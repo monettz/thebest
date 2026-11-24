@@ -23,8 +23,8 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 const VARIANTS: Record<Variant, string> = {
   // Disabled keeps readable text (grey on grey) instead of fading white-on-blue.
-  primary: 'bg-primary text-white hover:bg-primary-link shadow-sm disabled:bg-slate-200 disabled:text-slate-600',
-  outline: 'border border-line bg-white text-slate-700 shadow-sm hover:bg-slate-50 disabled:bg-slate-50 disabled:text-slate-500',
+  primary: 'bg-primary text-white hover:bg-primary-link disabled:bg-slate-200 disabled:text-slate-600',
+  outline: 'border border-line bg-white text-body hover:bg-app disabled:bg-app disabled:text-slate-500',
   ghost: 'text-body hover:bg-app disabled:text-slate-400',
   soft: 'bg-primary-tint text-primary-link hover:bg-bar-3 disabled:bg-slate-100 disabled:text-slate-500',
 };
@@ -59,7 +59,9 @@ export function Card({ className, children }: { className?: string; children: Re
   return <div className={cx('card', className)}>{children}</div>;
 }
 
-/* ---------- Badge (status pill) ---------- */
+/* ---------- Badge ----------
+ * A word ("Imelipwa", "Deni") reads as a status: a coloured dot and the word, no fill.
+ * A number (menu counts, totals) stays a small filled pill so it still reads as a count. */
 const BADGE: Record<'ok' | 'warn' | 'bad' | 'navy' | 'blue', string> = {
   ok: 'bg-ok-bg text-ok-fg',
   warn: 'bg-warn-bg text-warn-fg',
@@ -67,10 +69,25 @@ const BADGE: Record<'ok' | 'warn' | 'bad' | 'navy' | 'blue', string> = {
   navy: 'bg-navy text-white',
   blue: 'bg-primary-tint text-primary-link',
 };
+const DOT: Record<keyof typeof BADGE, { dot: string; text: string }> = {
+  ok: { dot: 'bg-[#16A34A]', text: 'text-ok-fg' },
+  warn: { dot: 'bg-[#D97706]', text: 'text-warn-fg' },
+  bad: { dot: 'bg-[#DC2626]', text: 'text-bad-fg' },
+  navy: { dot: 'bg-navy', text: 'text-ink' },
+  blue: { dot: 'bg-primary', text: 'text-primary-link' },
+};
 export function Badge({ tone, children, className }: { tone: keyof typeof BADGE; children: ReactNode; className?: string }) {
+  if (typeof children === 'string') {
+    return (
+      <span className={cx('inline-flex items-center gap-1.5 whitespace-nowrap text-[12px] font-semibold', DOT[tone].text, className)}>
+        <span aria-hidden className={cx('h-2 w-2 shrink-0 rounded-full', DOT[tone].dot)} />
+        {tr(children)}
+      </span>
+    );
+  }
   return (
     <span className={cx('inline-flex items-center rounded-full px-2.5 py-0.5 text-[12px] font-bold', BADGE[tone], className)}>
-      {typeof children === 'string' ? tr(children) : children}
+      {children}
     </span>
   );
 }
@@ -95,7 +112,7 @@ export function Tabs<T extends string>({
   return (
     <div
       className={cx(
-        'no-scrollbar inline-flex max-w-full gap-1 overflow-x-auto rounded-xl border border-line bg-white p-1 shadow-sm',
+        'no-scrollbar inline-flex max-w-full gap-2 overflow-x-auto',
         className,
       )}
       role="tablist"
@@ -108,8 +125,8 @@ export function Tabs<T extends string>({
           aria-selected={o.value === value}
           onClick={() => onChange(o.value)}
           className={cx(
-            'min-h-[40px] shrink-0 whitespace-nowrap rounded-lg px-3.5 text-[13px] font-semibold transition-all duration-150 sm:px-4 sm:text-[13.5px]',
-            o.value === value ? 'bg-primary text-white shadow-sm' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900',
+            'min-h-[40px] shrink-0 whitespace-nowrap rounded-full border px-4 text-[13px] font-semibold transition-all duration-150',
+            o.value === value ? 'border-primary bg-primary text-white' : 'border-line bg-white text-body hover:border-ink/20 hover:text-ink',
           )}
         >
           {tr(o.label)}

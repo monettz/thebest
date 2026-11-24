@@ -308,13 +308,13 @@ export default function POS() {
             type="button"
             aria-label={tr('Rudi')}
             onClick={() => navigate('/')}
-            className="flex h-10 w-10 items-center justify-center rounded-[10px] border border-[#E2E8F0] bg-white"
+            className="flex h-10 w-10 items-center justify-center rounded-[10px] border border-line bg-white"
           >
             <ChevronRight className="rotate-180" />
           </button>
           <div className="flex-1">
-            <h1 className="text-[20px] font-bold leading-tight text-[#0F172A]">{tr('Uza')}</h1>
-            <p className="text-[12.5px] text-[#64748B]">
+            <h1 className="text-[20px] font-bold leading-tight text-ink">{tr('Uza')}</h1>
+            <p className="text-[12.5px] text-muted">
               {tr('Duka')} · {tr(ROLE_LABEL[user!.role])}
             </p>
           </div>
@@ -347,10 +347,10 @@ export default function POS() {
 
         <div className="flex flex-wrap items-center gap-2.5">
           <div className="relative min-w-[220px] flex-1">
-            <SearchIcon width={16} height={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#64748B]" />
+            <SearchIcon width={16} height={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted" />
             <input
               ref={searchRef}
-              className="h-10 w-full rounded-[10px] border border-[#E2E8F0] bg-white pl-10 pr-3 text-[13.5px] text-[#0F172A] outline-none placeholder:text-[#64748B]/70 focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/15"
+              className="h-10 w-full rounded-[10px] border border-line bg-white pl-10 pr-3 text-[13.5px] text-ink outline-none placeholder:text-muted/70 focus:border-primary focus:ring-2 focus:ring-primary/15"
               placeholder={tr('Tafuta bidhaa, model au IMEI…')}
               value={q}
               onChange={(e) => onSearch(e.target.value)}
@@ -391,12 +391,12 @@ export default function POS() {
                 }}
                 className={cx(
                   'group flex min-h-[148px] max-h-[175px] flex-col justify-between rounded-[12px] border bg-white p-3 text-left transition-colors duration-150 select-none',
-                  out ? 'cursor-not-allowed opacity-60 border-[#E2E8F0]' : 'cursor-pointer hover:border-slate-300',
-                  n > 0 ? 'border-[#2563EB] ring-1 ring-[#2563EB]/20' : 'border-[#E2E8F0]',
+                  out ? 'cursor-not-allowed opacity-60 border-line' : 'cursor-pointer hover:border-slate-300',
+                  n > 0 ? 'border-primary ring-1 ring-primary/20' : 'border-line',
                 )}
               >
                 {/* Compact Product Image / Neutral Placeholder (70px height) */}
-                <div className="relative flex h-[70px] w-full shrink-0 items-center justify-center overflow-hidden rounded-[8px] border border-[#E2E8F0]/70 bg-[#F8FAFC]">
+                <div className="relative flex h-[70px] w-full shrink-0 items-center justify-center overflow-hidden rounded-[8px] border border-line/70 bg-app">
                   {p.imageUrl ? (
                     <img
                       src={p.imageUrl}
@@ -405,12 +405,12 @@ export default function POS() {
                       loading="lazy"
                     />
                   ) : p.type === 'phone' ? (
-                    <PhoneIcon width={24} height={24} className="text-[#64748B]" />
+                    <PhoneIcon width={24} height={24} className="text-muted" />
                   ) : (
-                    <BoxIcon width={24} height={24} className="text-[#64748B]" />
+                    <BoxIcon width={24} height={24} className="text-muted" />
                   )}
                   {n > 0 && (
-                    <span className="absolute right-1.5 top-1.5 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-[#2563EB] px-1.5 text-[11px] font-bold text-white">
+                    <span className="absolute right-1.5 top-1.5 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-primary px-1.5 text-[11px] font-bold text-white">
                       {n}
                     </span>
                   )}
@@ -418,8 +418,8 @@ export default function POS() {
 
                 {/* Compact Product Metadata */}
                 <div className="mt-1.5 min-w-0">
-                  <p className="truncate text-[13.5px] font-semibold leading-tight text-[#0F172A]">{p.name}</p>
-                  <p className="mt-0.5 truncate text-[11.5px] leading-tight text-[#64748B]">
+                  <p className="truncate text-[13.5px] font-semibold leading-tight text-ink">{p.name}</p>
+                  <p className="mt-0.5 truncate text-[11.5px] leading-tight text-muted">
                     {p.type === 'phone' ? tr('Simu') : tr('Accessory')} ·{' '}
                     {out
                       ? tr('Imeisha')
@@ -429,7 +429,7 @@ export default function POS() {
 
                 {/* Price & Inline Quantity Stepper (only when in cart) */}
                 <div className="mt-1.5 flex min-h-[26px] items-center justify-between gap-1.5">
-                  <span className="truncate text-[13.5px] font-bold tabular-nums text-[#0F172A]">
+                  <span className="truncate text-[13.5px] font-bold tabular-nums text-ink">
                     {formatTZS(p.sellPrice)}
                   </span>
                   {n > 0 && (
@@ -449,7 +449,7 @@ export default function POS() {
             );
           })}
           {list.length === 0 && (
-            <p className="col-span-full p-8 text-center text-[#64748B]">{tr('Hakuna bidhaa iliyopatikana.')}</p>
+            <p className="col-span-full p-8 text-center text-muted">{tr('Hakuna bidhaa iliyopatikana.')}</p>
           )}
         </div>
       </div>
@@ -459,7 +459,7 @@ export default function POS() {
       {createPortal(
         <>
       {/* Bottom Cart Summary Bar (starts after the 256px sidebar on desktop) */}
-      <div className="pb-safe fixed inset-x-0 bottom-0 z-30 md:left-[248px] border-t border-[#E2E8F0] bg-white px-4 py-3 shadow-[0_-4px_16px_rgba(15,23,42,0.06)]">
+      <div className="pb-safe fixed inset-x-0 bottom-0 z-30 md:left-[248px] border-t border-line bg-white px-4 py-3 shadow-[0_-4px_16px_rgba(15,23,42,0.06)]">
         <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-3">
           <button
             type="button"
@@ -467,14 +467,14 @@ export default function POS() {
             className="flex w-full items-center justify-between gap-3 text-left"
           >
             <span>
-              <span className="block text-[12.5px] text-[#64748B]">
+              <span className="block text-[12.5px] text-muted">
                 {tr('Bidhaa {n} kwenye kikapu', { n: cartCount })}
               </span>
-              <span className="block text-[19px] font-extrabold tabular-nums text-[#0F172A]">
+              <span className="block text-[19px] font-extrabold tabular-nums text-ink">
                 {formatTZS(derived.total)}
               </span>
             </span>
-            <span className="inline-flex min-h-[42px] items-center gap-2 rounded-[10px] bg-[#2563EB] px-4 text-[13.5px] font-semibold text-white">
+            <span className="inline-flex min-h-[42px] items-center gap-2 rounded-[10px] bg-primary px-4 text-[13.5px] font-semibold text-white">
               {tr('Kikapu')} <ChevronRight width={16} height={16} />
             </span>
           </button>
@@ -490,10 +490,10 @@ export default function POS() {
           <div
             role="dialog"
             aria-label={tr('Kikapu')}
-            className="flex h-[92dvh] max-h-[92dvh] w-full flex-col overflow-hidden rounded-t-[20px] bg-white shadow-[0_-8px_30px_rgba(15,23,42,0.12)] md:h-dvh md:max-h-dvh md:w-[500px] md:max-w-[95vw] md:rounded-none md:border-l md:border-[#E2E8F0] md:shadow-[-8px_0_24px_rgba(15,23,42,0.08)]"
+            className="flex h-[92dvh] max-h-[92dvh] w-full flex-col overflow-hidden rounded-t-[20px] bg-white shadow-[0_-8px_30px_rgba(15,23,42,0.12)] md:h-dvh md:max-h-dvh md:w-[500px] md:max-w-[95vw] md:rounded-none md:border-l md:border-line md:shadow-[-8px_0_24px_rgba(15,23,42,0.08)]"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="mx-auto mt-2.5 mb-1 h-1.5 w-12 shrink-0 rounded-full bg-[#E2E8F0] md:hidden" />
+            <div className="mx-auto mt-2.5 mb-1 h-1.5 w-12 shrink-0 rounded-full bg-line md:hidden" />
             <Cart {...cartProps} onClose={() => setSheetOpen(false)} />
           </div>
         </div>
@@ -666,25 +666,25 @@ function ScanImeiModal({
       <div
         role="dialog"
         aria-label={tr('Scan IMEI')}
-        className="flex max-h-[88dvh] w-full flex-col overflow-hidden rounded-t-[20px] border border-[#E2E8F0] bg-white shadow-xl sm:max-w-[480px] sm:rounded-[16px]"
+        className="flex max-h-[88dvh] w-full flex-col overflow-hidden rounded-t-[20px] border border-line bg-white shadow-xl sm:max-w-[480px] sm:rounded-[16px]"
         onClick={(e) => e.stopPropagation()}
       >
-        <header className="flex shrink-0 items-center justify-between border-b border-[#E2E8F0] px-4 py-3.5">
+        <header className="flex shrink-0 items-center justify-between border-b border-line px-4 py-3.5">
           <div className="flex items-center gap-2">
-            <ScanIcon width={18} height={18} className="text-[#2563EB]" />
-            <h2 className="text-[16px] font-bold text-[#0F172A]">{tr('Scan IMEI')}</h2>
+            <ScanIcon width={18} height={18} className="text-primary" />
+            <h2 className="text-[16px] font-bold text-ink">{tr('Scan IMEI')}</h2>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="rounded-[8px] border border-[#E2E8F0] bg-[#F8FAFC] px-2.5 py-1 text-[12.5px] font-semibold text-[#64748B] hover:text-[#0F172A]"
+            className="rounded-[8px] border border-line bg-app px-2.5 py-1 text-[12.5px] font-semibold text-muted hover:text-ink"
           >
             {tr('Funga')}
           </button>
         </header>
 
         <div className="flex-1 min-h-0 overflow-y-auto px-4 py-4 space-y-3.5">
-          <p className="text-[12.5px] text-[#64748B]">
+          <p className="text-[12.5px] text-muted">
             {tr('Scan au andika IMEI ya simu kuongeza bidhaa moja kwa moja kwenye kikapu.')}
           </p>
 
@@ -708,7 +708,7 @@ function ScanImeiModal({
                 'shrink-0 rounded-[10px] border px-3 text-[12.5px] font-semibold transition-colors',
                 camActive
                   ? 'border-bad-fg bg-bad-bg text-bad-fg'
-                  : 'border-[#2563EB] bg-blue-50/80 text-[#2563EB] hover:bg-blue-100/70',
+                  : 'border-primary bg-blue-50/80 text-primary hover:bg-blue-100/70',
               )}
             >
               {tr(camActive ? 'Zima kamera' : 'Washa kamera')}
@@ -716,9 +716,9 @@ function ScanImeiModal({
           </div>
 
           {camActive && (
-            <div className="relative overflow-hidden rounded-[10px] border border-[#E2E8F0] bg-slate-950">
+            <div className="relative overflow-hidden rounded-[10px] border border-line bg-slate-950">
               <video ref={videoRef} className="h-[180px] w-full object-cover" muted playsInline />
-              <div className="pointer-events-none absolute inset-x-8 top-1/2 h-0.5 -translate-y-1/2 bg-[#2563EB] shadow-[0_0_8px_#2563EB]" />
+              <div className="pointer-events-none absolute inset-x-8 top-1/2 h-0.5 -translate-y-1/2 bg-primary shadow-[0_0_8px_#2563EB]" />
             </div>
           )}
 
@@ -729,10 +729,10 @@ function ScanImeiModal({
           )}
 
           <div>
-            <p className="mb-2 text-[12px] font-semibold text-[#64748B]">
+            <p className="mb-2 text-[12px] font-semibold text-muted">
               {tr('Simu zinazopatikana dukani ({n})', { n: filtered.length })}
             </p>
-            <ul className="divide-y divide-[#E2E8F0] rounded-[10px] border border-[#E2E8F0] bg-[#F8FAFC]/50">
+            <ul className="divide-y divide-line rounded-[10px] border border-line bg-app/50">
               {filtered.map(({ product, imei }) => (
                 <li key={imei}>
                   <button
@@ -741,14 +741,14 @@ function ScanImeiModal({
                     className="flex w-full items-center justify-between gap-3 px-3 py-2.5 text-left transition-colors hover:bg-blue-50/50"
                   >
                     <div className="min-w-0">
-                      <p className="truncate text-[13.5px] font-semibold text-[#0F172A]">{product.name}</p>
-                      <p className="font-mono text-[12px] text-[#64748B]">IMEI: {imei}</p>
+                      <p className="truncate text-[13.5px] font-semibold text-ink">{product.name}</p>
+                      <p className="font-mono text-[12px] text-muted">IMEI: {imei}</p>
                     </div>
                     <div className="shrink-0 text-right">
-                      <p className="text-[13px] font-bold tabular-nums text-[#0F172A]">
+                      <p className="text-[13px] font-bold tabular-nums text-ink">
                         {formatTZS(product.sellPrice)}
                       </p>
-                      <span className="text-[11.5px] font-semibold text-[#2563EB]">
+                      <span className="text-[11.5px] font-semibold text-primary">
                         + {tr('Ongeza')}
                       </span>
                     </div>
@@ -756,7 +756,7 @@ function ScanImeiModal({
                 </li>
               ))}
               {filtered.length === 0 && (
-                <li className="p-5 text-center text-[13px] text-[#64748B]">
+                <li className="p-5 text-center text-[13px] text-muted">
                   {tr('Hakuna IMEI iliyopatikana.')}
                 </li>
               )}

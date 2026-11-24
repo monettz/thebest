@@ -116,13 +116,13 @@ export default function Receive() {
           className={cx(
             'flex items-center gap-4 rounded-[16px] border p-4 text-left transition',
             activeTab === 'existing'
-              ? 'border-[#2563EB] bg-[#EEF3FF] shadow-sm ring-2 ring-[#2563EB]/20'
-              : 'border-[#E2E8F0] bg-white hover:border-slate-300',
+              ? 'border-primary bg-primary-tint shadow-sm ring-2 ring-primary/20'
+              : 'border-line bg-white hover:border-slate-300',
           )}
         >
           <span className={cx(
             'flex h-12 w-12 shrink-0 items-center justify-center rounded-[12px]',
-            activeTab === 'existing' ? 'bg-[#2563EB] text-white' : 'bg-slate-100 text-slate-600',
+            activeTab === 'existing' ? 'bg-primary text-white' : 'bg-slate-100 text-slate-600',
           )}>
             <WarehouseIcon width={24} height={24} />
           </span>
@@ -141,13 +141,13 @@ export default function Receive() {
           className={cx(
             'flex items-center gap-4 rounded-[16px] border p-4 text-left transition',
             activeTab === 'new'
-              ? 'border-[#2563EB] bg-[#EEF3FF] shadow-sm ring-2 ring-[#2563EB]/20'
-              : 'border-[#E2E8F0] bg-white hover:border-slate-300',
+              ? 'border-primary bg-primary-tint shadow-sm ring-2 ring-primary/20'
+              : 'border-line bg-white hover:border-slate-300',
           )}
         >
           <span className={cx(
             'flex h-12 w-12 shrink-0 items-center justify-center rounded-[12px]',
-            activeTab === 'new' ? 'bg-[#2563EB] text-white' : 'bg-slate-100 text-slate-600',
+            activeTab === 'new' ? 'bg-primary text-white' : 'bg-slate-100 text-slate-600',
           )}>
             <PlusIcon width={24} height={24} />
           </span>
@@ -162,11 +162,11 @@ export default function Receive() {
         <Card className="p-6">
           {!showCreateProductForm ? (
             <div className="flex flex-col items-center justify-center py-10 text-center">
-              <span className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-[#EEF3FF] text-[#2563EB]">
+              <span className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-primary-tint text-primary">
                 <BoxIcon width={24} height={24} />
               </span>
-              <h3 className="text-[15px] font-bold text-[#0F172A]">{tr('Bidhaa mpya pekee')}</h3>
-              <p className="mt-1 max-w-md text-[13px] text-[#64748B]">
+              <h3 className="text-[15px] font-bold text-ink">{tr('Bidhaa mpya pekee')}</h3>
+              <p className="mt-1 max-w-md text-[13px] text-muted">
                 Sajili bidhaa mpya moja kwa moja Store na uweke idadi yake ya awali.
               </p>
               <Button
@@ -179,7 +179,7 @@ export default function Receive() {
               </Button>
             </div>
           ) : (
-            <div className="mx-auto max-w-2xl rounded-[12px] border border-[#E2E8F0] bg-white p-3.5 sm:p-5">
+            <div className="mx-auto max-w-2xl rounded-[12px] border border-line bg-white p-3.5 sm:p-5">
               <CreateProductForm
                 hideHeading
                 onCancel={() => setShowCreateProductForm(false)}

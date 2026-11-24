@@ -8,7 +8,6 @@ import { dayName, dayShort, formatCompact, formatDayMonth, formatLongDate, forma
 import { listProducts } from '@/mock/api';
 import { getShopDashboardLive } from '@/mock/ledger';
 import { getDebtOverview, listSales, type SaleListItem } from '@/mock/sales';
-import { NotificationBell } from '@/components/layout/NotificationBell';
 import { AnimatedNumber, Spinner, cx } from '@/components/ui';
 import { CalendarIcon, PlusIcon, SearchIcon } from '@/components/ui/icons';
 import { tr } from '@/i18n';
@@ -61,7 +60,7 @@ const fromIso = (s: string) => {
 };
 
 const METHOD_TONE: Partial<Record<PaymentMethod, string>> = {
-  CASH: 'bg-[#F1F5F9] text-body',
+  CASH: 'bg-app text-body',
   BANK: 'bg-primary-tint text-primary-link',
 };
 
@@ -78,7 +77,7 @@ function Pill({ className, children }: { className: string; children: ReactNode 
 
 /** Green up / red down; no change is grey. */
 function Delta({ value, unit = '' }: { value: number; unit?: string }) {
-  const tone = value > 0 ? 'bg-ok-bg text-ok-fg' : value < 0 ? 'bg-bad-bg text-bad-fg' : 'bg-[#F1F5F9] text-body';
+  const tone = value > 0 ? 'bg-ok-bg text-ok-fg' : value < 0 ? 'bg-bad-bg text-bad-fg' : 'bg-app text-body';
   return (
     <span className={cx('whitespace-nowrap rounded-md px-1.5 py-0.5 font-semibold', tone)}>
       {value > 0 ? '↑ ' : value < 0 ? '↓ ' : ''}
@@ -284,8 +283,7 @@ export default function Dashboard() {
             onChange={(e) => setQ(e.target.value)}
           />
         </label>
-        {/* Phones already have the bell in the top bar and a floating sell button. */}
-        <NotificationBell dot className="hidden !h-11 !w-11 !rounded-xl !shadow-none md:flex" />
+        {/* Phones have a floating sell button instead. The bell lives in the top bar. */}
         <Link
           to="/pos"
           className="hidden h-11 items-center gap-2 rounded-xl bg-primary px-[18px] text-[14px] font-semibold text-white transition hover:bg-primary-link md:inline-flex"
@@ -395,7 +393,7 @@ export default function Dashboard() {
             value={<AnimatedNumber id="dash.net" value={p.net} format={formatTZS} />}
             foot={
               <>
-                <span className="rounded-md bg-[#F1F5F9] px-1.5 py-0.5 font-semibold text-body">
+                <span className="rounded-md bg-app px-1.5 py-0.5 font-semibold text-body">
                   {p.sales > 0 ? Math.round((p.net / p.sales) * 100) : 0}%
                 </span>
                 {tr('baada ya matumizi')}
@@ -430,7 +428,7 @@ export default function Dashboard() {
                   onClick={() => setTab(t.value)}
                   className={cx(
                     'h-9 rounded-lg border px-3 text-[12px] transition-colors',
-                    tab === t.value ? 'border-primary bg-[#EEF2FF] font-semibold text-primary-link' : 'border-line bg-white font-medium text-[#475569] hover:bg-app',
+                    tab === t.value ? 'border-primary bg-[#EEF2FF] font-semibold text-primary-link' : 'border-line bg-white font-medium text-body hover:bg-app',
                   )}
                 >
                   {t.label}
@@ -462,7 +460,7 @@ export default function Dashboard() {
                     <span className="shrink-0 text-muted">{tr('{n} pcs', { n: t.sold })}</span>
                     <span className="w-[82px] shrink-0 text-right font-semibold tabular-nums text-ink">{t.revenue.toLocaleString('en-US')}</span>
                   </div>
-                  <div className="h-1.5 rounded-full bg-[#F1F5F9]">
+                  <div className="h-1.5 rounded-full bg-app">
                     <div className="h-1.5 rounded-full bg-primary" style={{ width: `${Math.max(3, t.revenuePct)}%` }} />
                   </div>
                 </li>
