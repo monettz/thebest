@@ -4,7 +4,7 @@
  * the real API will run inside a DB transaction.
  */
 import { isShopPaymentMethod, type PaymentMethod, type Role } from '@shared/constants';
-import { todayDar } from '@/lib/dar';
+import { timeDar, todayDar } from '@/lib/dar';
 import {
   addDays,
   ageBucket,
@@ -1200,6 +1200,10 @@ export interface SaleListItem {
   total: number;
   status: SaleStatus;
   hasReturns: boolean;
+  /** HH:MM in Dar. */
+  time: string;
+  /** The method that took most of the sale's payment; null when nothing was paid at sale time. */
+  method: PaymentMethod | null;
 }
 
 export async function listSales(q = '', limit = 60): Promise<{ items: SaleListItem[]; total: number }> {
@@ -1226,6 +1230,11 @@ export async function listSales(q = '', limit = 60): Promise<{ items: SaleListIt
         total: s.status === 'VOID' ? s.total : effTotal(s),
         status: s.status,
         hasReturns: (s.returns ?? []).length > 0,
+        time: timeDar(new Date(s.createdAt)),
+        method:
+          s.payments
+            .filter((p) => p.kind === 'SALE')
+            .sort((a, b) => b.amount - a.amount)[0]?.method ?? null,
       })),
   });
 }

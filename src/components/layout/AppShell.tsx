@@ -1,17 +1,17 @@
 import { Suspense, useEffect, useState } from 'react';
-import { Link, Navigate, NavLink, Outlet, useLocation } from 'react-router-dom';
+import { Link, Navigate, Outlet, useLocation } from 'react-router-dom';
 import { ROLE_LABEL } from '@shared/constants';
 import { useAuth } from '@/lib/auth';
 import { useLocationCode } from '@/lib/location';
 import { useScheduler } from '@/lib/useScheduler';
 import { LanguageSwitch } from '@/components/LanguageSwitch';
-import { Avatar, cx, Spinner } from '@/components/ui';
+import { Avatar, Spinner } from '@/components/ui';
 import { LogoutIcon, MenuIcon, PlusIcon } from '@/components/ui/icons';
 import { BrandMark } from '@/components/BrandMark';
 import { LocationSwitch } from './LocationSwitch';
 import { NotificationBell } from './NotificationBell';
-import { drawerGroups } from './nav';
-import { Sidebar } from './Sidebar';
+import { drawerGroups, sectionsOf } from './nav';
+import { NavSections, Sidebar, useNavCounts } from './Sidebar';
 import { tr } from '@/i18n';
 
 export function AppShell() {
@@ -20,6 +20,7 @@ export function AppShell() {
   const { code, switchTo } = useLocationCode();
   const { pathname } = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
+  const countOf = useNavCounts(user?.role);
 
   // A new screen starts at the top and closes the drawer.
   useEffect(() => {
@@ -40,7 +41,9 @@ export function AppShell() {
   const posMobile = pathname === '/pos';
   // Selling is open to every signed-in role today; gate it here if that rule ever changes.
   const canSell = true;
-  const groups = drawerGroups(user.role).filter((g) => g.items.length > 0);
+  // The phone drawer: the shop menu under its section headings, then the Store-only screens.
+  const [shopItems, storeItems] = drawerGroups(user.role).map((g) => g.items);
+  const drawerSections = [...sectionsOf(shopItems), ...(storeItems.length ? [{ title: 'Store', items: storeItems }] : [])];
 
   return (
     <div className="min-h-screen bg-white">
@@ -116,46 +119,22 @@ export function AppShell() {
               </button>
             </div>
 
-            <div className="mt-3 flex-1 overflow-y-auto overscroll-contain">
-              <p className="mb-1.5 text-[11px] font-bold uppercase tracking-wider text-slate-400">{tr('Eneo')}</p>
-              <LocationSwitch value={code} onChange={(c) => { switchTo(c); setMenuOpen(false); }} compact />
-
-              {groups.map((g) => (
-                <section key={g.title}>
-                  <p className="mb-1.5 mt-4 text-[11px] font-bold uppercase tracking-wider text-slate-400">{tr(g.title)}</p>
-                  <nav className="flex flex-col gap-0.5" aria-label={tr(g.title)}>
-                    {g.items.map((it) => (
-                      <NavLink
-                        key={it.to}
-                        to={it.to}
-                        end={it.end}
-                        onClick={() => setMenuOpen(false)}
-                        className={({ isActive }) =>
-                          cx('flex min-h-[44px] items-center gap-3 rounded-[10px] px-3 text-[14px] font-medium transition-colors', isActive ? 'bg-primary-tint font-semibold text-primary-link' : 'text-body hover:bg-app')
-                        }
-                      >
-                        {({ isActive }) => (
-                          <>
-                            <span className={cx('h-2 w-2 rounded-full', isActive ? 'bg-primary' : 'border-[1.5px] border-bar-1 bg-transparent')} />
-                            <span className="flex-1">{tr(it.label)}</span>
-                          </>
-                        )}
-                      </NavLink>
-                    ))}
-                  </nav>
-                </section>
-              ))}
+            <div className="mt-4 flex-1 overflow-y-auto overscroll-contain">
+              <LocationSwitch value={code} onChange={(c) => { switchTo(c); setMenuOpen(false); }} variant="soft" className="mb-4" />
+              <nav className="flex flex-col" aria-label={tr('Menyu kuu')}>
+                <NavSections sections={drawerSections} countOf={countOf} onNavigate={() => setMenuOpen(false)} />
+              </nav>
             </div>
 
-            <div className="mt-3 border-t border-line pt-3">
-              <LanguageSwitch compact className="mb-2.5" />
-              <div className="flex items-center gap-3 rounded-[10px] bg-app p-2.5">
+            <div className="mt-3 space-y-2.5 border-t border-line-soft pt-3">
+              <LanguageSwitch compact className="w-full !rounded-[10px] !bg-[#F1F5F9] [&>button]:!min-h-[36px] [&>button]:!text-[12.5px]" />
+              <div className="flex items-center gap-2.5 rounded-[12px] border border-line p-2.5">
                 <Avatar name={user.name} size={36} />
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-[13px] font-bold text-ink">{user.name}</p>
                   <p className="truncate text-[11.5px] text-muted">{tr(ROLE_LABEL[user.role])}</p>
                 </div>
-                <button type="button" onClick={logout} aria-label={tr('Toka')} title={tr('Toka')} className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-muted hover:bg-white hover:text-bad-fg">
+                <button type="button" onClick={logout} aria-label={tr('Toka')} title={tr('Toka')} className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-muted hover:bg-app hover:text-bad-fg">
                   <LogoutIcon width={18} height={18} />
                 </button>
               </div>

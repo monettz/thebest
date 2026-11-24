@@ -18,7 +18,7 @@ const ICON: Record<NotificationKind, { Icon: typeof BellIcon; tone: string }> = 
 };
 
 /** Bell with an unread count and a panel of real alerts. Works the same on the header and the dashboard. */
-export function NotificationBell({ className }: { className?: string }) {
+export function NotificationBell({ className, dot }: { className?: string; /** A small red dot instead of the unread count. */ dot?: boolean }) {
   const { user } = useAuth();
   const qc = useQueryClient();
   const navigate = useNavigate();
@@ -62,7 +62,10 @@ export function NotificationBell({ className }: { className?: string }) {
         className={cx('relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-line bg-white text-slate-600 shadow-sm hover:bg-slate-50', className)}
       >
         <BellIcon width={19} height={19} />
-        {unread.length > 0 && (
+        {unread.length > 0 && dot && (
+          <span className="absolute right-[11px] top-[10px] h-2 w-2 rounded-full border-2 border-white bg-red-600 box-content" data-testid="unread-count" />
+        )}
+        {unread.length > 0 && !dot && (
           <span className="absolute -right-1 -top-1 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-red-500 px-1 text-[10.5px] font-bold leading-none text-white" data-testid="unread-count">
             {unread.length > 99 ? '99+' : unread.length}
           </span>

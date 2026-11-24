@@ -413,7 +413,9 @@ export interface ShopDashboard {
   weekProfit?: number[];
   weekExpenses?: number[];
   weekTotal: number;
-  topProducts: { name: string; sub: string; soldPct: number; sold: number }[];
+  topProducts: { name: string; sub: string; soldPct: number; sold: number; revenue: number; revenuePct: number }[];
+  /** Totals for the whole chart period; `net` is owner only. Deltas compare with the same-length period before. */
+  period?: { sales: number; count: number; net?: number; salesPct: number; countDelta: number };
   debtors: { id: number; name: string; item: string; since: string; amount: number; tag: { kind: string; label: string } }[];
 }
 

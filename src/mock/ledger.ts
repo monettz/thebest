@@ -233,9 +233,30 @@ export async function getShopDashboardLive(role: Role, daysList?: Date[]): Promi
   const [yesterday, now] = [day(addDays(today, -1)), day(today)];
   const pct = (a: number, b: number) => (b > 0 ? Math.round(((a - b) / b) * 100) : 0);
 
-  const weekFacts = facts.filter((f) => inRange(f.date, { from: days[0], to: days[days.length - 1] }));
+  const range = { from: days[0], to: days[days.length - 1] };
+  const weekFacts = facts.filter((f) => inRange(f.date, range));
+  // The same number of days straight before the period, for "vs previous period".
+  const prevRange = { from: addDays(range.from, -days.length), to: addDays(range.from, -1) };
+  const spentIn = (r: Range) => expenses.filter((e) => inRange(e.spentOn, r)).map((e) => e.amount);
+  const cur = summarize(weekFacts, spentIn(range));
+  const prev = summarize(facts.filter((f) => inRange(f.date, prevRange)), spentIn(prevRange));
+
+  // Revenue per product after the sale's discount, returned units left out (as in profitByProduct).
+  const revenue = new Map<number, number>();
+  for (const f of weekFacts) {
+    if (f.status === 'VOID') continue;
+    const ratio = f.subtotal > 0 ? f.total / f.subtotal : 1;
+    for (const l of f.lines) {
+      const kept = l.qty - l.returnedQty;
+      if (kept > 0) revenue.set(l.productId, (revenue.get(l.productId) ?? 0) + Math.floor(l.unitPrice * kept * ratio));
+    }
+  }
   const types = new Map(internalProducts().map((p) => [p.id, p.type]));
-  const top = profitByProduct(weekFacts).sort((a, b) => b.qty - a.qty).slice(0, 5);
+  const top = profitByProduct(weekFacts)
+    .map((t) => ({ ...t, revenue: revenue.get(t.productId) ?? 0 }))
+    .sort((a, b) => b.revenue - a.revenue || b.qty - a.qty)
+    .slice(0, 5);
+  const maxRevenue = Math.max(1, ...top.map((t) => t.revenue));
   const maxQty = Math.max(1, ...top.map((t) => t.qty));
   const week = days.map((d) => day(d).sales);
 
@@ -255,7 +276,15 @@ export async function getShopDashboardLive(role: Role, daysList?: Date[]): Promi
       sub: `${types.get(t.productId) === 'phone' ? 'Simu' : 'Accessory'} · ${t.qty} zimeuzwa`,
       sold: t.qty,
       soldPct: Math.round((t.qty / maxQty) * 92),
+      revenue: t.revenue,
+      revenuePct: Math.round((t.revenue / maxRevenue) * 100),
     })),
+    period: {
+      sales: cur.sales,
+      count: cur.count,
+      salesPct: pct(cur.sales, prev.sales),
+      countDelta: cur.count - prev.count,
+    },
     debtors: debts.rows.slice(0, 5).map((r) => ({
       id: r.saleId,
       name: r.customer.name,
@@ -269,6 +298,7 @@ export async function getShopDashboardLive(role: Role, daysList?: Date[]): Promi
     data.netProfitToday = now.net;
     data.profitTrendPct = pct(now.net, yesterday.net);
     data.weekProfit = days.map((d) => Math.max(0, day(d).net));
+    data.period!.net = cur.net;
   }
   return delay(data);
 }
