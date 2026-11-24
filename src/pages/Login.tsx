@@ -8,6 +8,7 @@ import { LanguageSwitch } from '@/components/LanguageSwitch';
 import { Button, Field } from '@/components/ui';
 import { BackspaceIcon } from '@/components/ui/icons';
 import { BrandMark } from '@/components/BrandMark';
+import { LANG_PILL } from '@/components/layout/Sidebar';
 import { tr } from '@/i18n';
 
 const CHIPS = ['Store', 'Duka (POS)', 'Madeni', 'SMS'];
@@ -74,12 +75,17 @@ export default function Login() {
 
         {/* Form panel */}
         <form onSubmit={submit} className="relative flex flex-col justify-center px-6 py-10 md:px-12" noValidate>
-          <div className="absolute right-4 top-4 md:right-6 md:top-5">
-            <LanguageSwitch compact />
+          {/* Desktop: language in the corner of the form panel. */}
+          <div className="absolute right-6 top-5 hidden w-[120px] md:block">
+            <LanguageSwitch compact className={`${LANG_PILL} !bg-app`} />
           </div>
+          {/* Phones: logo and language share one row, so they never overlap. */}
           <div className="mb-8 flex items-center gap-3 md:hidden">
-            <BrandMark size={44} />
-            <span className="text-[19px] font-extrabold tracking-wide">{tr('THE BEST')}</span>
+            <div className="flex h-12 min-w-0 flex-1 items-center gap-2.5 rounded-full bg-app pl-1 pr-4">
+              <BrandMark size={40} className="!rounded-full" />
+              <span className="truncate text-[16px] font-bold tracking-[0.02em]">{tr('THE BEST')}</span>
+            </div>
+            <LanguageSwitch compact className={`${LANG_PILL} !w-[112px] shrink-0 !bg-app`} />
           </div>
 
           <h1 className="text-[28px] font-extrabold tracking-tight">{tr('Karibu tena')}</h1>
