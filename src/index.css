@@ -20,9 +20,34 @@
     max-width: 100vw;
     overflow-x: hidden;
   }
+  html {
+    /* Keep text at its set size when the phone rotates. */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
   body {
     @apply bg-app font-sans text-ink antialiased;
     -webkit-tap-highlight-color: transparent;
+  }
+  /* Taps act at once: no double-tap zoom on buttons and fields (pinch zoom still works). */
+  a,
+  button,
+  input,
+  select,
+  textarea,
+  label,
+  [role='button'],
+  [role='tab'] {
+    touch-action: manipulation;
+  }
+  /* iPhones zoom the whole page into any field whose text is under 16px and stay zoomed after typing.
+     Fields are 16px on phones so the screen stays still, like a native app. */
+  @media (max-width: 767px) {
+    input,
+    select,
+    textarea {
+      font-size: 16px !important;
+    }
   }
   input,
   select,

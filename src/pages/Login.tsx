@@ -48,7 +48,9 @@ export default function Login() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-app md:p-8">
+    // Phones: start at the top (below the clock and battery) instead of centring, so the keypad and the
+    // keyboard never push the logo off screen. Desktop keeps the centred card.
+    <div className="flex min-h-dvh items-start justify-center bg-app md:items-center md:p-8">
       <div className="grid w-full max-w-[1100px] overflow-hidden bg-white md:min-h-[560px] md:grid-cols-2 md:rounded-[28px] md:border md:border-line md:shadow-[0_20px_50px_rgba(15,23,42,0.08)]">
         {/* Brand panel */}
         <div className="hidden flex-col justify-between bg-navy p-12 text-white md:flex">
@@ -74,7 +76,11 @@ export default function Login() {
         </div>
 
         {/* Form panel */}
-        <form onSubmit={submit} className="relative flex flex-col justify-center px-6 py-10 md:px-12" noValidate>
+        <form
+          onSubmit={submit}
+          className="relative flex flex-col justify-center px-5 pb-8 pt-[max(1.25rem,calc(env(safe-area-inset-top)+0.75rem))] sm:px-6 md:px-12 md:py-10"
+          noValidate
+        >
           {/* Desktop: language in the corner of the form panel. */}
           <div className="absolute right-6 top-5 hidden w-[120px] md:block">
             <LanguageSwitch compact className={`${LANG_PILL} !bg-app`} />

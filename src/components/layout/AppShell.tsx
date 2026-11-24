@@ -58,7 +58,7 @@ export function AppShell() {
           <TopBar code={code} user={user} />
           {/* Phone header: menu on the left, brand, notifications on the right */}
           {!posMobile && (
-            <header className="sticky top-0 z-30 flex items-center gap-2.5 bg-app/95 px-3.5 py-2.5 backdrop-blur md:hidden">
+            <header className="sticky top-0 z-30 flex items-center gap-2.5 bg-app/95 px-3.5 pb-2.5 pt-[max(10px,env(safe-area-inset-top))] backdrop-blur md:hidden">
               <button
                 type="button"
                 aria-label={tr('Menyu kuu')}
@@ -76,7 +76,12 @@ export function AppShell() {
             </header>
           )}
 
-          <main className="flex-1 bg-app px-3.5 pb-28 pt-2 sm:px-4 md:px-8 md:pb-10 md:pt-6 lg:px-10">
+          <main
+            className={`flex-1 bg-app px-3.5 pb-28 sm:px-4 md:px-8 md:pb-10 md:pt-6 lg:px-10 ${
+              // The POS has no app header on phones, so it keeps clear of the clock and battery itself.
+              posMobile ? 'pt-[max(12px,calc(env(safe-area-inset-top)+8px))]' : 'pt-2'
+            }`}
+          >
             <div key={pathname} className="animate-page-in mx-auto min-w-0 max-w-[1520px]">
               <Suspense fallback={<Spinner />}>
                 <Outlet />
@@ -104,7 +109,7 @@ export function AppShell() {
           <aside
             role="dialog"
             aria-label={tr('Menyu kuu')}
-            className="flex h-full w-[288px] max-w-[86vw] flex-col bg-app p-4 shadow-xl"
+            className="flex h-full w-[288px] max-w-[86vw] flex-col bg-app p-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-[max(1rem,env(safe-area-inset-top))] shadow-xl"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between gap-2">
