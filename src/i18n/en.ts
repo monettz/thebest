@@ -1141,4 +1141,6 @@ export const EN: Record<string, string> = {
   'vs jana': 'vs yesterday',
   'vs wiki iliyopita': 'vs last week',
   'vs kipindi kilichopita': 'vs previous period',
+  'Toleo jipya la app lipo.': 'A new version of the app is ready.',
+  'Sasisha': 'Update',
 };

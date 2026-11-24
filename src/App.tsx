@@ -4,6 +4,7 @@ import { useAuth } from '@/lib/auth';
 import { useLang } from '@/i18n';
 import { AppShell } from '@/components/layout/AppShell';
 import { Spinner } from '@/components/ui';
+import { UpdateBanner } from '@/components/UpdateBanner';
 import { useSupabaseRealtime } from '@/lib/useSupabaseRealtime';
 
 // Each screen is its own chunk, so the first load only downloads what the first screen needs.
@@ -41,6 +42,7 @@ export default function App() {
   useSupabaseRealtime();
   return (
     <Suspense fallback={<div className="p-6"><Spinner /></div>}>
+      <UpdateBanner />
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/receipts/:saleId" element={<Receipt />} />
