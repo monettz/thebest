@@ -1,24 +1,61 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, type ReactNode } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/lib/auth';
-import { dayShort, formatCompact, formatDayMonth, formatLongDate, formatTZS, formatTZSCompact } from '@/lib/format';
-import type { ShopDashboard } from '@/mock/api';
+import { timeDar } from '@/lib/dar';
+import { dayName, dayShort, formatCompact, formatDayMonth, formatLongDate, formatTZS, formatTZSCompact } from '@/lib/format';
+import { listProducts, type ShopDashboard } from '@/mock/api';
 import { getShopDashboardLive } from '@/mock/ledger';
-import { getDebtOverview } from '@/mock/sales';
-import { Avatar, Badge, Button, Card, CodeTile, Spinner, cx } from '@/components/ui';
-import {
-  CalendarIcon,
-  ChevronDown,
-  PlusIcon,
-  RefreshIcon,
-  SearchIcon,
-} from '@/components/ui/icons';
+import { getDebtOverview, listSales } from '@/mock/sales';
+import { SaleStatusBadge } from '@/pages/Sales';
+import { Avatar, Badge, Button, Card, Spinner, cx } from '@/components/ui';
+import { CalendarIcon, PlusIcon, RefreshIcon, SearchIcon } from '@/components/ui/icons';
 import { AnimatedNumber } from '@/components/ui';
 import { tr } from '@/i18n';
 
 type TrendTab = 'sales' | 'profit' | 'debts' | 'expenses';
 type PeriodOption = 'today' | 'week' | 'month' | 'custom';
+
+const PERIODS: { value: PeriodOption; label: string }[] = [
+  { value: 'today', label: 'Leo' },
+  { value: 'week', label: 'Wiki hii' },
+  { value: 'month', label: 'Mwezi huu' },
+  { value: 'custom', label: 'Kipindi maalum' },
+];
+
+/** "HH:MM" in Dar → the matching Swahili greeting. */
+const greetingOf = (hhmm: string) => {
+  const h = Number(hhmm.slice(0, 2));
+  return h < 12 ? 'Habari za asubuhi' : h < 16 ? 'Habari za mchana' : 'Habari za jioni';
+};
+
+function Kpi({ label, value, foot, tone }: { label: string; value: ReactNode; foot: ReactNode; tone?: string }) {
+  return (
+    <Card className="flex flex-col gap-2.5 p-5">
+      <span className="text-[13px] font-medium text-muted">{label}</span>
+      <span className={cx('text-[26px] font-bold leading-tight tracking-tight tabular-nums', tone ?? 'text-ink')}>{value}</span>
+      <span className="flex flex-wrap items-center gap-1.5 text-[12px] text-muted">{foot}</span>
+    </Card>
+  );
+}
+
+function Delta({ value, unit = '' }: { value: number; unit?: string }) {
+  const up = value >= 0;
+  return (
+    <span className={cx('rounded-md px-1.5 py-0.5 font-semibold', up ? 'bg-ok-bg text-ok-fg' : 'bg-bad-bg text-bad-fg')}>
+      {up ? '↑' : '↓'} {Math.abs(value)}
+      {unit}
+    </span>
+  );
+}
+
+function EmptyNote({ children }: { children: ReactNode }) {
+  return (
+    <p className="flex flex-1 items-center justify-center rounded-xl border border-dashed border-line px-4 py-8 text-center text-[13px] text-muted">
+      <span>{children}</span>
+    </p>
+  );
+}
 
 /** The N days ending today, oldest first. */
 function dateRangeDays(startDate: Date, endDate: Date): Date[] {
@@ -81,8 +118,15 @@ export default function Dashboard() {
     queryFn: () => getShopDashboardLive(user!.role, days),
   });
   const { data: debts } = useQuery({ queryKey: ['debts'], queryFn: getDebtOverview });
+  const { data: recent } = useQuery({ queryKey: ['sales', '', 5], queryFn: () => listSales('', 5), select: (r) => r.items });
+  const { data: products } = useQuery({ queryKey: ['products', user?.role], queryFn: () => listProducts(user!.role) });
 
   if (isLoading || !base || !debts) return <Spinner variant="dashboard" />;
+
+  const firstName = user?.name.trim().split(/\s+/)[0] ?? '';
+  const lowStock = (products ?? [])
+    .filter((p) => p.shopStatus !== 'IPO')
+    .sort((a, b) => a.shopQty - a.minStock - (b.shopQty - b.minStock));
 
   // Debts come from the real sales ledger, not the sample dashboard numbers.
   const data: ShopDashboard = {
@@ -199,87 +243,90 @@ export default function Dashboard() {
         </Card>
       </div>
 
-      {/* ---------- Desktop View (Matching Reference UI in Royal Blue) ---------- */}
-      <div className="hidden md:block space-y-6">
-        {/* Top Header */}
-        <header className="flex flex-wrap items-start justify-between gap-4 border-b border-line-soft pb-5">
-          <div>
-            <h1 className="text-[28px] font-extrabold tracking-tight text-ink">{tr('Uchambuzi')}</h1>
-            <p className="mt-1 text-[13.5px] text-muted">{tr('Angalia na dhibiti takwimu za biashara ya duka lako.')}</p>
+      {/* ---------- Desktop View: "Safi" ---------- */}
+      <div className="hidden flex-col gap-6 md:flex">
+        <header className="flex flex-wrap items-center gap-3">
+          <div className="flex min-w-[260px] flex-1 flex-col gap-1">
+            <span className="text-[13px] text-muted">
+              {dayName(today)}, {formatLongDate(today)}
+            </span>
+            <h1 className="text-[26px] font-bold leading-tight tracking-tight text-ink">
+              {tr(greetingOf(timeDar()))}
+              {firstName && `, ${firstName}`}
+            </h1>
           </div>
-          <div className="flex items-center gap-2.5">
-            <button
-              type="button"
-              aria-label={tr('Tafuta')}
-              onClick={() => {
-                const el = document.getElementById('dashboard-search');
-                el?.focus();
-              }}
-              className="flex h-10 w-10 items-center justify-center rounded-xl border border-line bg-white text-slate-600 shadow-sm transition hover:bg-slate-50"
-            >
-              <SearchIcon width={17} height={17} />
-            </button>
-            <Button onClick={() => navigate('/pos')} className="min-h-[40px] rounded-xl px-5 font-bold shadow-sm">
-              <PlusIcon width={17} height={17} /> {tr('Uza sasa')}
-            </Button>
-          </div>
+          <label className="flex h-11 w-[280px] items-center gap-2 rounded-xl border border-line bg-white px-3.5 text-muted focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20">
+            <SearchIcon width={17} height={17} />
+            <span className="sr-only">{tr('Tafuta')}</span>
+            <input
+              id="dashboard-search"
+              type="search"
+              className="min-w-0 flex-1 bg-transparent text-[14px] text-ink outline-none placeholder:text-muted/70"
+              placeholder={tr('Tafuta bidhaa au mteja…')}
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+            />
+          </label>
+          <Button onClick={() => navigate('/pos')} className="min-h-[44px] rounded-xl px-5 font-semibold">
+            <PlusIcon width={18} height={18} /> {tr('Uza sasa')}
+          </Button>
         </header>
 
-        {/* Section: Business Data */}
-        <section>
-          <div className="mb-3.5 flex flex-wrap items-center justify-between gap-2">
-            <h2 className="text-[16px] font-bold text-ink">{tr('Taarifa za biashara')}</h2>
-            <div className="flex flex-wrap items-center gap-2">
-              <button
-                type="button"
-                onClick={() => setShowDatePicker(!showDatePicker)}
-                className="inline-flex h-9 items-center gap-2 rounded-xl border border-line bg-white px-3.5 text-[13px] font-medium text-slate-700 shadow-sm hover:bg-slate-50 transition"
-              >
-                <CalendarIcon width={14} height={14} className="text-muted" />
-                {days.length === 1 ? formatLongDate(days[0]) : `${formatLongDate(days[0])} – ${formatLongDate(days[days.length - 1])}`}
-              </button>
-
-              <div className="relative">
-                <select
-                  aria-label={tr('Chagua kipindi')}
-                  value={period}
-                  onChange={(e) => {
-                    const p = e.target.value as PeriodOption;
-                    setPeriod(p);
-                    if (p === 'custom') setShowDatePicker(true);
+        <div className="flex flex-col gap-3">
+          <div className="flex flex-wrap items-center gap-3">
+            <div role="tablist" aria-label={tr('Chagua kipindi')} className="inline-flex gap-0.5 rounded-xl border border-line bg-white p-1">
+              {PERIODS.map((p) => (
+                <button
+                  key={p.value}
+                  type="button"
+                  role="tab"
+                  aria-selected={period === p.value}
+                  onClick={() => {
+                    setPeriod(p.value);
+                    setShowDatePicker(p.value === 'custom');
                   }}
-                  className="inline-flex h-9 appearance-none items-center rounded-xl border border-line bg-white pl-3.5 pr-8 text-[13px] font-medium text-slate-700 shadow-sm outline-none focus:border-primary cursor-pointer hover:bg-slate-50"
+                  className={cx(
+                    'h-[34px] rounded-lg px-3.5 text-[13px] transition-colors',
+                    period === p.value ? 'bg-ink font-semibold text-white' : 'font-medium text-body hover:bg-app',
+                  )}
                 >
-                  <option value="today">{tr('Leo')}</option>
-                  <option value="week">{tr('Wiki hii')}</option>
-                  <option value="month">{tr('Mwezi huu')}</option>
-                  <option value="custom">{tr('Kipindi maalum')}</option>
-                </select>
-                <ChevronDown width={14} height={14} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-muted" />
-              </div>
+                  {tr(p.label)}
+                </button>
+              ))}
             </div>
+            <button
+              type="button"
+              onClick={() => setShowDatePicker(!showDatePicker)}
+              aria-expanded={showDatePicker}
+              className="inline-flex h-11 items-center gap-2 rounded-xl border border-line bg-white px-3.5 text-[13px] font-medium text-body transition hover:bg-app"
+            >
+              <CalendarIcon width={15} height={15} className="text-muted" />
+              {days.length === 1 ? formatLongDate(days[0]) : `${formatLongDate(days[0])} – ${formatLongDate(days[days.length - 1])}`}
+            </button>
+            <button
+              type="button"
+              onClick={() => void refetch()}
+              aria-label={tr('Onyesha upya')}
+              title={tr('Onyesha upya')}
+              className="ml-auto flex h-11 w-11 items-center justify-center rounded-xl border border-line bg-white text-body transition hover:bg-app"
+            >
+              <RefreshIcon width={16} height={16} />
+            </button>
           </div>
 
-          {/* Custom Date Range Picker when selected */}
           {showDatePicker && (
-            <div className="mb-3.5 flex flex-wrap items-center gap-2 rounded-xl border border-line-soft bg-white p-3 shadow-sm animate-fade-in">
-              <span className="text-[12.5px] font-medium text-muted">{tr('Kuanzia')}:</span>
-              <input
-                type="date"
-                value={customFrom}
-                onChange={(e) => setCustomFrom(e.target.value)}
-                className="h-8 rounded-lg border border-line px-2 text-[12.5px] outline-none"
-              />
-              <span className="text-[12.5px] font-medium text-muted">{tr('Hadi')}:</span>
-              <input
-                type="date"
-                value={customTo}
-                onChange={(e) => setCustomTo(e.target.value)}
-                className="h-8 rounded-lg border border-line px-2 text-[12.5px] outline-none"
-              />
+            <div className="flex flex-wrap items-center gap-2 rounded-xl border border-line bg-white p-3 animate-fade-in">
+              <label className="flex items-center gap-2 text-[12.5px] font-medium text-muted">
+                {tr('Kuanzia')}:
+                <input type="date" value={customFrom} max={customTo} onChange={(e) => setCustomFrom(e.target.value)} className="h-9 rounded-lg border border-line px-2 text-[13px] text-ink outline-none focus:border-primary" />
+              </label>
+              <label className="flex items-center gap-2 text-[12.5px] font-medium text-muted">
+                {tr('Hadi')}:
+                <input type="date" value={customTo} min={customFrom} onChange={(e) => setCustomTo(e.target.value)} className="h-9 rounded-lg border border-line px-2 text-[13px] text-ink outline-none focus:border-primary" />
+              </label>
               <Button
                 variant="soft"
-                className="!min-h-[32px] px-3 text-[12px]"
+                className="!min-h-[36px] px-3 text-[12.5px]"
                 onClick={() => {
                   if (customFrom && customTo) {
                     setPeriod('custom');
@@ -289,205 +336,211 @@ export default function Dashboard() {
               >
                 {tr('Tumia')}
               </Button>
-              <Button
-                variant="ghost"
-                className="!min-h-[32px] px-2 text-[12px]"
-                onClick={() => setShowDatePicker(false)}
-              >
+              <Button variant="ghost" className="!min-h-[36px] px-2 text-[12.5px]" onClick={() => setShowDatePicker(false)}>
                 {tr('Funga')}
               </Button>
             </div>
           )}
-
-          {/* Divided 4-Column Strip Card (Matching the "D.CC" layout) */}
-          <div className="rounded-[22px] border border-line bg-white shadow-sm overflow-hidden">
-            <div className={cx('grid divide-y divide-line-soft md:divide-y-0 md:divide-x md:grid-cols-4', !isOwner && 'md:grid-cols-3')}>
-              {/* Col 1: Revenue (Mauzo) */}
-              <div className="p-5 lg:p-6">
-                <p className="text-[13px] font-medium text-muted">{tr('Mauzo')}</p>
-                <p className="mt-2 text-[26px] font-extrabold tracking-tight text-ink tabular-nums">
-                  {<AnimatedNumber id="dash.salesToday" value={data.salesToday} format={formatTZS} />}
-                </p>
-                <p className="mt-2 text-[12.5px] text-muted flex items-center gap-1">
-                  <span className={cx('font-bold', data.salesTrendPct >= 0 ? 'text-ok-fg' : 'text-bad-fg')}>
-                    {data.salesTrendPct >= 0 ? '↑' : '↓'} {signed(data.salesTrendPct, '%')}
-                  </span>
-                  <span>{tr('vs siku iliyopita')}</span>
-                </p>
-              </div>
-
-              {/* Col 2: Total Orders (Idadi ya Mauzo) */}
-              <div className="p-5 lg:p-6">
-                <p className="text-[13px] font-medium text-muted">{tr('Idadi ya mauzo')}</p>
-                <p className="mt-2 text-[26px] font-extrabold tracking-tight text-ink tabular-nums">
-                  <AnimatedNumber id="dash.count" value={data.salesCount} />
-                </p>
-                <p className="mt-2 text-[12.5px] text-muted flex items-center gap-1">
-                  <span className={cx('font-bold', data.salesCountDelta >= 0 ? 'text-ok-fg' : 'text-bad-fg')}>
-                    {data.salesCountDelta >= 0 ? '↑' : '↓'} {signed(data.salesCountDelta)}
-                  </span>
-                  <span>{tr('vs siku iliyopita')}</span>
-                </p>
-              </div>
-
-              {/* Col 3: Net Profit (Owner) / Average Order (Cashier) */}
-              {isOwner && data.netProfitToday !== undefined ? (
-                <div className="p-5 lg:p-6">
-                  <p className="text-[13px] font-medium text-muted">{tr('Faida halisi')}</p>
-                  <p className="mt-2 text-[26px] font-extrabold tracking-tight text-emerald-600 tabular-nums">
-                    {<AnimatedNumber id="dash.net" value={data.netProfitToday} format={formatTZS} />}
-                  </p>
-                  <p className="mt-2 text-[12.5px] text-muted flex items-center gap-1">
-                    <span className={cx('font-bold', (data.profitTrendPct ?? 0) >= 0 ? 'text-ok-fg' : 'text-bad-fg')}>
-                      {(data.profitTrendPct ?? 0) >= 0 ? '↑' : '↓'} {signed(data.profitTrendPct ?? 0, '%')}
-                    </span>
-                    <span>{tr('baada ya matumizi')}</span>
-                  </p>
-                </div>
-              ) : (
-                <div className="p-5 lg:p-6">
-                  <p className="text-[13px] font-medium text-muted">{tr('Wastani wa mauzo')}</p>
-                  <p className="mt-2 text-[26px] font-extrabold tracking-tight text-ink tabular-nums">
-                    {formatTZS(data.salesCount > 0 ? Math.round(data.salesToday / data.salesCount) : 0)}
-                  </p>
-                  <p className="mt-2 text-[12.5px] text-muted">{tr('kwa kila muamala')}</p>
-                </div>
-              )}
-
-              {/* Col 4: Customer Debts (Madeni) */}
-              <div className="p-5 lg:p-6">
-                <p className="text-[13px] font-medium text-muted">{tr('Jumla ya madeni')}</p>
-                <p className="mt-2 text-[26px] font-extrabold tracking-tight text-warn-fg tabular-nums">
-                  {<AnimatedNumber id="dash.debt" value={data.totalDebt} format={formatTZS} />}
-                </p>
-                <p className="mt-2 text-[12.5px] text-muted font-medium">
-                  <span className="font-bold text-amber-700">{tr('wateja {n} wanadaiwa', { n: data.debtorCount })}</span>
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Trend Tabs & Filter Control Row */}
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          {/* Segmented Pill Tabs */}
-          <div className="inline-flex rounded-xl border border-line bg-white p-1 shadow-sm">
-            {tabs.map((t) => (
-              <button
-                key={t.value}
-                onClick={() => setTab(t.value)}
-                className={cx(
-                  'rounded-lg px-4 py-2 text-[13.5px] font-semibold transition-all duration-150',
-                  tab === t.value
-                    ? 'bg-primary text-white shadow-sm'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50',
-                )}
-              >
-                {t.label}
-              </button>
-            ))}
-          </div>
-
-          {/* Search + Action Controls */}
-          <div className="flex items-center gap-2">
-            <div className="relative">
-              <SearchIcon width={16} height={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted" />
-              <input
-                id="dashboard-search"
-                className="h-10 w-[260px] rounded-xl border border-line bg-white pl-10 pr-3 text-[13.5px] shadow-sm outline-none placeholder:text-muted/70 focus:border-primary focus:ring-2 focus:ring-primary/20"
-                placeholder={tr('Tafuta bidhaa au mteja…')}
-                value={q}
-                onChange={(e) => setQ(e.target.value)}
-              />
-            </div>
-            <button
-              onClick={() => void refetch()}
-              aria-label={tr('Onyesha upya')}
-              className="flex h-10 w-10 items-center justify-center rounded-xl border border-line bg-white text-slate-700 shadow-sm transition hover:bg-slate-50"
-            >
-              <RefreshIcon width={16} height={16} />
-            </button>
-          </div>
         </div>
 
-        {/* The Hero Bar Chart ("Sales Statistics" with Black Tooltip & Dots) */}
-        <Card className="p-6 transition-all duration-200">
-          <div className="flex items-start justify-between border-b border-line-soft pb-4">
-            <div>
-              <h2 className="text-[15px] font-bold text-slate-600">{chartTitle}</h2>
-              <p className="mt-1 text-[32px] font-extrabold tracking-tight text-ink tabular-nums">
-                {<AnimatedNumber id={`dash.chart.${tab}`} value={chartTotal} format={formatTZS} />}
-              </p>
-              <p className="mt-0.5 text-[13px] text-muted">{chartSubtitle}</p>
+        {/* Today's figures: these always describe today, whatever period the chart shows. */}
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-4">
+          <Kpi
+            label={tr('Mauzo ya leo')}
+            value={<AnimatedNumber id="dash.salesToday" value={data.salesToday} format={formatTZS} />}
+            foot={
+              <>
+                <Delta value={data.salesTrendPct} unit="%" /> {tr('vs siku iliyopita')}
+              </>
+            }
+          />
+          <Kpi
+            label={tr('Idadi ya mauzo')}
+            value={<AnimatedNumber id="dash.count" value={data.salesCount} />}
+            foot={
+              <>
+                <Delta value={data.salesCountDelta} /> {tr('vs siku iliyopita')}
+              </>
+            }
+          />
+          {isOwner && data.netProfitToday !== undefined ? (
+            <Kpi
+              label={tr('Faida halisi ya leo')}
+              tone="text-emerald-700"
+              value={<AnimatedNumber id="dash.net" value={data.netProfitToday} format={formatTZS} />}
+              foot={
+                <>
+                  <Delta value={data.profitTrendPct ?? 0} unit="%" /> {tr('baada ya matumizi')}
+                </>
+              }
+            />
+          ) : (
+            <Kpi
+              label={tr('Wastani wa mauzo')}
+              value={formatTZS(data.salesCount > 0 ? Math.round(data.salesToday / data.salesCount) : 0)}
+              foot={tr('kwa kila muamala')}
+            />
+          )}
+          <Kpi
+            label={tr('Jumla ya madeni')}
+            tone="text-warn-fg"
+            value={<AnimatedNumber id="dash.debt" value={data.totalDebt} format={formatTZS} />}
+            foot={
+              <Link to="/debts" className="font-semibold text-warn-fg hover:underline">
+                {tr('wateja {n} wanadaiwa', { n: data.debtorCount })} →
+              </Link>
+            }
+          />
+        </div>
+
+        <div className="flex flex-wrap gap-4">
+          <Card className="flex min-w-0 flex-[2_1_520px] flex-col p-6">
+            <div className="flex flex-wrap items-start gap-3">
+              <div className="min-w-0 flex-1">
+                <h2 className="text-[16px] font-semibold text-ink">{chartTitle}</h2>
+                <p className="mt-1 text-[24px] font-bold tracking-tight text-ink tabular-nums">
+                  <AnimatedNumber id={`dash.chart.${tab}`} value={chartTotal} format={formatTZS} />
+                </p>
+                <p className="text-[12.5px] text-muted">{chartSubtitle}</p>
+              </div>
+              <div role="tablist" aria-label={tr('Kipimo')} className="flex flex-wrap gap-1.5">
+                {tabs.map((t) => (
+                  <button
+                    key={t.value}
+                    type="button"
+                    role="tab"
+                    aria-selected={tab === t.value}
+                    onClick={() => setTab(t.value)}
+                    className={cx(
+                      'h-9 rounded-lg border px-3 text-[12.5px] transition-colors',
+                      tab === t.value
+                        ? 'border-primary bg-primary-tint font-semibold text-primary-link'
+                        : 'border-line bg-white font-medium text-body hover:bg-app',
+                    )}
+                  >
+                    {t.label}
+                  </button>
+                ))}
+              </div>
             </div>
-            <span className="inline-flex h-9 items-center gap-1.5 rounded-xl border border-line bg-white px-3.5 text-[13px] font-medium text-slate-700 shadow-sm">
-              {period === 'today' ? tr('Leo') : period === 'month' ? tr('Mwezi huu') : period === 'custom' ? tr('Kipindi maalum') : tr('Wiki hii')}
-            </span>
-          </div>
-
-          <DccStyleChart series={chartSeries} days={days} />
-        </Card>
-
-        {/* Bottom Split: Top Products with Gradient Progress Bars & Debtor List */}
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-          {/* Top Products (Matching the "Top Dishes" Gradient Bar Style) */}
-          <Card className="p-6">
-            <div className="flex items-center justify-between border-b border-line-soft pb-3.5">
-              <h2 className="text-[16px] font-bold text-ink">{tr('Bidhaa zinazouzwa zaidi')}</h2>
-              <span className="inline-flex h-8 items-center gap-1 rounded-lg border border-line bg-white px-2.5 text-[12px] font-medium text-slate-700">
-                {tr('Wiki hii')} <ChevronDown width={13} height={13} className="text-muted" />
-              </span>
-            </div>
-
-            <ul className="mt-5 space-y-5">
-              {filteredProducts.map((p) => (
-                <li key={p.name} className="flex items-center gap-3.5">
-                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary-tint">
-                    <CodeTile code={p.name.slice(0, 2).toUpperCase()} size={38} />
-                  </div>
-                  <div className="w-[120px] shrink-0 truncate sm:w-[150px]">
-                    <p className="truncate text-[14px] font-bold text-ink">{p.name}</p>
-                    <p className="text-[12px] text-muted">{p.sub}</p>
-                  </div>
-                  {/* Signature Gradient Progress Bar Ending with Circular Percentage Badge */}
-                  <div className="relative flex flex-1 items-center">
-                    <div className="relative h-4 flex-1 overflow-hidden rounded-full bg-blue-50/80">
-                      <div
-                        className="h-full rounded-full bg-gradient-to-r from-blue-200 via-blue-400 to-primary transition-all duration-300"
-                        style={{ width: `${p.soldPct}%` }}
-                      />
-                    </div>
-                    {/* Circle badge at the end of progress bar */}
-                    <span className="ml-2 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary text-[10.5px] font-extrabold text-white shadow-sm">
-                      {p.soldPct}%
-                    </span>
-                  </div>
-                </li>
-              ))}
-              {filteredProducts.length === 0 && (
-                <p className="py-8 text-center text-[13.5px] text-muted">{tr('Hakuna bidhaa iliyopatikana.')}</p>
-              )}
-            </ul>
+            <DccStyleChart series={chartSeries} days={days} />
           </Card>
 
-          {/* Customer Debts List */}
-          <Card className="p-6">
-            <div className="flex items-start justify-between border-b border-line-soft pb-3.5">
-              <div>
-                <h2 className="text-[16px] font-bold text-ink">{tr('Madeni ya wateja')}</h2>
-                <p className="text-[12.5px] text-muted">
-                  {tr('Jumla:')} <b className="font-bold text-warn-fg tabular-nums">{<AnimatedNumber id="dash.debt" value={data.totalDebt} format={formatTZS} />}</b>
-                </p>
-              </div>
-              <Link
-                to="/debts"
-                className="inline-flex min-h-[36px] items-center rounded-xl border border-line bg-white px-3 text-[13px] font-semibold text-primary-link shadow-sm hover:bg-slate-50 transition"
-              >
-                {tr('Ona yote')} →
+          <Card className="flex min-w-0 flex-[1_1_300px] flex-col gap-4 p-6">
+            <div className="flex items-center">
+              <h2 className="flex-1 text-[16px] font-semibold text-ink">{tr('Bidhaa zinazouzwa zaidi')}</h2>
+              <Link to="/reports" className="text-[13px] font-semibold text-primary-link hover:underline">
+                {tr('Ona yote')}
               </Link>
             </div>
-            <DebtorList debtors={filteredDebtors} />
+            {filteredProducts.length === 0 ? (
+              <EmptyNote>{needle ? tr('Hakuna bidhaa iliyopatikana.') : tr('Hakuna mauzo katika kipindi hiki.')}</EmptyNote>
+            ) : (
+              <ul className="flex flex-col gap-4">
+                {filteredProducts.map((p) => (
+                  <li key={p.name} className="flex flex-col gap-1.5">
+                    <div className="flex items-baseline gap-2 text-[13px]">
+                      <span className="min-w-0 flex-1 truncate font-medium text-ink">{p.name}</span>
+                      <span className="shrink-0 text-muted">{tr('{n} zimeuzwa', { n: p.sold })}</span>
+                    </div>
+                    <div className="h-1.5 rounded-full bg-app">
+                      <div className="h-1.5 rounded-full bg-primary" style={{ width: `${Math.max(4, p.soldPct)}%` }} />
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
           </Card>
+        </div>
+
+        <div className="flex flex-wrap items-start gap-4">
+          <Card className="flex min-w-0 flex-[2_1_520px] flex-col gap-3 p-6">
+            <div className="flex items-center">
+              <h2 className="flex-1 text-[16px] font-semibold text-ink">{tr('Mauzo ya hivi karibuni')}</h2>
+              <Link to="/sales" className="text-[13px] font-semibold text-primary-link hover:underline">
+                {tr('Ona yote')}
+              </Link>
+            </div>
+            {!recent ? (
+              <Spinner variant="list" />
+            ) : recent.length === 0 ? (
+              <EmptyNote>
+                {tr('Hakuna mauzo bado.')}{' '}
+                <Link to="/pos" className="font-semibold text-primary-link hover:underline">
+                  {tr('Anza kuuza')}
+                </Link>
+              </EmptyNote>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full min-w-[520px] border-collapse text-[13px]">
+                  <thead>
+                    <tr className="text-left text-[12px] text-muted">
+                      <th className="border-b border-line py-2 font-medium">{tr('Risiti')}</th>
+                      <th className="border-b border-line py-2 font-medium">{tr('Mteja')}</th>
+                      <th className="border-b border-line py-2 font-medium">{tr('Tarehe')}</th>
+                      <th className="border-b border-line py-2 font-medium">{tr('Hali')}</th>
+                      <th className="border-b border-line py-2 text-right font-medium">{tr('Kiasi')}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {recent.map((s) => (
+                      <tr key={s.id} className="cursor-pointer hover:bg-app/60" onClick={() => navigate(`/sales/${s.id}`)}>
+                        <td className="border-b border-line-soft py-3 font-semibold">
+                          <Link to={`/sales/${s.id}`} className="hover:underline" onClick={(e) => e.stopPropagation()}>
+                            {s.receiptNo}
+                          </Link>
+                        </td>
+                        <td className="max-w-[200px] truncate border-b border-line-soft py-3">{tr(s.customerName)}</td>
+                        <td className="border-b border-line-soft py-3 text-muted">{formatDayMonth(new Date(`${s.date}T00:00:00`))}</td>
+                        <td className="border-b border-line-soft py-3">
+                          <SaleStatusBadge status={s.status} hasReturns={s.hasReturns} />
+                        </td>
+                        <td className="border-b border-line-soft py-3 text-right font-semibold tabular-nums">{formatTZS(s.total)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </Card>
+
+          <div className="flex min-w-0 flex-[1_1_300px] flex-col gap-4">
+            <Card className="flex flex-col gap-2 p-6">
+              <div className="flex items-center gap-2">
+                <h2 className="flex-1 text-[16px] font-semibold text-ink">{tr('Stock inayoisha')}</h2>
+                {lowStock.length > 0 && <Badge tone="bad">{lowStock.length}</Badge>}
+              </div>
+              {lowStock.length === 0 ? (
+                <EmptyNote>{tr('Stock yote ya duka iko juu ya kiwango cha chini.')}</EmptyNote>
+              ) : (
+                <ul className="flex flex-col">
+                  {lowStock.slice(0, 5).map((p) => (
+                    <li key={p.id} className="flex items-center gap-3 border-b border-line-soft py-2.5 last:border-0">
+                      <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+                        <span className="truncate text-[13px] font-medium text-ink">{p.name}</span>
+                        <span className="text-[12px] text-muted">
+                          {p.shopQty === 0 ? tr('Imeisha') : tr('Zimebaki {n}', { n: p.shopQty })} · {tr('kiwango {n}', { n: p.minStock })}
+                        </span>
+                      </div>
+                      <Link to="/stock-in" className="inline-flex min-h-[36px] items-center rounded-lg border border-line px-3 text-[12.5px] font-semibold text-ink transition hover:bg-app">
+                        {tr('Ingiza')}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </Card>
+
+            <Card className="flex flex-col p-6">
+              <div className="flex items-center">
+                <h2 className="flex-1 text-[16px] font-semibold text-ink">{tr('Madeni ya wateja')}</h2>
+                <Link to="/debts" className="text-[13px] font-semibold text-primary-link hover:underline">
+                  {tr('Ona yote')}
+                </Link>
+              </div>
+              <DebtorList debtors={filteredDebtors} />
+            </Card>
+          </div>
         </div>
       </div>
     </>

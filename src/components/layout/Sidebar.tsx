@@ -1,5 +1,5 @@
-import { useState, type ReactElement } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import type { ReactElement } from 'react';
+import { NavLink } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import type { LocationCode, Role } from '@shared/constants';
 import { ROLE_LABEL } from '@shared/constants';
@@ -11,7 +11,6 @@ import {
   BoxIcon,
   ChartIcon,
   CheckIcon,
-  ChevronDown,
   ClipboardIcon,
   ContactIcon,
   GridIcon,
@@ -28,7 +27,7 @@ import { getDebtOverview } from '@/mock/sales';
 import type { SessionUser } from '@/mock/auth';
 import { LocationSwitch } from './LocationSwitch';
 import { NotificationBell } from './NotificationBell';
-import { navFor, type NavIcon, type NavItem } from './nav';
+import { navFor, sectionsOf, type NavIcon, type NavItem } from './nav';
 import { tr } from '@/i18n';
 
 const ICON: Record<NavIcon, (p: { width: number; height: number }) => ReactElement> = {
@@ -46,22 +45,8 @@ const ICON: Record<NavIcon, (p: { width: number; height: number }) => ReactEleme
   check: (p) => <CheckIcon {...p} />,
 };
 
-type Entry = { kind: 'item'; item: NavItem } | { kind: 'group'; title: string; icon: NavIcon; items: NavItem[] };
-
-/** Consecutive items that share a `group` become one collapsible section. */
-function entriesOf(items: NavItem[]): Entry[] {
-  const out: Entry[] = [];
-  for (const item of items) {
-    const last = out[out.length - 1];
-    if (item.group && last?.kind === 'group' && last.title === item.group) last.items.push(item);
-    else if (item.group) out.push({ kind: 'group', title: item.group, icon: item.icon, items: [item] });
-    else out.push({ kind: 'item', item });
-  }
-  return out;
-}
-
 // Row heights step down on short screens so the whole menu always fits without scrolling.
-const ROW = 'min-h-[44px] [@media(max-height:860px)]:min-h-[40px] [@media(max-height:740px)]:min-h-[34px]';
+const ROW = 'min-h-[40px] [@media(max-height:860px)]:min-h-[36px] [@media(max-height:740px)]:min-h-[32px]';
 
 export function Sidebar({
   code,
@@ -74,12 +59,10 @@ export function Sidebar({
 }) {
   const role: Role = user.role;
   const { logout } = useAuth();
-  const { pathname } = useLocation();
-  const [closed, setClosed] = useState<Record<string, boolean>>({});
   const { data: debts = 0 } = useQuery({ queryKey: ['debts'], queryFn: getDebtOverview, select: (d) => d.debtorCount });
   const { data: products } = useQuery({ queryKey: ['products', role], queryFn: () => listProducts(role) });
   const low = products?.filter((p) => p.storeStatus !== 'IPO').length ?? 0;
-  const entries = entriesOf(navFor(code, role));
+  const sections = sectionsOf(navFor(code, role));
 
   const countOf = (it: NavItem) => (it.badge === 'debts' ? debts : it.badge === 'lowStock' ? low : 0);
 
@@ -99,97 +82,53 @@ export function Sidebar({
       </div>
 
       <nav
-        className="flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto px-3 py-2 [@media(max-height:740px)]:gap-0.5 [@media(max-height:740px)]:py-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        className="flex min-h-0 flex-1 flex-col overflow-y-auto px-3 py-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         aria-label={tr('Menyu kuu')}
       >
-        {entries.map((e) => {
-          if (e.kind === 'item') {
-            const it = e.item;
-            const count = countOf(it);
-            return (
-              <NavLink
-                key={it.label}
-                to={it.to}
-                end={it.end}
-                className={({ isActive }) =>
-                  cx(
-                    ROW,
-                    'flex min-w-0 shrink-0 items-center gap-3 rounded-[12px] px-3.5 text-[14.5px] font-medium transition-colors',
-                    isActive ? 'bg-primary font-semibold text-white shadow-sm' : 'text-body hover:bg-app',
-                  )
-                }
-              >
-                {ICON[it.icon]({ width: 20, height: 20 })}
-                <span className="min-w-0 flex-1 truncate">{tr(it.label)}</span>
-                {count > 0 && (
-                  <Badge tone={it.badge === 'lowStock' ? 'bad' : 'warn'} className="min-w-[22px] shrink-0 justify-center">
-                    {count}
-                  </Badge>
-                )}
-              </NavLink>
-            );
-          }
-
-          const childActive = e.items.some((i) => (i.end ? pathname === i.to : pathname === i.to || pathname.startsWith(`${i.to}/`)));
-          const open = childActive || !closed[e.title];
-          return (
-            <div key={e.title} className="shrink-0">
-              <button
-                type="button"
-                aria-expanded={open}
-                onClick={() => setClosed((c) => ({ ...c, [e.title]: open }))}
+        {sections.map((s, si) => (
+          <div key={s.title || si} className="flex shrink-0 flex-col gap-0.5">
+            {s.title && (
+              <span
                 className={cx(
-                  ROW,
-                  'flex w-full min-w-0 items-center gap-3 rounded-[12px] px-3.5 text-[14.5px] transition-colors hover:bg-app',
-                  childActive ? 'font-bold text-ink' : 'font-medium text-body',
+                  'px-2.5 pb-1.5 text-[11px] font-semibold uppercase tracking-[0.08em] text-muted',
+                  si > 0 && 'pt-4 [@media(max-height:860px)]:pt-2.5 [@media(max-height:740px)]:pt-1.5',
                 )}
               >
-                <span className={childActive ? 'text-primary' : ''}>{ICON[e.icon]({ width: 20, height: 20 })}</span>
-                <span className="min-w-0 flex-1 truncate text-left">{tr(e.title)}</span>
-                <span className={cx('transition-transform', open ? 'rotate-180' : '')}>
-                  <ChevronDown width={16} height={16} />
-                </span>
-              </button>
-              {open && (
-                <div className="mt-0.5 flex flex-col gap-0.5">
-                  {e.items.map((it) => {
-                    const count = countOf(it);
-                    return (
-                      <NavLink
-                        key={it.label}
-                        to={it.to}
-                        end={it.end}
-                        className={({ isActive }) =>
-                          cx(
-                            'flex min-h-[36px] min-w-0 items-center gap-2 rounded-[10px] pl-[46px] pr-3.5 text-[13.5px] transition-colors [@media(max-height:740px)]:min-h-[30px]',
-                            isActive ? 'font-semibold text-primary-link' : 'text-muted hover:bg-app hover:text-ink',
-                          )
-                        }
-                      >
-                        {({ isActive }) => (
-                          <>
-                            <span className="min-w-0 flex-1 truncate">{tr(it.label)}</span>
-                            {count > 0 && (
-                              <Badge tone={it.badge === 'lowStock' ? 'bad' : 'warn'} className="min-w-[22px] shrink-0 justify-center">
-                                {count}
-                              </Badge>
-                            )}
-                            {isActive && <CheckIcon width={16} height={16} />}
-                          </>
-                        )}
-                      </NavLink>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
-          );
-        })}
+                {tr(s.title)}
+              </span>
+            )}
+            {s.items.map((it) => {
+              const count = countOf(it);
+              return (
+                <NavLink
+                  key={it.label}
+                  to={it.to}
+                  end={it.end}
+                  className={({ isActive }) =>
+                    cx(
+                      ROW,
+                      'flex min-w-0 shrink-0 items-center gap-3 rounded-[10px] px-2.5 text-[14px] transition-colors',
+                      isActive ? 'bg-primary-tint font-semibold text-primary-link' : 'font-medium text-body hover:bg-app',
+                    )
+                  }
+                >
+                  {ICON[it.icon]({ width: 18, height: 18 })}
+                  <span className="min-w-0 flex-1 truncate">{tr(it.label)}</span>
+                  {count > 0 && (
+                    <Badge tone={it.badge === 'lowStock' ? 'bad' : 'warn'} className="min-w-[22px] shrink-0 justify-center">
+                      {count}
+                    </Badge>
+                  )}
+                </NavLink>
+              );
+            })}
+          </div>
+        ))}
       </nav>
 
       <div className="shrink-0 space-y-2.5 border-t border-line-soft px-4 pb-4 pt-3 [@media(max-height:740px)]:space-y-2 [@media(max-height:740px)]:pb-3">
         <LanguageSwitch compact className="w-full" />
-        <div className="flex min-w-0 items-center gap-3 rounded-field bg-app p-2.5">
+        <div className="flex min-w-0 items-center gap-3 rounded-field border border-line p-2.5">
           <Avatar name={user.name} size={36} />
           <div className="min-w-0 flex-1">
             <p className="truncate text-[13.5px] font-bold text-ink" title={user.name}>{user.name}</p>
@@ -200,7 +139,7 @@ export function Sidebar({
             onClick={logout}
             aria-label={tr('Toka')}
             title={tr('Toka')}
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-muted transition hover:bg-white hover:text-bad-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-muted transition hover:bg-app hover:text-bad-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
           >
             <LogoutIcon width={18} height={18} />
           </button>

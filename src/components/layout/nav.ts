@@ -7,24 +7,24 @@ export interface NavItem {
   to: string;
   label: string;
   icon: NavIcon;
-  /** Items that share a group are drawn together under a collapsible heading (desktop sidebar). */
-  group?: string;
+  /** Desktop sidebar heading this item sits under; consecutive items share one heading. */
+  section?: string;
   end?: boolean;
   ownerOnly?: boolean;
   badge?: 'debts' | 'lowStock';
 }
 
 export const SHOP_NAV: NavItem[] = [
-  { to: '/', label: 'Dashboard', icon: 'grid', end: true },
-  { to: '/pos', label: 'Mauzo (POS)', icon: 'bag' },
-  { to: '/products', label: 'Bidhaa na stock', icon: 'box', group: 'Stock' },
-  { to: '/stock-in', label: 'Ingiza stock', icon: 'inbox', group: 'Stock' },
-  { to: '/customers', label: 'Wateja', icon: 'contact' },
-  { to: '/debts', label: 'Madeni', icon: 'clipboard', badge: 'debts' },
-  { to: '/expenses', label: 'Matumizi', icon: 'wallet' },
-  { to: '/reports', label: 'Ripoti', icon: 'chart' },
-  { to: '/users', label: 'Watumiaji', icon: 'users', ownerOnly: true },
-  { to: '/settings', label: 'Mipangilio', icon: 'settings', ownerOnly: true },
+  { to: '/', label: 'Dashboard', icon: 'grid', end: true, section: 'Kuu' },
+  { to: '/pos', label: 'Mauzo (POS)', icon: 'bag', section: 'Kuu' },
+  { to: '/products', label: 'Bidhaa na stock', icon: 'box', section: 'Bidhaa' },
+  { to: '/stock-in', label: 'Ingiza stock', icon: 'inbox', section: 'Bidhaa' },
+  { to: '/customers', label: 'Wateja', icon: 'contact', section: 'Fedha' },
+  { to: '/debts', label: 'Madeni', icon: 'clipboard', badge: 'debts', section: 'Fedha' },
+  { to: '/expenses', label: 'Matumizi', icon: 'wallet', section: 'Fedha' },
+  { to: '/reports', label: 'Ripoti', icon: 'chart', section: 'Fedha' },
+  { to: '/users', label: 'Watumiaji', icon: 'users', ownerOnly: true, section: 'Mfumo' },
+  { to: '/settings', label: 'Mipangilio', icon: 'settings', ownerOnly: true, section: 'Mfumo' },
 ];
 
 /**
@@ -32,13 +32,25 @@ export const SHOP_NAV: NavItem[] = [
  * The page (/store/suppliers) and its data stay, reachable from the receiving form.
  */
 export const STORE_NAV: NavItem[] = [
-  { to: '/store', label: 'Dashboard', icon: 'grid', end: true },
-  { to: '/store/receive', label: 'Pokea mzigo', icon: 'inbox' },
-  { to: '/products', label: 'Bidhaa za store', icon: 'box', badge: 'lowStock' },
-  { to: '/stock-in', label: 'Hamisha dukani', icon: 'transfer' },
-  { to: '/store/stock-take', label: 'Kuhesabu stock', icon: 'check' },
-  { to: '/store/movements', label: 'Ripoti za stock', icon: 'chart' },
+  { to: '/store', label: 'Dashboard', icon: 'grid', end: true, section: 'Kuu' },
+  { to: '/store/receive', label: 'Pokea mzigo', icon: 'inbox', section: 'Mzigo' },
+  { to: '/products', label: 'Bidhaa za store', icon: 'box', badge: 'lowStock', section: 'Mzigo' },
+  { to: '/stock-in', label: 'Hamisha dukani', icon: 'transfer', section: 'Mzigo' },
+  { to: '/store/stock-take', label: 'Kuhesabu stock', icon: 'check', section: 'Udhibiti' },
+  { to: '/store/movements', label: 'Ripoti za stock', icon: 'chart', section: 'Udhibiti' },
 ];
+
+/** Consecutive items that share a `section`, in menu order. */
+export function sectionsOf(items: NavItem[]): { title: string; items: NavItem[] }[] {
+  const out: { title: string; items: NavItem[] }[] = [];
+  for (const item of items) {
+    const title = item.section ?? '';
+    const last = out[out.length - 1];
+    if (last && last.title === title) last.items.push(item);
+    else out.push({ title, items: [item] });
+  }
+  return out;
+}
 
 export function navFor(code: LocationCode, role: Role): NavItem[] {
   return (code === 'STORE' ? STORE_NAV : SHOP_NAV).filter((i) => !i.ownerOnly || role === 'owner');

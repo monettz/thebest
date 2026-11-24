@@ -1110,4 +1110,21 @@ export const EN: Record<string, string> = {
   'Kifaa hiki hakina menyu ya kushiriki faili; tumia Pakua PDF au WhatsApp.': 'This device has no file share menu; use Download PDF or WhatsApp.',
   'Hakiki ya risiti': 'Receipt preview',
   'Pakua': 'Download',
+
+  // Dashboard "Safi" and sidebar sections
+  'Habari za asubuhi': 'Good morning',
+  'Habari za mchana': 'Good afternoon',
+  'Kuu': 'Main',
+  'Fedha': 'Finance',
+  'Udhibiti': 'Control',
+  'Kipimo': 'Measure',
+  'Hakuna mauzo katika kipindi hiki.': 'No sales in this period.',
+  'Mauzo ya hivi karibuni': 'Recent sales',
+  'Hakuna mauzo bado.': 'No sales yet.',
+  'Anza kuuza': 'Start selling',
+  'Stock inayoisha': 'Running low',
+  'Stock yote ya duka iko juu ya kiwango cha chini.': 'All shop stock is above its minimum level.',
+  'Zimebaki {n}': '{n} left',
+  'kiwango {n}': 'minimum {n}',
+  'Ingiza': 'Restock',
 };

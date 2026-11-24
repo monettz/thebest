@@ -71,7 +71,7 @@ export function AppShell() {
             </header>
           )}
 
-          <main className="flex-1 bg-app px-3.5 pb-28 pt-3.5 sm:px-4 md:bg-white md:px-8 md:py-7 lg:px-10">
+          <main className="flex-1 bg-app px-3.5 pb-28 pt-3.5 sm:px-4 md:px-8 md:py-7 lg:px-10">
             <div key={pathname} className="animate-page-in mx-auto min-w-0 max-w-[1520px]">
               <Suspense fallback={<Spinner />}>
                 <Outlet />

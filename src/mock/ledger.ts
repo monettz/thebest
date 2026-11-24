@@ -216,18 +216,24 @@ export async function closeDay(user: { name: string }, req: { counted: number; n
 }
 
 /* ---------- Dashboard ---------- */
-export async function getShopDashboardLive(role: Role, _daysList?: Date[]): Promise<ShopDashboard> {
+/**
+ * Today's figures (vs yesterday) plus one chart bucket per day of `daysList`
+ * (the 7 days ending today when omitted). Top products cover the same days.
+ */
+export async function getShopDashboardLive(role: Role, daysList?: Date[]): Promise<ShopDashboard> {
   await ensureFresh();
   const facts = salesFacts();
   const debts = await getDebtOverview();
   const today = todayDar();
-  const days = Array.from({ length: 7 }, (_, i) => addDays(today, i - 6));
+  const days = daysList?.length
+    ? daysList.map((d) => todayDar(d))
+    : Array.from({ length: 7 }, (_, i) => addDays(today, i - 6));
   const spent = (d: string) => expenses.filter((e) => e.spentOn === d).map((e) => e.amount);
   const day = (d: string) => summarize(facts.filter((f) => f.date === d), spent(d));
-  const [yesterday, now] = [day(days[5]), day(days[6])];
+  const [yesterday, now] = [day(addDays(today, -1)), day(today)];
   const pct = (a: number, b: number) => (b > 0 ? Math.round(((a - b) / b) * 100) : 0);
 
-  const weekFacts = facts.filter((f) => inRange(f.date, { from: days[0], to: today }));
+  const weekFacts = facts.filter((f) => inRange(f.date, { from: days[0], to: days[days.length - 1] }));
   const types = new Map(internalProducts().map((p) => [p.id, p.type]));
   const top = profitByProduct(weekFacts).sort((a, b) => b.qty - a.qty).slice(0, 5);
   const maxQty = Math.max(1, ...top.map((t) => t.qty));
