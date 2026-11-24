@@ -459,7 +459,7 @@ export default function POS() {
       {createPortal(
         <>
       {/* Bottom Cart Summary Bar (starts after the 256px sidebar on desktop) */}
-      <div className="pb-safe fixed inset-x-0 bottom-0 z-30 md:left-[256px] border-t border-[#E2E8F0] bg-white px-4 py-3 shadow-[0_-4px_16px_rgba(15,23,42,0.06)]">
+      <div className="pb-safe fixed inset-x-0 bottom-0 z-30 md:left-[248px] border-t border-[#E2E8F0] bg-white px-4 py-3 shadow-[0_-4px_16px_rgba(15,23,42,0.06)]">
         <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-3">
           <button
             type="button"

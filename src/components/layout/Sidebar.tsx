@@ -138,7 +138,10 @@ export function Sidebar({
 
   return (
     // Fixed to the viewport height: header and footer never move, the menu in between is sized to fit.
-    <aside className="hidden w-[248px] shrink-0 flex-col overflow-hidden border-r border-line bg-white md:sticky md:top-0 md:flex md:h-dvh [&_*]:box-border">
+    // Fixed, not sticky: index.css sets overflow-x:hidden on html/body/#root, which stops sticky from ever
+    // sticking, so on long pages the menu scrolled away and left an empty white band under it.
+    // AppShell keeps a 248px spacer beside it so content is never covered.
+    <aside className="hidden w-[248px] flex-col overflow-hidden border-r border-line bg-white md:fixed md:inset-y-0 md:left-0 md:z-30 md:flex md:h-dvh [&_*]:box-border">
       <div className="shrink-0 space-y-5 px-4 pb-3 pt-5 [@media(max-height:740px)]:space-y-3 [@media(max-height:740px)]:pt-3">
         <div className="flex min-w-0 items-center gap-2.5 px-1.5">
           <BrandMark size={36} />

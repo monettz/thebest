@@ -52,6 +52,7 @@ export function AppShell() {
           overflow-x-clip, not hidden, so the sidebar below can still be sticky. */}
       <div className="flex min-h-screen w-full max-w-full overflow-x-clip bg-white">
         <Sidebar code={code} onSwitch={switchTo} user={user} />
+        <div aria-hidden className="hidden w-[248px] shrink-0 md:block" />
 
         <div className="flex min-w-0 flex-1 flex-col">
           {/* Phone header: menu on the left, brand, notifications on the right */}
