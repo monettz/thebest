@@ -6,6 +6,8 @@ import { isShopPaymentMethod, type PaymentMethod, type Role } from '@shared/cons
 import { imeiFromBody } from '@shared/sales';
 import {
   allocateSupplierPayments,
+  pricesAfter,
+  shopPriceErrors,
   validateDirectStockIn,
   validatePurchase,
   validateSupplierPayment,
@@ -15,7 +17,7 @@ import {
   type TransferLineInput,
 } from '@shared/stock';
 import { todayDar } from '@/lib/dar';
-import { internalProducts, moveStock } from './api';
+import { internalProducts, moveStock, setProductPrices } from './api';
 import { SEED_PRODUCTS } from './seed';
 import { supabase } from '@/lib/supabase';
 import { check, ensureFresh, isRemote, rpc, write } from './sync';
@@ -344,6 +346,20 @@ export async function createPurchase(
     await delay(null);
     throw new Error(verdict.errors.join('\n'));
   }
+  // Goods received straight into the Shop are on sale at once: both prices are needed.
+  if (safe.location === 'SHOP') {
+    const canSetCost = user.role === 'owner';
+    const byId = new Map(internalProducts().map((p) => [p.id, p]));
+    const priceErrors = safe.lines.flatMap((l) => {
+      const p = byId.get(l.productId);
+      const current = { costPrice: p?.costPrice ?? 0, sellPrice: p?.sellPrice ?? 0 };
+      return shopPriceErrors(l.name, pricesAfter(current, { costPrice: l.unitCost }, canSetCost), canSetCost);
+    });
+    if (priceErrors.length) {
+      await delay(null);
+      throw new Error([...new Set(priceErrors)].join('\n'));
+    }
+  }
 
   if (isRemote()) {
     return write(async () => {
@@ -411,14 +427,18 @@ export async function createPurchase(
 
 /** Store -> Shop. Phones move by exact IMEI; quantities are checked against Store stock. */
 export async function createTransfer(
-  user: { name: string },
+  user: { name: string; role?: Role },
   req: { lines: TransferLineInput[]; note?: string },
 ): Promise<{ transferId: number }> {
   await ensureFresh();
   const products = internalProducts();
+  // Going to the Shop: each product must end up with both prices (new ones may come with the line).
+  const canSetCost = user.role === 'owner';
   const verdict = validateTransfer(req.lines, {
     storeStock: Object.fromEntries(products.map((p) => [p.id, p.storeQty])),
     storeImeis: new Set(imeisIn('IN_STORE')),
+    prices: Object.fromEntries(products.map((p) => [p.id, { costPrice: p.costPrice ?? 0, sellPrice: p.sellPrice }])),
+    canSetCost,
   });
   if (!verdict.ok) {
     await delay(null);
@@ -426,6 +446,12 @@ export async function createTransfer(
   }
   if (isRemote()) {
     return write(async () => {
+      // Prices typed for this move are saved first; the database then lets the stock into the Shop.
+      for (const l of req.lines) {
+        const cost = canSetCost ? (l.costPrice ?? 0) : 0;
+        const sell = l.sellPrice ?? 0;
+        if (cost > 0 || sell > 0) await rpc('rpc_set_product_prices', { p_id: l.productId, p_cost: cost, p_sell: sell });
+      }
       const transferId = await rpc<number>('rpc_create_transfer', {
         payload: {
           note: req.note?.trim() ?? '',
@@ -437,6 +463,7 @@ export async function createTransfer(
   }
   const id = Math.max(0, ...transfers.map((t) => t.id)) + 1;
   for (const l of req.lines) {
+    setProductPrices(l.productId, { costPrice: canSetCost ? l.costPrice : undefined, sellPrice: l.sellPrice });
     moveStock({ productId: l.productId, from: 'STORE', to: 'SHOP', qty: l.qty, type: 'TRANSFER', refType: 'transfer', refId: id, userName: user.name });
     if (l.imeis.length) setUnitStatus(l.imeis, 'IN_SHOP');
   }
@@ -460,13 +487,19 @@ export async function addShopStock(
   req: { lines: DirectStockLineInput[] },
 ): Promise<{ total: number; unitsAdded: number }> {
   await ensureFresh();
-  const costs = new Map(internalProducts().map((p) => [p.id, p.costPrice]));
+  const current = internalProducts();
+  const costs = new Map(current.map((p) => [p.id, p.costPrice]));
+  const canSetCost = user.role === 'owner';
   const safeLines: DirectStockLineInput[] = req.lines.map((l) => ({
     ...l,
-    unitCost: user.role === 'owner' && l.unitCost > 0 ? l.unitCost : (costs.get(l.productId) ?? 0),
+    unitCost: canSetCost && l.unitCost > 0 ? l.unitCost : (costs.get(l.productId) ?? 0),
   }));
 
-  const verdict = validateDirectStockIn(safeLines, { knownImeis: allImeis() });
+  const verdict = validateDirectStockIn(safeLines, {
+    knownImeis: allImeis(),
+    prices: Object.fromEntries(current.map((p) => [p.id, { costPrice: p.costPrice ?? 0, sellPrice: p.sellPrice }])),
+    canSetCost,
+  });
   if (!verdict.ok) {
     await delay(null);
     throw new Error(verdict.errors.join('\n'));
@@ -474,10 +507,18 @@ export async function addShopStock(
 
   if (isRemote()) {
     return write(async () => {
+      for (const l of safeLines) {
+        if ((l.sellPrice ?? 0) > 0) await rpc('rpc_set_product_prices', { p_id: l.productId, p_cost: 0, p_sell: l.sellPrice });
+      }
       await rpc('rpc_add_shop_stock', {
         payload: {
           location: 'SHOP',
-          lines: safeLines.map((l) => ({ productId: l.productId, qty: l.qty, unitCost: l.unitCost, imeis: l.type === 'phone' ? l.imeis : [] })),
+          lines: safeLines.map((l) => ({
+            productId: l.productId,
+            qty: l.qty,
+            unitCost: l.unitCost,
+            imeis: l.type === 'phone' ? l.imeis : [],
+          })),
         },
       });
       return { total: verdict.total, unitsAdded: safeLines.reduce((a, l) => a + l.qty, 0) };
@@ -486,6 +527,7 @@ export async function addShopStock(
 
   let unitsAdded = 0;
   for (const l of safeLines) {
+    setProductPrices(l.productId, { sellPrice: l.sellPrice });
     moveStock({
       productId: l.productId,
       from: null,

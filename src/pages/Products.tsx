@@ -33,6 +33,9 @@ import { Badge, Button, Card, Field, PageHeader, Spinner, StockBadge, Tabs, cx }
 import { BoxIcon, PhoneIcon, SearchIcon } from '@/components/ui/icons';
 import { tr } from '@/i18n';
 
+/** A price, or "Haijawekwa" while it is not set yet (0): Store products may wait for their prices. */
+const priceText = (n: number | undefined | null) => (n && n > 0 ? formatTZS(n) : tr('Haijawekwa'));
+
 type Filter = 'all' | 'phone' | 'accessory' | 'low' | 'out';
 const FILTERS: { value: Filter; label: string }[] = [
   { value: 'all', label: 'Zote' },
@@ -453,11 +456,11 @@ export default function Products() {
                     </td>
                     {isOwner && (
                       <td className="px-3 py-3 text-right tabular-nums text-muted">
-                        TSh {formatNumber(p.costPrice ?? 0)}
+                        {priceText(p.costPrice)}
                       </td>
                     )}
                     <td className="px-3 py-3 text-right font-bold tabular-nums text-ink">
-                      TSh {formatNumber(p.sellPrice)}
+                      {priceText(p.sellPrice)}
                     </td>
                     <td
                       className={cx(
@@ -605,13 +608,13 @@ export default function Products() {
                   <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-line pb-2.5">
                     <div>
                       <span className="block text-[12px] font-medium text-muted">{tr('Bei ya kuuza')}</span>
-                      <span className="text-[16px] font-bold tabular-nums text-ink">{formatTZS(p.sellPrice)}</span>
+                      <span className="text-[16px] font-bold tabular-nums text-ink">{priceText(p.sellPrice)}</span>
                     </div>
                     {isOwner ? (
                       <div className="text-right">
                         <span className="block text-[12px] text-muted">{tr('Bei ya kununua')}</span>
                         <span className="text-[13px] font-semibold tabular-nums text-body">
-                          {formatTZS(p.costPrice ?? 0)}
+                          {priceText(p.costPrice)}
                         </span>
                       </div>
                     ) : (
@@ -1007,12 +1010,12 @@ function ProductDetailsModal({
           <div className="grid grid-cols-2 gap-3 rounded-[12px] border border-line p-3.5 text-[13px]">
             <div>
               <span className="block text-[12px] text-muted">{tr('Bei ya kuuza')}</span>
-              <span className="text-[16px] font-bold tabular-nums text-ink">{formatTZS(p.sellPrice)}</span>
+              <span className="text-[16px] font-bold tabular-nums text-ink">{priceText(p.sellPrice)}</span>
             </div>
             {isOwner && (
               <div>
                 <span className="block text-[12px] text-muted">{tr('Bei ya kununua')}</span>
-                <span className="text-[16px] font-bold tabular-nums text-ink">{formatTZS(p.costPrice ?? 0)}</span>
+                <span className="text-[16px] font-bold tabular-nums text-ink">{priceText(p.costPrice)}</span>
               </div>
             )}
           </div>
@@ -1095,8 +1098,9 @@ function EditProductModal({
       name: p.name,
       detail: p.detail,
       type: p.type,
-      costPrice: p.costPrice ?? 0,
-      sellPrice: p.sellPrice,
+      // A price not set yet shows as an empty box (saved as 0 = not set), not as "0".
+      costPrice: (p.costPrice || '') as unknown as number,
+      sellPrice: (p.sellPrice || '') as unknown as number,
       minStock: p.minStock,
       code: p.code ?? '',
       barcode: p.barcode ?? '',
@@ -1160,12 +1164,13 @@ function EditProductModal({
               </div>
             </div>
 
+            {/* With stock in the Shop both prices are needed; otherwise they may stay empty for now. */}
             <div className="grid grid-cols-2 gap-3">
-              <Field label="Bei ya kununua" error={errors.costPrice?.message}>
-                <input className="input h-11" inputMode="numeric" {...register('costPrice')} />
+              <Field label={p.shopQty > 0 ? 'Bei ya kununua' : 'Bei ya kununua (hiari)'} error={errors.costPrice?.message}>
+                <input className="input h-11" inputMode="numeric" placeholder={tr('TSh')} {...register('costPrice')} />
               </Field>
-              <Field label="Bei ya kuuza" error={errors.sellPrice?.message}>
-                <input className="input h-11" inputMode="numeric" {...register('sellPrice')} />
+              <Field label={p.shopQty > 0 ? 'Bei ya kuuza' : 'Bei ya kuuza (hiari)'} error={errors.sellPrice?.message}>
+                <input className="input h-11" inputMode="numeric" placeholder={tr('TSh')} {...register('sellPrice')} />
               </Field>
             </div>
 
@@ -1374,14 +1379,20 @@ export function CreateProductForm({
         </div>
       </div>
 
+      {/* Store: prices may wait until the product moves to the Shop. Shop: it sells at once, so both are needed. */}
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-        <Field label="Bei ya kununua" error={errors.costPrice?.message}>
+        <Field label={location === 'STORE' ? 'Bei ya kununua (hiari)' : 'Bei ya kununua'} error={errors.costPrice?.message}>
           <input className="input h-11" inputMode="numeric" placeholder={tr('TSh')} {...register('costPrice')} />
         </Field>
-        <Field label="Bei ya kuuza" error={errors.sellPrice?.message}>
+        <Field label={location === 'STORE' ? 'Bei ya kuuza (hiari)' : 'Bei ya kuuza'} error={errors.sellPrice?.message}>
           <input className="input h-11" inputMode="numeric" placeholder={tr('TSh')} {...register('sellPrice')} />
         </Field>
       </div>
+      {location === 'STORE' && (
+        <p className="-mt-1 text-[12px] text-muted">
+          {tr('Bei zinaweza kusubiri. Utaziweka utakapohamisha bidhaa hii Dukani.')}
+        </p>
+      )}
 
       {/* Mandatory Initial Shop Quantity */}
       <Field label={location === 'STORE' ? 'Idadi ya awali store' : 'Idadi ya awali dukani'} error={location === 'STORE' ? (errors.initialShopQty?.message as string | undefined)?.replace('dukani', 'store') : (errors.initialShopQty?.message as string | undefined)}>

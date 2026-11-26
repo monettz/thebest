@@ -11,7 +11,7 @@ import {
   type ProductInput,
   type ProductUpdateInput,
 } from '@shared/schemas';
-import { validateNewProductDuplicates } from '@shared/stock';
+import { shopPriceErrors, validateNewProductDuplicates } from '@shared/stock';
 import { DEFAULT_SETTINGS, SEED_PRODUCTS, type Settings } from './seed';
 import { localUsers } from './users';
 import { logAudit } from './audit';
@@ -136,6 +136,12 @@ export async function createProduct(
     knownImeis: allImeis(),
   });
   if (dupError) throw new Error(dupError);
+  // Straight into the Shop: it will be sold, so both prices are needed now. In the Store they can wait.
+  if (location === 'SHOP') {
+    const owner = user.role === 'owner';
+    const priceErrors = shopPriceErrors(data.name, { costPrice: owner ? data.costPrice : 0, sellPrice: data.sellPrice }, owner);
+    if (priceErrors.length) throw new Error(priceErrors[0]);
+  }
 
   const code = generateUniqueCode(data.name, data.code);
   const imageUrl = data.imageUrl?.trim() || undefined;
@@ -245,6 +251,11 @@ export async function updateProduct(
   const parsed = productUpdateSchema.safeParse(input);
   if (!parsed.success) throw new Error(parsed.error.issues[0]?.message ?? 'Taarifa za bidhaa si sahihi');
   const data = parsed.data;
+  // While the product has stock in the Shop it is being sold: its prices cannot be cleared.
+  if (target.shopQty > 0) {
+    const priceErrors = shopPriceErrors(data.name, { costPrice: data.costPrice, sellPrice: data.sellPrice });
+    if (priceErrors.length) throw new Error(priceErrors[0]);
+  }
   const priceChanged = target.costPrice !== data.costPrice || target.sellPrice !== data.sellPrice;
   if (isRemote()) {
     const nextImage =
@@ -461,6 +472,20 @@ export async function getStoreDashboard(role: Role): Promise<StoreDashboard> {
 }
 
 /** Internal (server-side) helpers for the mock sales module. Never returned to the UI as-is. */
+/** Sets a product's prices in memory (local/test mode); in the app the database function does it. */
+export function setProductPrices(productId: number, prices: { costPrice?: number; sellPrice?: number }): void {
+  products = products.map((p) =>
+    p.id === productId
+      ? {
+          ...p,
+          ...((prices.costPrice ?? 0) > 0 ? { costPrice: prices.costPrice! } : {}),
+          ...((prices.sellPrice ?? 0) > 0 ? { sellPrice: prices.sellPrice! } : {}),
+        }
+      : p,
+  );
+  save(LS_PRODUCTS, products);
+}
+
 export function internalProducts() {
   if (!products) products = load(LS_PRODUCTS, SEED_PRODUCTS);
   return products.map((p) => ({ ...p }));

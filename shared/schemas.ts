@@ -87,6 +87,8 @@ const baseProductShape = {
   name: z.string().trim().min(2, 'Weka jina la bidhaa'),
   detail: z.string().trim().optional(),
   type: z.enum(PRODUCT_TYPES),
+  // Optional here (blank = 0 = not set yet): a Store product may wait for its prices. The Shop needs both, which
+  // is checked where stock enters the Shop (shopPriceErrors in shared/stock.ts) and again in the database.
   costPrice: money('Bei ya kununua'),
   sellPrice: money('Bei ya kuuza'),
   minStock: money('Kiwango cha chini'),
@@ -95,9 +97,12 @@ const baseProductShape = {
   imageUrl: z.string().trim().optional(),
 };
 
+/** Both prices set and the selling price under the buying price: a sale would lose money. */
+const sellsAtLoss = (p: { costPrice: number; sellPrice: number }) => p.costPrice > 0 && p.sellPrice > 0 && p.sellPrice < p.costPrice;
+
 export const productUpdateSchema = z
   .object(baseProductShape)
-  .refine((p) => p.sellPrice >= p.costPrice, {
+  .refine((p) => !sellsAtLoss(p), {
     message: 'Bei ya kuuza iko chini ya bei ya kununua',
     path: ['sellPrice'],
   });
@@ -110,7 +115,7 @@ export const productSchema = z
     imeis: z.array(z.string().trim()).optional().default([]),
   })
   .superRefine((p, ctx) => {
-    if (p.sellPrice < p.costPrice) {
+    if (sellsAtLoss(p)) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: 'Bei ya kuuza iko chini ya bei ya kununua',

@@ -1161,4 +1161,16 @@ export const EN: Record<string, string> = {
   'Faili si sahihi.': 'Invalid file.',
   'Faili hili ni binafsi.': 'This file is private.',
   'Picha haipo.': 'Photo not found.',
+  // Prices: optional in the Store, required in the Shop
+  'Bei ya kununua (hiari)': 'Buying price (optional)',
+  'Bei ya kuuza (hiari)': 'Selling price (optional)',
+  'Bei zinaweza kusubiri. Utaziweka utakapohamisha bidhaa hii Dukani.': 'Prices can wait. You will set them when you move this product to the Shop.',
+  '{1}: weka bei ya kuuza kabla ya kuweka bidhaa Dukani': '{1}: set a selling price before putting it in the Shop',
+  '{1}: weka bei ya kununua kabla ya kuweka bidhaa Dukani': '{1}: set a buying price before putting it in the Shop',
+  '{1}: mmiliki aweke bei ya kununua kwanza': '{1}: the owner must set the buying price first',
+  '{1}: bei ya kuuza iko chini ya bei ya kununua': '{1}: selling price is below the buying price',
+  '{1}: bei ya kuuza haijawekwa': '{1}: selling price not set',
+  '{1}: weka bei ya kuuza na ya kununua; bidhaa ina stock Dukani': '{1}: set selling and buying prices; it has stock in the Shop',
+  'Mmiliki tu ndiye anaweza kuweka bei ya kununua': 'Only the owner can set the buying price',
+  'Mmiliki tu ndiye anaweza kubadilisha bei ya kuuza': 'Only the owner can change the selling price',
 };

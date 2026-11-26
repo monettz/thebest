@@ -9,6 +9,35 @@ export function parseImeis(text: string): string[] {
     .filter(Boolean);
 }
 
+/* ---------- Prices needed in the Shop ---------- */
+export interface ShopPrices {
+  costPrice: number;
+  sellPrice: number;
+}
+
+/**
+ * Why a product cannot go into the Shop yet. A product may sit in the Store without prices, but the Shop sells it,
+ * so both prices are needed there: the selling price for the till, the buying price for profit.
+ * `canSetCost` is false for a seller, who never sees or sets buying prices: the owner has to add it first.
+ */
+export function shopPriceErrors(name: string, p: ShopPrices, canSetCost = true): string[] {
+  const errors: string[] = [];
+  if (!(p.sellPrice > 0)) errors.push(`${name}: weka bei ya kuuza kabla ya kuweka bidhaa Dukani`);
+  if (!(p.costPrice > 0)) {
+    errors.push(canSetCost ? `${name}: weka bei ya kununua kabla ya kuweka bidhaa Dukani` : `${name}: mmiliki aweke bei ya kununua kwanza`);
+  }
+  if (p.sellPrice > 0 && p.costPrice > 0 && p.sellPrice < p.costPrice) errors.push(`${name}: bei ya kuuza iko chini ya bei ya kununua`);
+  return errors;
+}
+
+/** Prices the product will have once a line's new prices (if any) are applied. */
+export function pricesAfter(current: ShopPrices, line: { costPrice?: number; sellPrice?: number }, canSetCost: boolean): ShopPrices {
+  return {
+    costPrice: canSetCost && (line.costPrice ?? 0) > 0 ? line.costPrice! : current.costPrice,
+    sellPrice: (line.sellPrice ?? 0) > 0 ? line.sellPrice! : current.sellPrice,
+  };
+}
+
 /* ---------- Receiving goods from a supplier ---------- */
 export interface PurchaseLineInput {
   productId: number;
@@ -72,13 +101,22 @@ export interface TransferLineInput {
   type: ProductType;
   qty: number;
   imeis: string[]; // exact units for phones
+  /** Prices to set while moving (for a product still without them). Buying price is ignored for a seller. */
+  costPrice?: number;
+  sellPrice?: number;
 }
 
 export type TransferResult = { ok: true } | { ok: false; errors: string[] };
 
 export function validateTransfer(
   lines: TransferLineInput[],
-  ctx: { storeStock: Record<number, number>; storeImeis: ReadonlySet<string> },
+  ctx: {
+    storeStock: Record<number, number>;
+    storeImeis: ReadonlySet<string>;
+    /** Current prices by product; when given, every line must end up with both prices (it is going to the Shop). */
+    prices?: Record<number, ShopPrices>;
+    canSetCost?: boolean;
+  },
 ): TransferResult {
   const errors: string[] = [];
   if (lines.length === 0) errors.push('Ongeza angalau bidhaa moja');
@@ -88,6 +126,11 @@ export function validateTransfer(
   for (const l of lines) {
     if (!Number.isInteger(l.qty) || l.qty < 1) errors.push(`${l.name}: idadi si sahihi`);
     wanted.set(l.productId, (wanted.get(l.productId) ?? 0) + (Number.isInteger(l.qty) ? l.qty : 0));
+    if (ctx.prices) {
+      const current = ctx.prices[l.productId] ?? { costPrice: 0, sellPrice: 0 };
+      const canSetCost = ctx.canSetCost ?? true;
+      errors.push(...shopPriceErrors(l.name, pricesAfter(current, l, canSetCost), canSetCost));
+    }
     if (l.type !== 'phone') continue;
     if (l.imeis.length > l.qty) errors.push(`${l.name}: IMEI ${l.imeis.length} ni nyingi kuliko idadi ${l.qty}`);
     for (const imei of l.imeis) {
@@ -114,6 +157,8 @@ export interface DirectStockLineInput {
   qty: number;
   unitCost: number;
   imeis: string[];
+  /** Selling price to set now (for a product that has none yet). */
+  sellPrice?: number;
 }
 
 export type DirectStockResult =
@@ -122,7 +167,12 @@ export type DirectStockResult =
 
 export function validateDirectStockIn(
   lines: DirectStockLineInput[],
-  ctx: { knownImeis: ReadonlySet<string> },
+  ctx: {
+    knownImeis: ReadonlySet<string>;
+    /** Current prices by product; when given, every line must end up with both prices (it is going to the Shop). */
+    prices?: Record<number, ShopPrices>;
+    canSetCost?: boolean;
+  },
 ): DirectStockResult {
   const errors: string[] = [];
   const byProduct: Record<number, string[]> = {};
@@ -148,6 +198,12 @@ export function validateDirectStockIn(
     }
     if (!Number.isInteger(l.unitCost) || l.unitCost < 0) {
       addErr(l.productId, `${l.name}: bei ya kununua si sahihi`);
+    }
+    if (ctx.prices) {
+      const current = ctx.prices[l.productId] ?? { costPrice: 0, sellPrice: 0 };
+      const canSetCost = ctx.canSetCost ?? true;
+      const after = pricesAfter(current, { costPrice: l.unitCost, sellPrice: l.sellPrice }, canSetCost);
+      for (const e of shopPriceErrors(l.name, after, canSetCost)) addErr(l.productId, e);
     }
     total +=
       (Number.isInteger(l.qty) && l.qty > 0 ? l.qty : 0) *

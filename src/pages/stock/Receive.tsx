@@ -182,6 +182,7 @@ export default function Receive() {
             <div className="mx-auto max-w-2xl rounded-[12px] border border-line bg-white p-3.5 sm:p-5">
               <CreateProductForm
                 hideHeading
+                location="STORE"
                 onCancel={() => setShowCreateProductForm(false)}
                 onCreated={(_createdId, created) => {
                   for (const k of ['products', 'store-feed', 'store-dashboard', 'store-imeis', 'pos-products', 'movements']) {

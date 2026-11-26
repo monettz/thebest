@@ -375,6 +375,12 @@ export async function completeSale(
     await delay(null);
     throw new Error(verdict.errors.join('\n'));
   }
+  // A product without a selling price is not for sale yet (it would go out at TSh 0 and spoil the profit).
+  const unpriced = req.lines.filter((l) => !(products.find((p) => p.id === l.productId)?.sellPrice! > 0));
+  if (unpriced.length) {
+    await delay(null);
+    throw new Error(unpriced.map((l) => `${l.name}: bei ya kuuza haijawekwa`).join('\n'));
+  }
 
   if (isRemote()) {
     let customer: Customer | null = null;
