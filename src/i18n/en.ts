@@ -1158,4 +1158,7 @@ export const EN: Record<string, string> = {
   'Faili hili si la app hii.': 'This file does not belong to this app.',
   'Imeshindikana kufuta faili.': 'Could not delete the file.',
   'Kitendo si sahihi.': 'Invalid action.',
+  'Faili si sahihi.': 'Invalid file.',
+  'Faili hili ni binafsi.': 'This file is private.',
+  'Picha haipo.': 'Photo not found.',
 };

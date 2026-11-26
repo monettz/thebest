@@ -27,30 +27,33 @@ npm run build          # typecheck + production build + PWA
 | `VITE_SMS_DRIVER` | Hapana | `http` ukitumia mtoa huduma wa SMS; vinginevyo SMS zinaandikwa kwenye log tu |
 | `VITE_SMS_API_URL`, `VITE_SMS_API_KEY`, `VITE_SMS_SENDER_ID` | Hapana | zinahitajika tu kama `VITE_SMS_DRIVER=http` |
 | `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY` | Kwa picha | Cloudflare R2 (Vercel tu, **si** `VITE_`: zisifike kwenye browser) |
-| `R2_BUCKET`, `R2_PUBLIC_URL` | Kwa picha | jina la bucket na anwani yake ya umma, mf. `https://pub-xxxx.r2.dev` (bila `/` mwishoni) |
+| `R2_BUCKET` | Kwa picha | jina la bucket: `thebest-images` |
 
 ### Picha na faili: Cloudflare R2
 
-Picha za bidhaa (na faili zingine za app baadaye) zinahifadhiwa **Cloudflare R2**, si kwenye database: database inahifadhi
-link tu, ili app ibaki nyepesi. Funguo za R2 ziko kwenye Vercel tu. Browser inaomba `/api/storage` (function ya Vercel,
-mmiliki tu, inakaguliwa kwa `public.is_owner()`) link ya muda wa dakika 5, inapakia picha moja kwa moja R2, na kuhifadhi link.
-Picha inabanwa kwanza (upande mrefu 1200px, WebP). Picha iliyobadilishwa au kuondolewa, na ya bidhaa iliyofutwa, inafutwa R2.
+Picha za bidhaa (na faili zingine za app baadaye) zinahifadhiwa **Cloudflare R2**, si kwenye database. Bucket ni
+**binafsi** (haina anwani ya umma) na funguo za R2 ziko kwenye Vercel tu:
+
+- **Kupakia:** browser inaomba `/api/storage` (mmiliki tu, inakaguliwa kwa `public.is_owner()`) link ya muda wa dakika 5,
+  inapakia picha moja kwa moja R2. Picha inabanwa kwanza (upande mrefu 1200px, WebP).
+- **Kuonyesha:** database inahifadhi `/api/file?key=products/…`; `/api/file` inasoma faili R2 na kulituma, likihifadhiwa
+  (cache) mwaka mzima kwa sababu jina la kila faili halibadiliki. Picha za `products` tu zinafunguka kwa link; folda zingine
+  zinabaki binafsi.
+- Picha iliyobadilishwa au kuondolewa, na ya bidhaa iliyofutwa, inafutwa R2.
 
 Kuweka R2 (mara moja):
-1. Cloudflare → **R2** → Create bucket: `thebest-images`.
-2. Bucket → Settings → **Public access** → washa **r2.dev subdomain** (au unganisha domain yako). Anwani hiyo ndiyo `R2_PUBLIC_URL`.
-3. Bucket → Settings → **CORS policy**:
+1. Cloudflare → **R2** → Create bucket: `thebest-images` (Automatic, Standard). **Usiwashe** Public access.
+2. Bucket → Settings → **CORS policy** (browser inapakia moja kwa moja R2):
    ```json
    [{ "AllowedOrigins": ["https://thebest-tau.vercel.app", "http://localhost:5173"],
-      "AllowedMethods": ["PUT", "GET"], "AllowedHeaders": ["content-type"], "MaxAgeSeconds": 3600 }]
+      "AllowedMethods": ["PUT"], "AllowedHeaders": ["content-type"], "MaxAgeSeconds": 3600 }]
    ```
-4. R2 → **Manage API tokens** → Create token: *Object Read & Write*, kwa bucket `thebest-images` tu.
-   Unapata Access Key ID, Secret Access Key, na Account ID (kwenye ukurasa wa R2).
-5. Vercel → Project → Settings → **Environment Variables** (Production na Preview): `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`,
-   `R2_SECRET_ACCESS_KEY`, `R2_BUCKET=thebest-images`, `R2_PUBLIC_URL`. Kisha **Redeploy**.
+3. R2 → **Manage API tokens** → Create token: *Object Read & Write*, kwa bucket `thebest-images` tu.
+4. Vercel → Project → Settings → **Environment Variables** (Production na Preview): `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`,
+   `R2_SECRET_ACCESS_KEY`, `R2_BUCKET=thebest-images`. Kisha **Redeploy**.
 
 Bila hizi, kuhifadhi picha kunaonyesha "Hifadhi ya picha (Cloudflare R2) bado haijawekwa." na hakuna kingine kinachoathirika.
-`/api/storage` haiendeshwi na `npm run dev`; kujaribu picha kwenye kompyuta tumia `vercel dev`.
+`/api/storage` na `/api/file` haziendeshwi na `npm run dev`; kujaribu picha kwenye kompyuta tumia `vercel dev`.
 
 Migrations zinawekwa kwa `SUPABASE_ACCESS_TOKEN=... node scripts/run_migration.cjs supabase/migrations/<faili>.sql`
 (token haiwekwi kwenye code wala Vercel).

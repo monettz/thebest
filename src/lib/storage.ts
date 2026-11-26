@@ -1,8 +1,9 @@
 import { supabase } from '@/lib/supabase';
 
 /**
- * Files in Cloudflare R2. The browser never holds the R2 keys: it asks /api/storage (a Vercel function, owner
- * only) for a short-lived upload link, PUTs the file straight to R2, and the database keeps only the public URL.
+ * Files in Cloudflare R2. The bucket is private and the browser never holds the R2 keys: it asks /api/storage
+ * (a Vercel function, owner only) for a short-lived upload link, PUTs the file straight to R2, and the database
+ * keeps only the app link "/api/file?key=…", which /api/file serves from R2.
  */
 
 export type StorageFolder = 'products' | 'receipts' | 'expenses' | 'misc';
@@ -74,6 +75,6 @@ export async function storeImage(value: string | undefined, folder: StorageFolde
  * change the owner made, and links that are not ours (or photos kept in the database) are ignored.
  */
 export async function deleteStoredFile(url: string | undefined): Promise<void> {
-  if (!url || !/^https:\/\//i.test(url)) return;
+  if (!url || !url.includes('/api/file?key=')) return;
   await callStorage({ action: 'delete', url }).catch(() => undefined);
 }
