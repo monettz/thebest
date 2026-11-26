@@ -1,0 +1,63 @@
+# THE BEST POS — nightly backup of the Supabase database to Google Drive.
+# Runs every night at 00:00 Dar es Salaam (21:00 UTC). Photos are not copied (they live in Cloudflare R2).
+# Setup and restore: docs/BACKUP.md
+name: Backup ya database
+
+on:
+  schedule:
+    - cron: '0 21 * * *'
+  workflow_dispatch:
+    inputs:
+      force_monthly:
+        description: 'Tengeneza pia faili za mwezi (Excel, ripoti na jaribio la kurudisha)'
+        type: boolean
+        default: false
+
+concurrency:
+  group: database-backup
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  backup:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    services:
+      # An empty Postgres the month-end backup is restored into, to prove it really works.
+      verify:
+        image: postgres:17
+        env:
+          POSTGRES_PASSWORD: verify
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres" --health-interval 5s --health-timeout 5s --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Postgres 17 client (pg_dump, psql)
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq postgresql-common
+          sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y
+          sudo apt-get install -y -qq postgresql-client-17
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install
+        run: npm ci --ignore-scripts --no-audit --no-fund
+
+      - name: Backup to Google Drive
+        env:
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+          GDRIVE_CLIENT_ID: ${{ secrets.GDRIVE_CLIENT_ID }}
+          GDRIVE_CLIENT_SECRET: ${{ secrets.GDRIVE_CLIENT_SECRET }}
+          GDRIVE_REFRESH_TOKEN: ${{ secrets.GDRIVE_REFRESH_TOKEN }}
+          VERIFY_DB_URL: postgresql://postgres:verify@localhost:5432/postgres
+          PG_BIN: /usr/lib/postgresql/17/bin
+          FORCE_MONTHLY: ${{ inputs.force_monthly && '1' || '' }}
+        run: node scripts/backup/run.mjs
