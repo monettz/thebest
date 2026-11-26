@@ -724,7 +724,7 @@ export default function Products() {
             <div
               role="dialog"
               aria-label={`${tr('Picha ya bidhaa')}: ${imageModalProduct.name}`}
-              className="flex h-[100dvh] w-full flex-col justify-between overflow-y-auto bg-white p-4 shadow-xl sm:h-auto sm:max-w-md sm:rounded-[16px] sm:border sm:border-line sm:p-5"
+              className="flex h-[100dvh] w-full flex-col justify-between overflow-y-auto overscroll-contain bg-white p-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-[max(1rem,env(safe-area-inset-top))] shadow-xl sm:h-auto sm:max-h-[min(90dvh,820px)] sm:max-w-md sm:rounded-[20px] sm:border sm:border-line sm:p-5"
               onClick={(e) => e.stopPropagation()}
             >
               <div>
@@ -1120,10 +1120,11 @@ function EditProductModal({
       <div
         role="dialog"
         aria-label={`${tr('Hariri bidhaa')}: ${p.name}`}
-        className="flex h-[100dvh] w-full flex-col overflow-y-auto bg-white p-4 shadow-xl sm:h-auto sm:max-w-md sm:rounded-[16px] sm:border sm:border-line sm:p-5"
+        // Never taller than the screen: the title and the buttons stay put, only the fields scroll.
+        className="flex h-[100dvh] w-full flex-col overflow-hidden bg-white shadow-xl sm:h-auto sm:max-h-[min(90dvh,820px)] sm:max-w-md sm:rounded-[20px] sm:border sm:border-line"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="mb-4 flex items-center justify-between border-b border-line pb-3">
+        <div className="flex shrink-0 items-center justify-between border-b border-line px-4 pb-3 pt-[max(0.75rem,env(safe-area-inset-top))] sm:px-5 sm:pt-4">
           <h3 className="text-[17px] font-bold text-ink">{tr('Hariri bidhaa')}</h3>
           <button
             type="button"
@@ -1134,8 +1135,8 @@ function EditProductModal({
           </button>
         </div>
 
-        <form onSubmit={handleSubmit((v) => save.mutate(v))} className="flex flex-1 flex-col justify-between space-y-3.5" noValidate>
-          <div className="space-y-3.5">
+        <form onSubmit={handleSubmit((v) => save.mutate(v))} className="flex min-h-0 flex-1 flex-col" noValidate>
+          <div className="min-h-0 flex-1 space-y-3.5 overflow-y-auto overscroll-contain px-4 py-4 sm:px-5">
             <Field label="Jina la bidhaa" error={errors.name?.message}>
               <input className="input h-11" {...register('name')} />
             </Field>
@@ -1194,7 +1195,7 @@ function EditProductModal({
             )}
           </div>
 
-          <div className="flex justify-end gap-2 border-t border-line pt-3.5">
+          <div className="flex shrink-0 justify-end gap-2 border-t border-line bg-white px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 sm:px-5 sm:pb-4">
             <Button variant="outline" className="min-h-[44px] flex-1 sm:flex-initial" onClick={onClose}>
               {tr('Ghairi')}
             </Button>
