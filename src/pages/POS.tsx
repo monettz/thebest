@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -18,6 +18,7 @@ import { completeSale, listPosProducts, todayDar, type PosProduct } from '@/mock
 import { Button, PageHeader, Spinner, Tabs, cx } from '@/components/ui';
 import { BoxIcon, ChevronRight, PhoneIcon, ScanIcon, SearchIcon } from '@/components/ui/icons';
 import { Cart, Stepper, digits, type CartState } from './pos/Cart';
+import { CameraScanner } from '@/components/CameraScanner';
 import { tr } from '@/i18n';
 
 type Filter = 'all' | 'phone' | 'accessory';
@@ -542,9 +543,7 @@ function ScanImeiModal({
 }) {
   const [input, setInput] = useState('');
   const [camActive, setCamActive] = useState(false);
-  const [camError, setCamError] = useState('');
   const [localError, setLocalError] = useState('');
-  const videoRef = useRef<HTMLVideoElement>(null);
 
   const takenSet = useMemo(() => new Set(takenImeis), [takenImeis]);
 
@@ -568,75 +567,6 @@ function ScanImeiModal({
     );
   }, [availableUnits, cleaned]);
 
-  useEffect(() => {
-    if (!camActive) return;
-    let stream: MediaStream | null = null;
-    let timer: number | undefined;
-    let cancelled = false;
-
-    const startCamera = async () => {
-      try {
-        if (!navigator.mediaDevices?.getUserMedia) {
-          setCamError('Kamera haipatikani kwenye kifaa hiki');
-          setCamActive(false);
-          return;
-        }
-        stream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: 'environment' },
-        });
-        if (cancelled) {
-          stream.getTracks().forEach((t) => t.stop());
-          return;
-        }
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-          await videoRef.current.play();
-        }
-        const BarcodeDetectorCtor = (
-          window as unknown as {
-            BarcodeDetector?: new (opts?: { formats: string[] }) => {
-              detect: (el: HTMLVideoElement) => Promise<{ rawValue: string }[]>;
-            };
-          }
-        ).BarcodeDetector;
-        if (BarcodeDetectorCtor) {
-          const detector = new BarcodeDetectorCtor({
-            formats: ['code_128', 'code_39', 'ean_13', 'itf', 'qr_code'],
-          });
-          const tick = async () => {
-            if (cancelled || !videoRef.current) return;
-            try {
-              const codes = await detector.detect(videoRef.current);
-              for (const c of codes) {
-                const digitsOnly = c.rawValue.replace(/\D/g, '');
-                if (/^\d{15}$/.test(digitsOnly)) {
-                  const match = availableUnits.find((u) => u.imei === digitsOnly);
-                  if (match) {
-                    onScan(match.product, match.imei);
-                    return;
-                  }
-                }
-              }
-            } catch {
-              /* ignore frame errors */
-            }
-            timer = window.setTimeout(tick, 250);
-          };
-          timer = window.setTimeout(tick, 300);
-        }
-      } catch {
-        setCamError('Kamera haipatikani kwenye kifaa hiki');
-        setCamActive(false);
-      }
-    };
-
-    void startCamera();
-    return () => {
-      cancelled = true;
-      if (timer) window.clearTimeout(timer);
-      stream?.getTracks().forEach((t) => t.stop());
-    };
-  }, [camActive, availableUnits, onScan]);
 
   const handleInput = (val: string) => {
     setInput(val);
@@ -704,10 +634,7 @@ function ScanImeiModal({
             />
             <button
               type="button"
-              onClick={() => {
-                setCamError('');
-                setCamActive((v) => !v);
-              }}
+              onClick={() => setCamActive((v) => !v)}
               className={cx(
                 'shrink-0 rounded-[10px] border px-3 text-[12.5px] font-semibold transition-colors',
                 camActive
@@ -720,16 +647,20 @@ function ScanImeiModal({
           </div>
 
           {camActive && (
-            <div className="relative overflow-hidden rounded-[10px] border border-line bg-slate-950">
-              <video ref={videoRef} className="h-[180px] w-full object-cover" muted playsInline />
-              <div className="pointer-events-none absolute inset-x-8 top-1/2 h-0.5 -translate-y-1/2 bg-primary shadow-[0_0_8px_#2563EB]" />
-            </div>
+            <CameraScanner
+              height={200}
+              onImei={(imei) => {
+                if (takenSet.has(imei)) return { ok: false, message: tr('IMEI {1} tayari iko kwenye kikapu', { 1: imei }) };
+                const match = availableUnits.find((u) => u.imei === imei);
+                if (!match) return { ok: false, message: tr('IMEI {1} haipatikani dukani', { 1: imei }) };
+                onScan(match.product, match.imei);
+                return { ok: true, message: tr('{1} imeongezwa', { 1: match.product.name }) };
+              }}
+            />
           )}
 
-          {(localError || camError) && (
-            <p className="rounded-[8px] bg-bad-bg px-3 py-2 text-[12.5px] font-medium text-bad-fg">
-              {tr(localError || camError)}
-            </p>
+          {localError && (
+            <p className="rounded-[8px] bg-bad-bg px-3 py-2 text-[12.5px] font-medium text-bad-fg">{tr(localError)}</p>
           )}
 
           <div>

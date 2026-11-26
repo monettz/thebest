@@ -10,6 +10,8 @@ import { formatNumber, formatTZS } from '@/lib/format';
 import { listProducts } from '@/mock/api';
 import { allImeis, createPurchase, listSuppliers, saveSupplier } from '@/mock/inventory';
 import Modal from '@/components/Modal';
+import { CameraScanner } from '@/components/CameraScanner';
+import { ScanIcon } from '@/components/ui/icons';
 import { CreateProductForm } from '@/pages/Products';
 import { Badge, Button, Card, Field, Spinner, cx } from '@/components/ui';
 import { Stepper } from '../pos/Cart';
@@ -44,6 +46,7 @@ export default function ReceiveForm({ location }: { location: 'STORE' | 'SHOP' }
   const [scan, setScan] = useState('');
   const [scanFor, setScanFor] = useState<number | null>(null);
   const [scanError, setScanError] = useState('');
+  const [camOn, setCamOn] = useState(false);
   const [done, setDone] = useState<number | null>(null);
   const [creating, setCreating] = useState(false);
   const [createdMsg, setCreatedMsg] = useState<(() => string) | ''>('');
@@ -108,10 +111,11 @@ export default function ReceiveForm({ location }: { location: 'STORE' | 'SHOP' }
     setDone(null);
   };
 
-  const addScanned = (productId: number, text: string) => {
+  /** Adds the IMEIs in `text` to a phone line; returns the problem with the last one, or '' when all went in. */
+  const addScanned = (productId: number, text: string): string => {
     const line = lines.find((l) => l.productId === productId)!;
     const tokens = parseImeis(text);
-    if (tokens.length === 0) return;
+    if (tokens.length === 0) return '';
     const known = allImeis();
     const next = [...line.imeis];
     let err = '';
@@ -124,6 +128,7 @@ export default function ReceiveForm({ location }: { location: 'STORE' | 'SHOP' }
     setScanError(err);
     patchLine(productId, { imeis: next, qty: Math.max(line.qty, next.length) });
     if (!err) setScan('');
+    return err;
   };
 
   const phoneLines = lines.filter((l) => byId.get(l.productId)?.type === 'phone');
@@ -287,7 +292,21 @@ export default function ReceiveForm({ location }: { location: 'STORE' | 'SHOP' }
                       onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addScanned(l.productId, scan))}
                     />
                     <Button variant="soft" onClick={() => addScanned(l.productId, scan)}>{tr('Ongeza')}</Button>
+                    <Button variant={camOn ? 'outline' : 'soft'} onClick={() => setCamOn((v) => !v)} aria-pressed={camOn}>
+                      <ScanIcon width={17} height={17} />
+                      <span className="hidden sm:inline">{tr(camOn ? 'Zima kamera' : 'Kamera')}</span>
+                    </Button>
                   </div>
+                  {camOn && (
+                    // One phone after another: the camera stays open and adds each new IMEI to this product.
+                    <CameraScanner
+                      className="mt-3"
+                      onImei={(imei) => {
+                        const err = addScanned(l.productId, imei);
+                        return err ? { ok: false, message: tr(err) } : { ok: true, message: tr('IMEI {1} imeongezwa', { 1: imei }) };
+                      }}
+                    />
+                  )}
                   {scanError && <p role="alert" className="mt-2 text-[12.5px] font-medium text-bad-fg">{tr(scanError)}</p>}
                   <div className="mt-3.5 relative flex items-center">
                     <div className="h-3.5 flex-1 overflow-hidden rounded-full bg-blue-50/80">

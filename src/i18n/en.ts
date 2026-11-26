@@ -1173,4 +1173,16 @@ export const EN: Record<string, string> = {
   '{1}: weka bei ya kuuza na ya kununua; bidhaa ina stock Dukani': '{1}: set selling and buying prices; it has stock in the Shop',
   'Mmiliki tu ndiye anaweza kuweka bei ya kununua': 'Only the owner can set the buying price',
   'Mmiliki tu ndiye anaweza kubadilisha bei ya kuuza': 'Only the owner can change the selling price',
+  // Camera IMEI scanner
+  'IMEI {1} tayari iko kwenye kikapu': 'IMEI {1} is already in the cart',
+  '{1} imeongezwa': '{1} added',
+  'IMEI {1} imeongezwa': 'IMEI {1} added',
+  'Kamera': 'Camera',
+  'Barcode hii si IMEI. Elekeza kamera kwenye barcode ya IMEI.': 'This barcode is not an IMEI. Point the camera at the IMEI barcode.',
+  'Inafungua kamera…': 'Opening camera…',
+  'Elekeza kamera kwenye barcode ya IMEI kwenye boksi au chini ya betri.': 'Point the camera at the IMEI barcode on the box or under the battery.',
+  'Kamera inahitaji anwani salama (https). Fungua app kupitia link yake rasmi.': 'The camera needs a secure address (https). Open the app through its official link.',
+  'Ruhusa ya kamera imekataliwa. Iruhusu kwenye mipangilio ya browser, kisha jaribu tena.': 'Camera permission was denied. Allow it in the browser settings, then try again.',
+  'Kamera inatumiwa na programu nyingine. Ifunge, kisha jaribu tena.': 'The camera is in use by another app. Close it, then try again.',
+  'Imeshindikana kufungua kamera. Jaribu tena.': 'Could not open the camera. Try again.',
 };
