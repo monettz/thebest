@@ -240,3 +240,23 @@ export const CloseIcon = (p: P) => (
     <path d="M6 6l12 12M18 6 6 18" />
   </svg>
 );
+export const PencilIcon = (p: P) => (
+  <svg {...base(p)}>
+    <path d="M4 20h4L18.5 9.5a2.12 2.12 0 0 0-3-3L5 17v3z" />
+    <path d="m13.5 6.5 3 3" />
+  </svg>
+);
+export const TrashIcon = (p: P) => (
+  <svg {...base(p)}>
+    <path d="M4 7h16" />
+    <path d="M10 11v6M14 11v6" />
+    <path d="M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12" />
+    <path d="M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
+  </svg>
+);
+export const RestoreIcon = (p: P) => (
+  <svg {...base(p)}>
+    <path d="M4 12a8 8 0 1 0 2.4-5.7L4 8.5" />
+    <path d="M4 4v4.5h4.5" />
+  </svg>
+);

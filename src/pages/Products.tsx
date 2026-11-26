@@ -30,7 +30,7 @@ import {
 } from '@/mock/api';
 import { allImeis } from '@/mock/inventory';
 import { Badge, Button, Card, Field, PageHeader, Spinner, StockBadge, Tabs, cx } from '@/components/ui';
-import { BoxIcon, PhoneIcon, SearchIcon } from '@/components/ui/icons';
+import { BoxIcon, PencilIcon, PhoneIcon, RestoreIcon, SearchIcon, TrashIcon } from '@/components/ui/icons';
 import { tr } from '@/i18n';
 
 /** A price, or "Haijawekwa" while it is not set yet (0): Store products may wait for their prices. */
@@ -417,7 +417,7 @@ export default function Products() {
                         )}
 
                         <div className="min-w-0">
-                          <p className="truncate font-semibold text-ink">{p.name}</p>
+                          <button type="button" onClick={() => setDetailProduct(p)} className="block max-w-full truncate text-left font-semibold text-ink hover:text-primary hover:underline">{p.name}</button>
                           <div className="mt-0.5 flex flex-wrap items-center gap-1.5 text-[12px] text-muted">
                             <span>{specText}</span>
                             {isOwner &&
@@ -482,41 +482,40 @@ export default function Products() {
                       <StockBadge status={status} />
                     </td>
                     <td className="px-4 py-3 text-right">
-                      <div className="inline-flex items-center justify-end gap-2">
-                        <button
-                          type="button"
-                          onClick={() => setDetailProduct(p)}
-                          className="text-[12.5px] font-semibold text-primary hover:underline"
-                        >
-                          {tr('Angalia')}
-                        </button>
-                        {isOwner && (
-                          <>
+                      {isOwner && (
+                        <div className="inline-flex items-center justify-end gap-1.5">
+                          {p.archived && (
                             <button
                               type="button"
-                              onClick={() => setEditingProduct(p)}
-                              className="text-[12.5px] font-semibold text-ink hover:text-primary hover:underline"
-                            >
-                              {tr('Hariri')}
-                            </button>
-                            <button
-                              type="button"
+                              aria-label={`${tr('Weka tena')}: ${p.name}`}
+                              title={tr('Weka tena')}
                               disabled={toggleArchive.isPending}
-                              onClick={() => toggleArchive.mutate({ id: p.id, name: p.name, archived: !p.archived })}
-                              className="text-[12.5px] font-semibold text-muted hover:text-ink hover:underline"
+                              onClick={() => toggleArchive.mutate({ id: p.id, name: p.name, archived: false })}
+                              className="flex h-9 w-9 items-center justify-center rounded-full text-muted transition hover:bg-app hover:text-ink"
                             >
-                              {p.archived ? tr('Weka tena') : tr('Ficha')}
+                              <RestoreIcon width={17} height={17} />
                             </button>
-                            <button
-                              type="button"
-                              onClick={() => setDeletingProduct(p)}
-                              className="text-[12.5px] font-semibold text-bad-fg hover:underline"
-                            >
-                              {tr('Futa')}
-                            </button>
-                          </>
-                        )}
-                      </div>
+                          )}
+                          <button
+                            type="button"
+                            aria-label={`${tr('Hariri')}: ${p.name}`}
+                            title={tr('Hariri')}
+                            onClick={() => setEditingProduct(p)}
+                            className="flex h-9 w-9 items-center justify-center rounded-full text-body transition hover:bg-primary-tint hover:text-primary-link"
+                          >
+                            <PencilIcon width={17} height={17} />
+                          </button>
+                          <button
+                            type="button"
+                            aria-label={`${tr('Futa')}: ${p.name}`}
+                            title={tr('Futa')}
+                            onClick={() => setDeletingProduct(p)}
+                            className="flex h-9 w-9 items-center justify-center rounded-full text-bad-fg transition hover:bg-bad-bg"
+                          >
+                            <TrashIcon width={17} height={17} />
+                          </button>
+                        </div>
+                      )}
                     </td>
                   </tr>
                 );
@@ -568,7 +567,7 @@ export default function Products() {
                       </span>
                     )}
                     <div className="min-w-0 flex-1">
-                      <p className="break-words text-[15px] font-bold leading-snug text-ink">{p.name}</p>
+                      <button type="button" onClick={() => setDetailProduct(p)} className="block text-left break-words text-[15px] font-bold leading-snug text-ink hover:text-primary">{p.name}</button>
                       <div className="mt-1 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-[12.5px] leading-snug text-muted">
                         <span>{specText}</span>
                         {isOwner &&
@@ -657,42 +656,41 @@ export default function Products() {
                   </div>
                 </div>
 
-                {/* Action Row: 42px Touch Targets for View Details, Edit, and Delete */}
-                <div className={cx('mt-3 grid gap-2', isOwner ? 'grid-cols-3' : 'grid-cols-1')}>
-                  <button
-                    type="button"
-                    onClick={() => setDetailProduct(p)}
-                    className="inline-flex min-h-[42px] items-center justify-center rounded-[10px] border border-line bg-white px-2 text-[13px] font-semibold text-primary transition hover:bg-blue-50/50 active:scale-[0.98]"
-                  >
-                    {tr('Angalia')}
-                  </button>
-                  {isOwner && (
-                    <>
+                {/* Owner actions as icons (the name above opens the details). 44px touch targets. */}
+                {isOwner && (
+                  <div className="mt-3 flex items-center justify-end gap-2">
+                    {p.archived && (
                       <button
                         type="button"
-                        onClick={() => setEditingProduct(p)}
-                        className="inline-flex min-h-[42px] items-center justify-center rounded-[10px] border border-line bg-white px-2 text-[13px] font-semibold text-ink transition hover:bg-slate-50 active:scale-[0.98]"
-                      >
-                        {tr('Hariri')}
-                      </button>
-                      <button
-                        type="button"
+                        aria-label={`${tr('Weka tena')}: ${p.name}`}
+                        title={tr('Weka tena')}
                         disabled={toggleArchive.isPending}
-                        onClick={() => toggleArchive.mutate({ id: p.id, name: p.name, archived: !p.archived })}
-                        className="inline-flex min-h-[42px] items-center justify-center rounded-[10px] border border-line bg-white px-2 text-[13px] font-semibold text-muted transition hover:bg-slate-50 active:scale-[0.98]"
+                        onClick={() => toggleArchive.mutate({ id: p.id, name: p.name, archived: false })}
+                        className="flex h-11 w-11 items-center justify-center rounded-full bg-app text-muted transition active:scale-95"
                       >
-                        {p.archived ? tr('Weka tena') : tr('Ficha')}
+                        <RestoreIcon width={19} height={19} />
                       </button>
-                      <button
-                        type="button"
-                        onClick={() => setDeletingProduct(p)}
-                        className="inline-flex min-h-[42px] items-center justify-center rounded-[10px] border border-red-200 bg-bad-bg/60 px-2 text-[13px] font-semibold text-bad-fg transition hover:bg-bad-bg active:scale-[0.98]"
-                      >
-                        {tr('Futa')}
-                      </button>
-                    </>
-                  )}
-                </div>
+                    )}
+                    <button
+                      type="button"
+                      aria-label={`${tr('Hariri')}: ${p.name}`}
+                      title={tr('Hariri')}
+                      onClick={() => setEditingProduct(p)}
+                      className="flex h-11 w-11 items-center justify-center rounded-full bg-primary-tint text-primary-link transition active:scale-95"
+                    >
+                      <PencilIcon width={19} height={19} />
+                    </button>
+                    <button
+                      type="button"
+                      aria-label={`${tr('Futa')}: ${p.name}`}
+                      title={tr('Futa')}
+                      onClick={() => setDeletingProduct(p)}
+                      className="flex h-11 w-11 items-center justify-center rounded-full bg-bad-bg text-bad-fg transition active:scale-95"
+                    >
+                      <TrashIcon width={19} height={19} />
+                    </button>
+                  </div>
+                )}
               </div>
             );
           })}
