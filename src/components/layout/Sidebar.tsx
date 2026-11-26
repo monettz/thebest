@@ -140,9 +140,10 @@ export function Sidebar({
     // Fixed, not sticky: index.css sets overflow-x:hidden on html/body/#root, which stops sticky from ever
     // sticking. AppShell keeps a 248px spacer beside it so content is never covered.
     <aside className="hidden w-[248px] flex-col overflow-hidden bg-app md:fixed md:inset-y-0 md:left-0 md:z-30 md:flex md:h-dvh [&_*]:box-border">
-      <div className="shrink-0 space-y-4 px-4 pb-3 pt-5 [@media(max-height:740px)]:space-y-3 [@media(max-height:740px)]:pt-3">
-        <Link to={code === 'STORE' ? '/store' : '/'} className="flex min-w-0 items-center gap-3 rounded-full bg-white p-1.5 pr-4">
-          <BrandMark size={40} className="!rounded-full" />
+      {/* pt-6 and a 48px pill: the logo lines up exactly with the top bar's pills (TopBar: pt-6, h-12). */}
+      <div className="shrink-0 space-y-4 px-4 pb-3 pt-6 [@media(max-height:740px)]:space-y-3">
+        <Link to={code === 'STORE' ? '/store' : '/'} className="flex h-12 min-w-0 items-center gap-2.5 rounded-full bg-white pl-1.5 pr-4">
+          <BrandMark size={36} className="!rounded-full" />
           <span className="min-w-0 flex-1 leading-tight">
             <span className="block truncate text-[14px] font-bold tracking-[0.02em] text-ink">{tr('THE BEST')}</span>
             <span className="block truncate text-[11.5px] text-muted">{tr('Msaidizi wako wa POS')}</span>
@@ -181,7 +182,7 @@ export function TopBar({ code, user }: { code: LocationCode; user: SessionUser }
   const { pathname } = useLocation();
   const page = pageMeta(pathname, code);
   return (
-    <div className="hidden items-center gap-3 px-8 pt-6 md:flex lg:px-10">
+    <div className="hidden h-[72px] items-end gap-3 px-8 md:flex lg:px-10">
       <div className="flex h-12 min-w-0 items-center gap-2.5 rounded-full bg-white pl-1.5 pr-5">
         <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-app text-ink">
           {ICON[page.icon]({ width: 17, height: 17 })}
