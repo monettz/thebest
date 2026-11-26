@@ -1144,4 +1144,18 @@ export const EN: Record<string, string> = {
   'vs kipindi kilichopita': 'vs previous period',
   'Toleo jipya la app lipo.': 'A new version of the app is ready.',
   'Sasisha': 'Update',
+  // Cloudflare R2 storage
+  'Ingia tena ili kuhifadhi picha.': 'Sign in again to save the photo.',
+  'Hakuna mtandao. Jaribu tena.': 'No connection. Try again.',
+  'Imeshindikana kuhifadhi picha. Jaribu tena.': 'Could not save the photo. Try again.',
+  'Imeshindikana kupakia picha kwenda kwenye hifadhi. Jaribu tena.': 'Could not upload the photo to storage. Try again.',
+  'Hifadhi ya picha (Cloudflare R2) bado haijawekwa.': 'Photo storage (Cloudflare R2) is not set up yet.',
+  'Ingia tena.': 'Sign in again.',
+  'Mmiliki tu ndiye anaweza kuhifadhi au kufuta faili.': 'Only the owner can store or delete files.',
+  'Ombi si sahihi.': 'Invalid request.',
+  'Folda si sahihi.': 'Invalid folder.',
+  'Aina ya faili haikubaliki.': 'This file type is not allowed.',
+  'Faili hili si la app hii.': 'This file does not belong to this app.',
+  'Imeshindikana kufuta faili.': 'Could not delete the file.',
+  'Kitendo si sahihi.': 'Invalid action.',
 };

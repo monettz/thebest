@@ -23,6 +23,7 @@ import {
   restoreUnitsSnapshot,
 } from './inventory';
 import { check, ensureFresh, isRemote, rpc, write } from './sync';
+import { deleteStoredFile, storeImage } from '@/lib/storage';
 import { supabase } from '@/lib/supabase';
 
 /** Local-only latency for the in-memory test engine; with Supabase there is nothing to simulate. */
@@ -141,6 +142,8 @@ export async function createProduct(
   const barcode = data.barcode?.trim() || undefined;
 
   if (isRemote()) {
+    // A picked photo goes to Cloudflare R2 first; the product keeps only its link.
+    const storedImage = await storeImage(imageUrl, 'products');
     return write(async () => {
       const newId = await rpc<number>('rpc_create_product', {
         payload: {
@@ -152,7 +155,7 @@ export async function createProduct(
           costPrice: data.costPrice,
           sellPrice: data.sellPrice,
           minStock: data.minStock,
-          imageUrl,
+          imageUrl: storedImage,
           initialQty: data.initialShopQty,
           location,
           imeis: data.imeis,
@@ -244,6 +247,8 @@ export async function updateProduct(
   const data = parsed.data;
   const priceChanged = target.costPrice !== data.costPrice || target.sellPrice !== data.sellPrice;
   if (isRemote()) {
+    const nextImage =
+      data.imageUrl !== undefined ? await storeImage(data.imageUrl.trim() || undefined, 'products') : target.imageUrl;
     return write(async () => {
       await rpc('rpc_update_product', {
         payload: {
@@ -256,9 +261,10 @@ export async function updateProduct(
           costPrice: data.costPrice,
           sellPrice: data.sellPrice,
           minStock: data.minStock,
-          imageUrl: data.imageUrl !== undefined ? data.imageUrl.trim() || undefined : target.imageUrl,
+          imageUrl: nextImage,
         },
       });
+      if (target.imageUrl && target.imageUrl !== nextImage) void deleteStoredFile(target.imageUrl);
       logAudit(user.name, priceChanged ? 'PRICE_CHANGE' : 'PRODUCT_CREATE', productId, `${data.name}: kununua ${data.costPrice}, kuuza ${data.sellPrice}`);
     });
   }
@@ -296,6 +302,7 @@ export async function deleteProduct(user: { name: string; role: Role }, productI
   if (isRemote()) {
     return write(async () => {
       await rpc('rpc_delete_product', { p_id: productId });
+      void deleteStoredFile(target.imageUrl);
       logAudit(user.name, 'PRODUCT_CREATE', productId, `${target.name}: bidhaa imefutwa`);
     });
   }
@@ -319,8 +326,11 @@ export async function updateProductImage(
     throw new Error('Aina ya faili haikubaliki. Tumia JPG, PNG au WEBP.');
   }
   if (isRemote()) {
+    const stored = await storeImage(cleaned, 'products');
     return write(async () => {
-      await rpc('rpc_update_product_image', { p_id: productId, p_image_url: cleaned ?? '' });
+      await rpc('rpc_update_product_image', { p_id: productId, p_image_url: stored ?? '' });
+      // The replaced (or removed) photo is deleted from R2 so it does not linger.
+      if (target.imageUrl && target.imageUrl !== stored) void deleteStoredFile(target.imageUrl);
       logAudit(user.name, 'PRODUCT_CREATE', productId, `${target.name}: ${cleaned ? 'picha imehifadhiwa' : 'picha imeondolewa'}`);
     });
   }
