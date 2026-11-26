@@ -6,7 +6,7 @@
  * Only product photos can be opened by link today; other folders stay private until they get their own
  * signed links.
  */
-import { PUBLIC_FOLDERS, json, objectUrl, r2Client, r2Configured, validKey, type R2Env } from './_r2';
+import { PUBLIC_FOLDERS, json, objectUrl, r2Client, r2Configured, validKey, type R2Env } from './_r2.js';
 
 const MIME: Record<string, string> = { webp: 'image/webp', jpg: 'image/jpeg', png: 'image/png', pdf: 'application/pdf' };
 

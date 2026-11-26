@@ -8,7 +8,7 @@
  *
  * Only a signed-in owner may call it: the caller's Supabase session is checked with public.is_owner().
  */
-import { FILE_PATH, FOLDERS, json, keyOf, objectUrl, r2Client, r2Configured, type R2Env } from './_r2';
+import { FILE_PATH, FOLDERS, json, keyOf, objectUrl, r2Client, r2Configured, type R2Env } from './_r2.js';
 
 const TYPES: Record<string, string> = {
   'image/webp': 'webp',
