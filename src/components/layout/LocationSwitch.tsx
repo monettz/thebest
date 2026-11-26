@@ -20,7 +20,7 @@ export function LocationSwitch({
     const pill = variant === 'pill';
     return (
       <div
-        className={cx('grid grid-cols-2 gap-1 p-1', pill ? 'rounded-full bg-white' : 'rounded-[12px] bg-app', className)}
+        className={cx('grid grid-cols-2 gap-1 p-1', pill ? 'rounded-full bg-surface' : 'rounded-[12px] bg-app', className)}
         role="tablist"
         aria-label={tr('Eneo')}
       >
@@ -38,8 +38,8 @@ export function LocationSwitch({
                 pill ? 'rounded-full' : 'rounded-[9px]',
                 active
                   ? pill
-                    ? 'bg-ink font-semibold text-white'
-                    : 'bg-white font-semibold text-ink shadow-[0_1px_2px_rgba(15,23,42,0.08)]'
+                    ? 'bg-ink font-semibold text-app'
+                    : 'bg-surface font-semibold text-ink shadow-[0_1px_2px_rgba(15,23,42,0.08)]'
                   : 'font-medium text-muted hover:text-ink',
               )}
             >
@@ -79,7 +79,7 @@ export function LocationSwitch({
             <span
               className={cx(
                 'h-2 w-2 shrink-0 rounded-full',
-                active ? 'bg-white' : 'bg-[#94A3B8]',
+                active ? 'bg-surface' : 'bg-[#94A3B8]',
               )}
             />
             <span className="truncate">{tr(LOCATION_LABEL[l])}</span>

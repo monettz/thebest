@@ -117,7 +117,7 @@ export function Chip({ active, onClick, children }: { active: boolean; onClick: 
       onClick={onClick}
       className={cx(
         'min-h-[38px] rounded-chip border px-3.5 text-[13px] font-semibold',
-        active ? 'border-primary bg-primary-tint text-primary-link' : 'border-line bg-white text-body',
+        active ? 'border-primary bg-primary-tint text-primary-link' : 'border-line bg-surface text-body',
       )}
     >
       {children}

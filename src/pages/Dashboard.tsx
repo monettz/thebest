@@ -89,7 +89,7 @@ function Delta({ value, unit = '' }: { value: number; unit?: string }) {
 
 function Kpi({ label, value, foot, tone }: { label: string; value: ReactNode; foot: ReactNode; tone?: string }) {
   return (
-    <div className="flex min-w-0 flex-col gap-2.5 rounded-2xl border border-line bg-white p-4 sm:p-5">
+    <div className="flex min-w-0 flex-col gap-2.5 rounded-2xl border border-line bg-surface p-4 sm:p-5">
       <span className="text-[13px] font-medium text-muted">{label}</span>
       <span className={cx('truncate text-[20px] font-bold leading-tight tracking-[-0.02em] tabular-nums sm:text-[24px] xl:text-[28px]', tone ?? 'text-ink')}>
         {value}
@@ -101,7 +101,7 @@ function Kpi({ label, value, foot, tone }: { label: string; value: ReactNode; fo
 
 function Panel({ title, action, children, className }: { title: string; action?: ReactNode; children: ReactNode; className?: string }) {
   return (
-    <section className={cx('flex min-w-0 flex-col gap-4 rounded-2xl border border-line bg-white px-4 py-5 sm:px-6', className)}>
+    <section className={cx('flex min-w-0 flex-col gap-4 rounded-2xl border border-line bg-surface px-4 py-5 sm:px-6', className)}>
       <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
         <h2 className="flex-1 whitespace-nowrap text-[16px] font-semibold text-ink">{title}</h2>
         {action}
@@ -159,7 +159,7 @@ function TrendChart({ bars }: { bars: { label: string; value: number }[] }) {
                   <span className="hidden text-[11px] font-semibold text-body sm:block">{short(b.value)}</span>
                 )}
                 <div
-                  className={cx('w-full max-w-[44px] rounded-t-lg rounded-b-[3px]', last ? 'bg-primary' : 'bg-[#C7D2FE]')}
+                  className={cx('w-full max-w-[44px] rounded-t-lg rounded-b-[3px]', last ? 'bg-primary' : 'bg-bar-2')}
                   style={{ height: `${(b.value / max) * 100}%`, minHeight: 3 }}
                 />
               </div>
@@ -167,7 +167,7 @@ function TrendChart({ bars }: { bars: { label: string; value: number }[] }) {
           })}
           {empty && (
             <span className="absolute inset-0 flex items-center justify-center">
-              <span className="rounded-lg bg-white/90 px-3 py-1.5 text-[13px] text-muted">{tr('Hakuna mauzo katika kipindi hiki.')}</span>
+              <span className="rounded-lg bg-surface/90 px-3 py-1.5 text-[13px] text-muted">{tr('Hakuna mauzo katika kipindi hiki.')}</span>
             </span>
           )}
         </div>
@@ -272,7 +272,7 @@ export default function Dashboard() {
             {firstName && `, ${firstName}`}
           </h1>
         </div>
-        <label className="flex h-11 w-full items-center gap-2 rounded-xl border border-line bg-white px-3.5 text-muted focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 sm:w-[280px]">
+        <label className="flex h-11 w-full items-center gap-2 rounded-xl border border-line bg-surface px-3.5 text-muted focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 sm:w-[280px]">
           <SearchIcon width={18} height={18} />
           <span className="sr-only">{tr('Tafuta')}</span>
           <input
@@ -294,7 +294,7 @@ export default function Dashboard() {
 
       <div className="flex flex-col gap-3">
         <div className="flex flex-wrap items-center gap-3">
-          <div role="tablist" aria-label={tr('Chagua kipindi')} className="flex gap-0.5 rounded-xl border border-line bg-white p-1">
+          <div role="tablist" aria-label={tr('Chagua kipindi')} className="flex gap-0.5 rounded-xl border border-line bg-surface p-1">
             {PERIODS.map((o) => (
               <button
                 key={o.value}
@@ -307,7 +307,7 @@ export default function Dashboard() {
                 }}
                 className={cx(
                   'h-[34px] rounded-lg px-3 text-[13px] transition-colors sm:px-3.5',
-                  period === o.value ? 'bg-ink font-semibold text-white' : 'font-medium text-body hover:bg-app',
+                  period === o.value ? 'bg-ink font-semibold text-app' : 'font-medium text-body hover:bg-app',
                 )}
               >
                 {tr(o.label)}
@@ -320,7 +320,7 @@ export default function Dashboard() {
             aria-expanded={showDatePicker}
             title={tr('Kipindi maalum')}
             className={cx(
-              'inline-flex h-11 items-center gap-2 rounded-xl border bg-white px-3.5 text-[13px] font-medium text-body transition hover:bg-app',
+              'inline-flex h-11 items-center gap-2 rounded-xl border bg-surface px-3.5 text-[13px] font-medium text-body transition hover:bg-app',
               period === 'custom' ? 'border-ink' : 'border-line',
             )}
           >
@@ -338,7 +338,7 @@ export default function Dashboard() {
         </div>
 
         {showDatePicker && (
-          <div className="flex flex-wrap items-center gap-2 rounded-xl border border-line bg-white p-3 animate-fade-in">
+          <div className="flex flex-wrap items-center gap-2 rounded-xl border border-line bg-surface p-3 animate-fade-in">
             <label className="flex items-center gap-2 text-[12.5px] font-medium text-muted">
               {tr('Kuanzia')}:
               <input type="date" value={customFrom} max={customTo} onChange={(e) => setCustomFrom(e.target.value)} className="h-10 rounded-lg border border-line px-2 text-[13px] text-ink outline-none focus:border-primary" />
@@ -355,7 +355,7 @@ export default function Dashboard() {
                   setShowDatePicker(false);
                 }
               }}
-              className="min-h-[40px] rounded-lg bg-primary-tint px-3.5 text-[13px] font-semibold text-primary-link hover:bg-[#DCE6FB]"
+              className="min-h-[40px] rounded-lg bg-primary-tint px-3.5 text-[13px] font-semibold text-primary-link hover:bg-bar-3"
             >
               {tr('Tumia')}
             </button>
@@ -389,7 +389,7 @@ export default function Dashboard() {
         {isOwner && p.net !== undefined && (
           <Kpi
             label={tr('Faida halisi')}
-            tone="text-[#15803D]"
+            tone="text-ok-fg"
             value={<AnimatedNumber id="dash.net" value={p.net} format={formatTZS} />}
             foot={
               <>
@@ -403,7 +403,7 @@ export default function Dashboard() {
         )}
         <Kpi
           label={tr('Jumla ya madeni')}
-          tone="text-[#B45309]"
+          tone="text-warn-fg"
           value={<AnimatedNumber id="dash.debt" value={debts.totalDebt} format={formatTZS} />}
           foot={
             <Link to="/debts" className="font-semibold text-warn-fg hover:underline">
@@ -428,7 +428,7 @@ export default function Dashboard() {
                   onClick={() => setTab(t.value)}
                   className={cx(
                     'h-9 rounded-lg border px-3 text-[12px] transition-colors',
-                    tab === t.value ? 'border-primary bg-[#EEF2FF] font-semibold text-primary-link' : 'border-line bg-white font-medium text-body hover:bg-app',
+                    tab === t.value ? 'border-primary bg-primary-tint font-semibold text-primary-link' : 'border-line bg-surface font-medium text-body hover:bg-app',
                   )}
                 >
                   {t.label}

@@ -27,6 +27,7 @@ import { getDebtOverview } from '@/mock/sales';
 import type { SessionUser } from '@/mock/auth';
 import { LocationSwitch } from './LocationSwitch';
 import { NotificationBell } from './NotificationBell';
+import { ThemeToggle } from '@/components/ThemeToggle';
 import { navFor, pageMeta, sectionsOf, type NavIcon, type NavItem } from './nav';
 import { tr } from '@/i18n';
 
@@ -87,7 +88,7 @@ export function NavSections({
                   cx(
                     row,
                     'flex min-w-0 shrink-0 items-center gap-3 rounded-full px-3.5 text-[13.5px] transition-colors',
-                    isActive ? 'bg-primary font-semibold text-white' : 'font-medium text-body hover:bg-white hover:text-ink',
+                    isActive ? 'bg-primary font-semibold text-white' : 'font-medium text-body hover:bg-surface hover:text-ink',
                   )
                 }
               >
@@ -117,7 +118,7 @@ export function useNavCounts(role: Role | undefined) {
 
 /** SW / EN as white pills on the canvas; the chosen one is dark. */
 export const LANG_PILL =
-  'w-full !gap-1 !rounded-full !bg-white !p-1 [&>button]:!rounded-full [&>button]:!shadow-none [&>[aria-checked=true]]:!bg-ink [&>[aria-checked=true]]:!text-white';
+  'w-full !gap-1 !rounded-full !bg-surface !p-1 [&>button]:!rounded-full [&>button]:!shadow-none [&>[aria-checked=true]]:!bg-ink [&>[aria-checked=true]]:!text-app';
 
 // Row heights step down on short screens so the whole menu always fits without scrolling.
 const ROW = 'min-h-[40px] [@media(max-height:860px)]:min-h-[36px] [@media(max-height:740px)]:min-h-[32px]';
@@ -142,7 +143,7 @@ export function Sidebar({
     <aside className="hidden w-[248px] flex-col overflow-hidden bg-app md:fixed md:inset-y-0 md:left-0 md:z-30 md:flex md:h-dvh [&_*]:box-border">
       {/* pt-6 and a 48px pill: the logo lines up exactly with the top bar's pills (TopBar: pt-6, h-12). */}
       <div className="shrink-0 space-y-4 px-4 pb-3 pt-6 [@media(max-height:740px)]:space-y-3">
-        <Link to={code === 'STORE' ? '/store' : '/'} className="flex h-12 min-w-0 items-center gap-2.5 rounded-full bg-white pl-1.5 pr-4">
+        <Link to={code === 'STORE' ? '/store' : '/'} className="flex h-12 min-w-0 items-center gap-2.5 rounded-full bg-surface pl-1.5 pr-4">
           <BrandMark size={36} className="!rounded-full" />
           <span className="min-w-0 flex-1 leading-tight">
             <span className="block truncate text-[14px] font-bold tracking-[0.02em] text-ink">{tr('THE BEST')}</span>
@@ -164,7 +165,7 @@ export function Sidebar({
         <button
           type="button"
           onClick={logout}
-          className="flex min-h-[40px] w-full items-center gap-3 rounded-full px-3.5 text-[13.5px] font-medium text-body transition-colors hover:bg-white hover:text-bad-fg"
+          className="flex min-h-[40px] w-full items-center gap-3 rounded-full px-3.5 text-[13.5px] font-medium text-body transition-colors hover:bg-surface hover:text-bad-fg"
         >
           <LogoutIcon width={18} height={18} />
           {tr('Toka')}
@@ -183,15 +184,16 @@ export function TopBar({ code, user }: { code: LocationCode; user: SessionUser }
   const page = pageMeta(pathname, code);
   return (
     <div className="hidden h-[72px] items-end gap-3 px-8 md:flex lg:px-10">
-      <div className="flex h-12 min-w-0 items-center gap-2.5 rounded-full bg-white pl-1.5 pr-5">
+      <div className="flex h-12 min-w-0 items-center gap-2.5 rounded-full bg-surface pl-1.5 pr-5">
         <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-app text-ink">
           {ICON[page.icon]({ width: 17, height: 17 })}
         </span>
         <span className="truncate text-[14px] font-semibold text-ink">{tr(page.label)}</span>
       </div>
       <div className="ml-auto flex items-center gap-3">
-        <NotificationBell className="!h-12 !w-12 !border-0 !bg-white !shadow-none hover:!bg-white/70" />
-        <div className="flex h-12 min-w-0 max-w-[260px] items-center gap-2.5 rounded-full bg-white pl-1.5 pr-5">
+        <ThemeToggle className="!h-12 !w-12" />
+        <NotificationBell className="!h-12 !w-12 !border-0 !bg-surface !shadow-none hover:!bg-surface/70" />
+        <div className="flex h-12 min-w-0 max-w-[260px] items-center gap-2.5 rounded-full bg-surface pl-1.5 pr-5">
           <Avatar name={user.name} size={36} />
           <span className="min-w-0 leading-tight">
             <span className="block truncate text-[13px] font-semibold text-ink" title={user.name}>{user.name}</span>

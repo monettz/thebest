@@ -119,7 +119,7 @@ export default function Expenses() {
       {/* 1. Date filters */}
       <section aria-label={tr('Kipindi')} className="mb-4">
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-          <div className="inline-flex max-w-full flex-wrap gap-1 rounded-xl border border-line bg-white p-1 shadow-sm" role="tablist">
+          <div className="inline-flex max-w-full flex-wrap gap-1 rounded-xl border border-line bg-surface p-1 shadow-sm" role="tablist">
             {PERIODS.map((o) => (
               <button
                 key={o.value}
@@ -127,7 +127,7 @@ export default function Expenses() {
                 role="tab"
                 aria-selected={period === o.value}
                 onClick={() => setPeriod(o.value)}
-                className={cx('min-h-[38px] shrink-0 whitespace-nowrap rounded-lg px-3.5 text-[13px] font-semibold transition-colors', period === o.value ? 'bg-primary text-white shadow-sm' : 'text-slate-600 hover:bg-slate-50')}
+                className={cx('min-h-[38px] shrink-0 whitespace-nowrap rounded-lg px-3.5 text-[13px] font-semibold transition-colors', period === o.value ? 'bg-primary text-white shadow-sm' : 'text-body hover:bg-app')}
               >
                 {tr(o.label)}
               </button>
@@ -219,7 +219,7 @@ export default function Expenses() {
                   <span className="font-semibold text-ink">{tr(EXPENSE_LABEL[c.category])}</span>
                   <span className="tabular font-extrabold text-ink">{formatTZS(c.amount)}</span>
                 </div>
-                <div className="h-2 overflow-hidden rounded-full bg-slate-100">
+                <div className="h-2 overflow-hidden rounded-full bg-line-soft">
                   <div className="h-full rounded-full bg-primary" style={{ width: `${(c.amount / maxCat) * 100}%` }} />
                 </div>
               </li>
@@ -253,7 +253,7 @@ export default function Expenses() {
             <div className="hidden overflow-x-auto border-t border-line-soft md:block">
               <table className="w-full text-[13.5px]">
                 <thead>
-                  <tr className="bg-slate-50/80 text-left text-[11.5px] font-bold uppercase tracking-wider text-slate-500">
+                  <tr className="bg-app/80 text-left text-[11.5px] font-bold uppercase tracking-wider text-muted">
                     <th className="px-5 py-3">{tr('Tarehe')}</th>
                     <th className="py-3">{tr('Aina')}</th>
                     <th className="py-3">{tr('Maelezo')}</th>
@@ -264,7 +264,7 @@ export default function Expenses() {
                 </thead>
                 <tbody>
                   {shown.map((e) => (
-                    <tr key={e.id} className="border-t border-line-soft hover:bg-slate-50/70">
+                    <tr key={e.id} className="border-t border-line-soft hover:bg-app/70">
                       <td className="whitespace-nowrap px-5 py-2.5">{day(e.spentOn)}</td>
                       <td><Badge tone="blue">{tr(EXPENSE_LABEL[e.category])}</Badge></td>
                       <td className="max-w-[260px] truncate pr-3 text-body">{e.description || '–'}</td>

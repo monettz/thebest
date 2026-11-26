@@ -94,7 +94,7 @@ export default function Receive() {
       />
 
       {successMsg && (
-        <div role="status" className="mb-4 rounded-[12px] border border-emerald-200 bg-emerald-50 px-4 py-3 text-[14px] font-semibold text-emerald-800">
+        <div role="status" className="mb-4 rounded-[12px] border border-ok-fg/30 bg-ok-bg px-4 py-3 text-[14px] font-semibold text-ok-fg">
           ✓ {successMsg}
         </div>
       )}
@@ -117,18 +117,18 @@ export default function Receive() {
             'flex items-center gap-4 rounded-[16px] border p-4 text-left transition',
             activeTab === 'existing'
               ? 'border-primary bg-primary-tint shadow-sm ring-2 ring-primary/20'
-              : 'border-line bg-white hover:border-slate-300',
+              : 'border-line bg-surface hover:border-line',
           )}
         >
           <span className={cx(
             'flex h-12 w-12 shrink-0 items-center justify-center rounded-[12px]',
-            activeTab === 'existing' ? 'bg-primary text-white' : 'bg-slate-100 text-slate-600',
+            activeTab === 'existing' ? 'bg-primary text-white' : 'bg-line-soft text-body',
           )}>
             <WarehouseIcon width={24} height={24} />
           </span>
           <div>
-            <h3 className="text-[15px] font-bold text-slate-900">Ongeza Mzigo wa Bidhaa Zilizopo</h3>
-            <p className="text-[12.5px] text-slate-500">Ongeza idadi ya simu au vifaa vinavyotambulika Store.</p>
+            <h3 className="text-[15px] font-bold text-ink">Ongeza Mzigo wa Bidhaa Zilizopo</h3>
+            <p className="text-[12.5px] text-muted">Ongeza idadi ya simu au vifaa vinavyotambulika Store.</p>
           </div>
         </button>
 
@@ -142,18 +142,18 @@ export default function Receive() {
             'flex items-center gap-4 rounded-[16px] border p-4 text-left transition',
             activeTab === 'new'
               ? 'border-primary bg-primary-tint shadow-sm ring-2 ring-primary/20'
-              : 'border-line bg-white hover:border-slate-300',
+              : 'border-line bg-surface hover:border-line',
           )}
         >
           <span className={cx(
             'flex h-12 w-12 shrink-0 items-center justify-center rounded-[12px]',
-            activeTab === 'new' ? 'bg-primary text-white' : 'bg-slate-100 text-slate-600',
+            activeTab === 'new' ? 'bg-primary text-white' : 'bg-line-soft text-body',
           )}>
             <PlusIcon width={24} height={24} />
           </span>
           <div>
-            <h3 className="text-[15px] font-bold text-slate-900">+ Sajili Bidhaa Mpya Store</h3>
-            <p className="text-[12.5px] text-slate-500">Tengeneza bidhaa mpya kabisa yenye stock ya awali Store.</p>
+            <h3 className="text-[15px] font-bold text-ink">+ Sajili Bidhaa Mpya Store</h3>
+            <p className="text-[12.5px] text-muted">Tengeneza bidhaa mpya kabisa yenye stock ya awali Store.</p>
           </div>
         </button>
       </div>
@@ -179,7 +179,7 @@ export default function Receive() {
               </Button>
             </div>
           ) : (
-            <div className="mx-auto max-w-2xl rounded-[12px] border border-line bg-white p-3.5 sm:p-5">
+            <div className="mx-auto max-w-2xl rounded-[12px] border border-line bg-surface p-3.5 sm:p-5">
               <CreateProductForm
                 hideHeading
                 location="STORE"
@@ -201,8 +201,8 @@ export default function Receive() {
         <Card className="overflow-hidden p-5">
           <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <h2 className="text-[16px] font-extrabold text-slate-900">Chagua Bidhaa za Kuongeza Store</h2>
-              <p className="text-[13px] text-slate-500">Tafuta kwa jina, model au SKU, kisha uweke idadi.</p>
+              <h2 className="text-[16px] font-extrabold text-ink">Chagua Bidhaa za Kuongeza Store</h2>
+              <p className="text-[13px] text-muted">Tafuta kwa jina, model au SKU, kisha uweke idadi.</p>
             </div>
 
             <Button
@@ -221,10 +221,10 @@ export default function Receive() {
           {/* Search bar & dropdown */}
           <div className="mb-4 flex flex-col gap-2 sm:flex-row">
             <div className="relative flex-1">
-              <SearchIcon width={16} height={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+              <SearchIcon width={16} height={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted" />
               <input
                 type="text"
-                className="h-10 w-full rounded-[10px] border border-slate-200 bg-white pl-10 pr-3 text-[13.5px] shadow-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                className="h-10 w-full rounded-[10px] border border-line bg-surface pl-10 pr-3 text-[13.5px] shadow-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
                 placeholder={tr('Tafuta bidhaa…')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -232,7 +232,7 @@ export default function Receive() {
             </div>
 
             <select
-              className="h-10 rounded-[10px] border border-slate-200 bg-white px-3 text-[13.5px] shadow-sm outline-none focus:border-blue-500"
+              className="h-10 rounded-[10px] border border-line bg-surface px-3 text-[13.5px] shadow-sm outline-none focus:border-primary"
               value={selectedDropdownId}
               onChange={(e) => {
                 if (e.target.value) {
@@ -251,9 +251,9 @@ export default function Receive() {
 
           {/* Selected Lines for Stocking */}
           {lines.length === 0 ? (
-            <div className="rounded-[12px] border border-dashed border-slate-200 bg-slate-50/70 py-10 text-center text-slate-400">
-              <WarehouseIcon width={36} height={36} className="mx-auto mb-2 text-slate-300" />
-              <p className="text-[14px] font-medium text-slate-600">Hakuna bidhaa iliyochaguliwa bado.</p>
+            <div className="rounded-[12px] border border-dashed border-line bg-app/70 py-10 text-center text-muted">
+              <WarehouseIcon width={36} height={36} className="mx-auto mb-2 text-muted" />
+              <p className="text-[14px] font-medium text-body">Hakuna bidhaa iliyochaguliwa bado.</p>
               <p className="text-[12.5px]">Tafuta na ubofye kwenye orodha ili kuingiza idadi au IMEI.</p>
             </div>
           ) : (
@@ -261,24 +261,24 @@ export default function Receive() {
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-[13.5px]">
                   <thead>
-                    <tr className="border-b border-slate-200 bg-slate-50 text-[12px] font-bold uppercase tracking-wider text-slate-500">
+                    <tr className="border-b border-line bg-app text-[12px] font-bold uppercase tracking-wider text-muted">
                       <th className="px-4 py-3">Bidhaa</th>
                       <th className="py-3">Hisa ya Sasa Store</th>
                       <th className="py-3 text-center">Idadi ya Kuongeza</th>
                       <th className="px-4 py-3 text-right">Kitendo</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100">
+                  <tbody className="divide-y divide-line-soft">
                     {lines.map((l) => {
                       const prod = byId.get(l.productId);
                       if (!prod) return null;
                       return (
-                        <tr key={l.productId} className="hover:bg-slate-50/50">
+                        <tr key={l.productId} className="hover:bg-app/50">
                           <td className="px-4 py-3.5">
-                            <p className="font-bold text-slate-900">{prod.name}</p>
-                            <p className="text-[12px] text-slate-500">{prod.detail || prod.code} · {prod.type === 'phone' ? 'Simu (IMEI)' : 'Accessory'}</p>
+                            <p className="font-bold text-ink">{prod.name}</p>
+                            <p className="text-[12px] text-muted">{prod.detail || prod.code} · {prod.type === 'phone' ? 'Simu (IMEI)' : 'Accessory'}</p>
                           </td>
-                          <td className="py-3.5 font-semibold text-slate-700">
+                          <td className="py-3.5 font-semibold text-body">
                             {formatNumber(prod.storeQty)} vipande
                           </td>
                           <td className="py-3.5">
@@ -292,12 +292,12 @@ export default function Receive() {
 
                             {/* IMEI Input for Phones */}
                             {prod.type === 'phone' && (
-                              <div className="mt-2.5 max-w-sm rounded-[8px] border border-blue-100 bg-blue-50/40 p-2.5">
-                                <p className="mb-1 text-[11.5px] font-bold text-blue-900">
+                              <div className="mt-2.5 max-w-sm rounded-[8px] border border-bar-3 bg-primary-tint/40 p-2.5">
+                                <p className="mb-1 text-[11.5px] font-bold text-primary-link">
                                   IMEI (hiari, hadi {l.qty}) · moja kwa mstari au scan:
                                 </p>
                                 <textarea
-                                  className="w-full rounded-[6px] border border-blue-200 bg-white p-2 font-mono text-[12px] outline-none focus:border-blue-500"
+                                  className="w-full rounded-[6px] border border-bar-2 bg-surface p-2 font-mono text-[12px] outline-none focus:border-primary"
                                   rows={Math.min(4, Math.max(2, l.qty))}
                                   placeholder="359200000000000"
                                   value={l.imeis.join('\n')}
@@ -307,7 +307,7 @@ export default function Receive() {
                                   }}
                                 />
                                 <div className="mt-1 flex items-center justify-between text-[11px]">
-                                  <span className={l.imeis.length === l.qty ? 'font-bold text-emerald-600' : 'font-bold text-amber-600'}>
+                                  <span className={l.imeis.length === l.qty ? 'font-bold text-ok-fg' : 'font-bold text-warn-fg'}>
                                     Zimeingizwa: {l.imeis.length} / {l.qty}
                                   </span>
                                 </div>
@@ -330,7 +330,7 @@ export default function Receive() {
                 </table>
               </div>
 
-              <div className="flex items-center justify-end gap-3 border-t border-slate-100 pt-4">
+              <div className="flex items-center justify-end gap-3 border-t border-line-soft pt-4">
                 <Button
                   variant="outline"
                   onClick={() => setLines([])}

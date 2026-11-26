@@ -35,7 +35,7 @@ export default function Audit() {
           ) : (
             <table className="w-full min-w-[560px] text-[14px]">
               <thead>
-                <tr className="bg-slate-50/80 text-left text-[11.5px] font-bold uppercase tracking-wider text-slate-500">
+                <tr className="bg-app/80 text-left text-[11.5px] font-bold uppercase tracking-wider text-muted">
                   <th className="px-5 py-3.5">{tr('Muda')}</th>
                   <th className="py-3.5">{tr('Aliyefanya')}</th>
                   <th className="py-3.5">{tr('Tukio')}</th>
@@ -44,7 +44,7 @@ export default function Audit() {
               </thead>
               <tbody>
                 {rows.map((e) => (
-                  <tr key={e.id} className="border-t border-line-soft transition hover:bg-slate-50/70 align-top">
+                  <tr key={e.id} className="border-t border-line-soft transition hover:bg-app/70 align-top">
                     <td className="px-4 py-3 text-[13px] text-body">
                       {new Date(e.at).toLocaleString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
                     </td>

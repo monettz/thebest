@@ -26,7 +26,7 @@ export default function CloseDay({ onClose }: { onClose: () => void }) {
 
   return (
     <div className="fixed inset-0 z-40 flex items-end justify-center bg-navy/50 animate-fade-in sm:items-center" onClick={onClose}>
-      <div role="dialog" aria-label={tr('Funga siku')} onClick={(e) => e.stopPropagation()} className="pb-safe max-h-[92vh] w-full max-w-md space-y-4 overflow-y-auto animate-sheet rounded-t-[28px] bg-white p-6 shadow-2xl sm:rounded-[28px]">
+      <div role="dialog" aria-label={tr('Funga siku')} onClick={(e) => e.stopPropagation()} className="pb-safe max-h-[92vh] w-full max-w-md space-y-4 overflow-y-auto animate-sheet rounded-t-[28px] bg-surface p-6 shadow-2xl sm:rounded-[28px]">
         <h2 className="text-[20px] font-extrabold text-ink">{tr('Funga siku')}</h2>
         {!data ? (
           <Spinner variant="list" />

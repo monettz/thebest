@@ -79,7 +79,7 @@ export default function Reports() {
         <Spinner variant="list" />
       ) : (
         <>
-          <div className="rounded-[20px] border border-line bg-white shadow-sm overflow-hidden mb-6">
+          <div className="rounded-[20px] border border-line bg-surface shadow-sm overflow-hidden mb-6">
             <div className={cx('grid divide-y divide-line-soft md:divide-y-0 md:divide-x', isOwner ? 'grid-cols-2 md:grid-cols-5' : 'grid-cols-2')}>
               <Cell label="Mauzo" value={<AnimatedNumber id="rep.sales" value={r.sales} format={formatTZSCompact} />} note={`mauzo ${formatNumber(r.count)}`} />
               {isOwner && r.gross !== undefined && r.net !== undefined ? (
@@ -99,19 +99,19 @@ export default function Reports() {
             <div className="flex items-center justify-between border-b border-line-soft pb-4">
               <h2 className="text-[17px] font-bold text-ink">{isOwner ? tr('Mauzo na faida halisi, miezi 6') : tr('Mauzo, miezi 6')}</h2>
               <ul className="flex gap-4 text-[12.5px] text-muted">
-                <li className="flex items-center gap-1.5"><span className="h-3 w-3 rounded-full bg-blue-200" />{tr('Mauzo')}</li>
+                <li className="flex items-center gap-1.5"><span className="h-3 w-3 rounded-full bg-bar-2" />{tr('Mauzo')}</li>
                 {isOwner && <li className="flex items-center gap-1.5"><span className="h-3 w-3 rounded-full bg-primary" />{tr('Faida halisi')}</li>}
               </ul>
             </div>
             <div className="relative mt-6 pt-2">
               <div className="absolute inset-x-0 top-0 flex h-[160px] flex-col justify-between pointer-events-none">
-                {[0, 1, 2, 3].map((i) => <div key={i} className="border-b border-dashed border-slate-200/90 w-full" />)}
+                {[0, 1, 2, 3].map((i) => <div key={i} className="border-b border-dashed border-line/90 w-full" />)}
               </div>
               <div className="relative z-10 flex h-[200px] items-end justify-around gap-2 pb-6" role="img" aria-label={tr('Mauzo ya miezi sita')}>
                 {r.months.map((m) => (
                   <div key={m.ym} className="flex flex-1 flex-col items-center justify-end gap-2 group cursor-pointer">
                     <div className="flex h-[150px] items-end gap-1.5">
-                      <div className="w-5 rounded-t-lg bg-blue-200 transition group-hover:bg-blue-300 sm:w-8" style={{ height: `${Math.max(6, (m.sales / maxMonth) * 100)}%` }} title={formatTZS(m.sales)} />
+                      <div className="w-5 rounded-t-lg bg-bar-2 transition group-hover:bg-blue-300 sm:w-8" style={{ height: `${Math.max(6, (m.sales / maxMonth) * 100)}%` }} title={formatTZS(m.sales)} />
                       {m.net !== undefined && (
                         <div className={cx('w-5 rounded-t-lg transition sm:w-8', m.net >= 0 ? 'bg-primary group-hover:bg-blue-700 shadow-sm' : 'bg-bad-fg')} style={{ height: `${Math.max(6, (Math.abs(m.net) / maxMonth) * 100)}%` }} title={formatTZS(m.net)} />
                       )}
@@ -134,9 +134,9 @@ export default function Reports() {
                   <li key={m.method} className="flex items-center gap-3 text-[13.5px]">
                     <span className="w-20 shrink-0 font-semibold text-ink">{tr(PAYMENT_LABEL[m.method])}</span>
                     <div className="relative flex flex-1 items-center">
-                      <div className="h-3 flex-1 overflow-hidden rounded-full bg-blue-50/80">
+                      <div className="h-3 flex-1 overflow-hidden rounded-full bg-primary-tint/80">
                         <div
-                          className="h-full rounded-full bg-gradient-to-r from-blue-300 to-primary transition-all duration-300"
+                          className="h-full rounded-full bg-gradient-to-r from-bar-1 to-primary transition-all duration-300"
                           style={{ width: `${(m.amount / maxMethod) * 100}%` }}
                         />
                       </div>
@@ -174,7 +174,7 @@ export default function Reports() {
 
 function Cell({ label, value, note, good, bad }: { label: string; value: React.ReactNode; note: string; good?: boolean; bad?: boolean }) {
   return (
-    <div className={cx('min-w-0 border-b border-r border-line-soft px-5 py-5', good && 'bg-[#F0FDF4]', bad && 'bg-[#FEF2F2]')}>
+    <div className={cx('min-w-0 border-b border-r border-line-soft px-5 py-5', good && 'bg-ok-bg/50', bad && 'bg-bad-bg/50')}>
       <p className={cx('text-[13px]', good ? 'text-ok-fg' : bad ? 'text-bad-fg' : 'text-body')}>{tr(label)}</p>
       <p className={cx('mt-1.5 whitespace-nowrap text-[24px] font-extrabold leading-none', good ? 'text-ok-fg' : bad ? 'text-bad-fg' : 'text-ink')}>{value}</p>
       <p className="mt-2 text-[12.5px] text-muted">{tr(note)}</p>

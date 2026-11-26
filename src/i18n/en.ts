@@ -1185,4 +1185,6 @@ export const EN: Record<string, string> = {
   'Ruhusa ya kamera imekataliwa. Iruhusu kwenye mipangilio ya browser, kisha jaribu tena.': 'Camera permission was denied. Allow it in the browser settings, then try again.',
   'Kamera inatumiwa na programu nyingine. Ifunge, kisha jaribu tena.': 'The camera is in use by another app. Close it, then try again.',
   'Imeshindikana kufungua kamera. Jaribu tena.': 'Could not open the camera. Try again.',
+  'Giza': 'Dark mode',
+  'Mwanga': 'Light mode',
 };

@@ -25,7 +25,7 @@ export default function Sales() {
       <PageHeader title="Historia ya mauzo" subtitle="Tafuta mauzo kwa namba ya risiti, mteja, bidhaa au IMEI." />
       <div className="relative mb-6 max-w-md">
         <SearchIcon width={16} height={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted" />
-        <input className="h-10 w-full rounded-xl border border-line bg-white pl-10 pr-3 text-[13.5px] shadow-sm outline-none placeholder:text-muted/70 focus:border-primary focus:ring-2 focus:ring-primary/20" placeholder={tr('TB-000001, jina, IMEI…')} value={q} onChange={(e) => { setQ(e.target.value); setLimit(60); }} />
+        <input className="h-10 w-full rounded-xl border border-line bg-surface pl-10 pr-3 text-[13.5px] shadow-sm outline-none placeholder:text-muted/70 focus:border-primary focus:ring-2 focus:ring-primary/20" placeholder={tr('TB-000001, jina, IMEI…')} value={q} onChange={(e) => { setQ(e.target.value); setLimit(60); }} />
       </div>
       {!data ? (
         <Spinner variant="list" />

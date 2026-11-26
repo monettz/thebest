@@ -26,7 +26,7 @@ export function LanguageSwitch({ compact, className }: { compact?: boolean; clas
           className={cx(
             'rounded-chip px-3 text-[13.5px] font-semibold transition-colors duration-150',
             compact ? 'min-h-[32px]' : 'min-h-[40px] px-5',
-            lang === o.value ? 'bg-white text-ink shadow-sm' : 'text-muted hover:text-ink',
+            lang === o.value ? 'bg-surface text-ink shadow-sm' : 'text-muted hover:text-ink',
           )}
         >
           {compact ? o.short : o.label}

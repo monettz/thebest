@@ -12,6 +12,60 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ---------- Colours: light (default) and dark (html.dark). "R G B" so Tailwind can add opacity. ---------- */
+:root,
+.theme-light {
+  color-scheme: light;
+  --c-primary: 37 99 235;
+  --c-primary-link: 29 78 216;
+  --c-primary-tint: 238 243 255;
+  --c-bar-1: 147 180 245;
+  --c-bar-2: 199 215 251;
+  --c-bar-3: 220 230 251;
+  --c-ink: 20 18 23;
+  --c-body: 58 59 66;
+  --c-muted: 95 97 104;
+  --c-line: 223 229 226;
+  --c-line-soft: 234 239 236;
+  --c-app: 240 245 243;
+  --c-surface: 255 255 255;
+  --c-ok-bg: 220 252 231;
+  --c-ok-fg: 22 101 52;
+  --c-warn-bg: 254 243 199;
+  --c-warn-fg: 146 64 14;
+  --c-bad-bg: 254 226 226;
+  --c-bad-fg: 153 27 27;
+}
+/* Dark: a deep grey-green canvas (not pure black), raised cards, the same brand blue. */
+.dark {
+  color-scheme: dark;
+  --c-primary: 47 108 235;
+  --c-primary-link: 138 180 255;
+  --c-primary-tint: 25 39 66;
+  --c-bar-1: 70 104 178;
+  --c-bar-2: 48 70 122;
+  --c-bar-3: 36 52 90;
+  --c-ink: 236 241 239;
+  --c-body: 200 209 205;
+  --c-muted: 150 162 157;
+  --c-line: 46 58 54;
+  --c-line-soft: 36 46 43;
+  --c-app: 14 20 18;
+  --c-surface: 23 31 28;
+  --c-ok-bg: 17 52 33;
+  --c-ok-fg: 120 230 165;
+  --c-warn-bg: 60 44 14;
+  --c-warn-fg: 250 205 120;
+  --c-bad-bg: 62 22 25;
+  --c-bad-fg: 252 170 170;
+}
+/* Receipts and anything printed stay on white paper. */
+@media print {
+  .dark {
+    color-scheme: light;
+  }
+}
+
 @layer base {
   html,
   body,
@@ -72,7 +126,7 @@
 
 @layer components {
   .input {
-    @apply min-h-touch w-full rounded-field border border-line bg-white px-3.5 text-[14px] text-ink outline-none placeholder:text-muted/70 focus:border-primary focus:ring-2 focus:ring-primary/20;
+    @apply min-h-touch w-full rounded-field border border-line bg-surface px-3.5 text-[14px] text-ink outline-none placeholder:text-muted/70 focus:border-primary focus:ring-2 focus:ring-primary/20;
   }
   .label {
     @apply mb-1.5 block text-[12.5px] font-medium text-body;
@@ -82,19 +136,19 @@
   }
   /* White panel straight on the grey-green canvas: large radius, no shadow, a barely-there edge. */
   .card {
-    @apply rounded-[20px] border border-line-soft bg-white;
+    @apply rounded-[20px] border border-line-soft bg-surface;
   }
 }
 
 /* Sidebar menu: a slim scrollbar with its own gutter, so it never sits on top of the labels or badges. */
 .nav-scroll {
   scrollbar-width: thin;
-  scrollbar-color: #cbd5e1 transparent;
+  scrollbar-color: rgb(var(--c-line)) transparent;
   scrollbar-gutter: stable;
 }
 .nav-scroll::-webkit-scrollbar { width: 6px; }
 .nav-scroll::-webkit-scrollbar-track { background: transparent; }
-.nav-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+.nav-scroll::-webkit-scrollbar-thumb { background: rgb(var(--c-line)); border-radius: 9999px; }
 
 /* Safe area for the mobile bottom nav */
 .pb-safe {
@@ -124,7 +178,7 @@
   position: relative;
   overflow: hidden;
   border-radius: 10px;
-  background: #e5e8ee;
+  background: rgb(var(--c-line));
 }
 .skeleton::after {
   content: '';

@@ -97,10 +97,10 @@ export default function Debts() {
         <Card className="mb-4 px-4 py-3">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-5">
             <p className="shrink-0 text-[12.5px] font-semibold text-ink">{tr('Umri wa madeni')}</p>
-            <div className="flex h-2 w-full overflow-hidden rounded-full bg-slate-100 sm:w-auto sm:flex-1" role="img" aria-label={tr('Umri wa madeni')}>
+            <div className="flex h-2 w-full overflow-hidden rounded-full bg-line-soft sm:w-auto sm:flex-1" role="img" aria-label={tr('Umri wa madeni')}>
               {data.buckets.map((v, i) => <div key={i} className={BUCKETS[i].color} style={{ width: `${(v / bucketTotal) * 100}%` }} />)}
             </div>
-            <ul className="flex flex-wrap gap-x-4 gap-y-1 text-[12px] text-slate-600">
+            <ul className="flex flex-wrap gap-x-4 gap-y-1 text-[12px] text-body">
               {BUCKETS.map((b, i) => (
                 <li key={b.label} className="flex items-center gap-1.5">
                   <span className={cx('h-2 w-2 rounded-full', b.color)} />
@@ -139,7 +139,7 @@ export default function Debts() {
           <Card className="hidden overflow-x-auto md:block">
             <table className="w-full min-w-[820px] text-[12.5px]">
               <thead>
-                <tr className="bg-slate-50/80 text-left text-[11.5px] font-bold uppercase tracking-wider text-slate-500">
+                <tr className="bg-app/80 text-left text-[11.5px] font-bold uppercase tracking-wider text-muted">
                   <th className="px-4 py-3">{tr('Mteja')}</th>
                   <th className="py-3">{tr('Tarehe ya mauzo')}</th>
                   <th className="py-3">{tr('Risiti')}</th>
@@ -153,7 +153,7 @@ export default function Debts() {
               </thead>
               <tbody>
                 {rows.map((r) => (
-                  <tr key={r.saleId} className="border-t border-line-soft hover:bg-slate-50/70">
+                  <tr key={r.saleId} className="border-t border-line-soft hover:bg-app/70">
                     <td className="max-w-[160px] px-4 py-2.5">
                       <Link to={`/customers?c=${r.customer.id}`} className="block truncate font-bold text-ink hover:text-primary-link hover:underline" title={tr('Tazama mteja')}>{r.customer.name}</Link>
                       <p className="truncate text-[12px] text-muted">{phoneOf(r) || '–'}</p>
@@ -294,7 +294,7 @@ function ReminderDialog({ rows, onClose }: { rows: DebtRow[]; onClose: () => voi
         ) : (
           <ul className="max-h-[48vh] divide-y divide-line-soft overflow-y-auto rounded-field border border-line">
             {previews.map((p) => (
-              <li key={p.saleId} className={cx('p-3 text-[13px]', !p.eligible && 'bg-slate-50')}>
+              <li key={p.saleId} className={cx('p-3 text-[13px]', !p.eligible && 'bg-app')}>
                 <label className="flex items-start gap-3">
                   <input type="checkbox" className="mt-1 h-4 w-4 accent-primary" disabled={!p.eligible} checked={p.eligible && !off.has(p.saleId)} onChange={(e) => setOff((s) => { const n = new Set(s); if (e.target.checked) n.delete(p.saleId); else n.add(p.saleId); return n; })} />
                   <span className="min-w-0 flex-1">

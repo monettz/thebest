@@ -8,7 +8,7 @@ import { initials } from '@/lib/format';
 import type { StockStatus } from '@shared/constants';
 import { STOCK_STATUS_LABEL } from '@shared/constants';
 
-/** Joins classes and lets the LAST conflicting utility win (so `bg-white` on a primary button really overrides `bg-primary`). */
+/** Joins classes and lets the LAST conflicting utility win (so `bg-surface` on a primary button really overrides `bg-primary`). */
 export function cx(...parts: (string | false | null | undefined)[]) {
   return twMerge(parts.filter(Boolean).join(' '));
 }
@@ -23,10 +23,10 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 const VARIANTS: Record<Variant, string> = {
   // Disabled keeps readable text (grey on grey) instead of fading white-on-blue.
-  primary: 'bg-primary text-white hover:bg-primary-link disabled:bg-slate-200 disabled:text-slate-600',
-  outline: 'border border-line bg-white text-body hover:bg-app disabled:bg-app disabled:text-slate-500',
-  ghost: 'text-body hover:bg-app disabled:text-slate-400',
-  soft: 'bg-primary-tint text-primary-link hover:bg-bar-3 disabled:bg-slate-100 disabled:text-slate-500',
+  primary: 'bg-primary text-white hover:bg-primary-link disabled:bg-line disabled:text-body',
+  outline: 'border border-line bg-surface text-body hover:bg-app disabled:bg-app disabled:text-muted',
+  ghost: 'text-body hover:bg-app disabled:text-muted',
+  soft: 'bg-primary-tint text-primary-link hover:bg-bar-3 disabled:bg-line-soft disabled:text-muted',
 };
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
   { variant = 'primary', block, loading, className, type = 'button', disabled, children, ...rest },
@@ -66,7 +66,7 @@ const BADGE: Record<'ok' | 'warn' | 'bad' | 'navy' | 'blue', string> = {
   ok: 'bg-ok-bg text-ok-fg',
   warn: 'bg-warn-bg text-warn-fg',
   bad: 'bg-bad-bg text-bad-fg',
-  navy: 'bg-navy text-white',
+  navy: 'bg-navy text-app',
   blue: 'bg-primary-tint text-primary-link',
 };
 const DOT: Record<keyof typeof BADGE, { dot: string; text: string }> = {
@@ -126,7 +126,7 @@ export function Tabs<T extends string>({
           onClick={() => onChange(o.value)}
           className={cx(
             'min-h-[40px] shrink-0 whitespace-nowrap rounded-full border px-4 text-[13px] font-semibold transition-all duration-150',
-            o.value === value ? 'border-primary bg-primary text-white' : 'border-line bg-white text-body hover:border-ink/20 hover:text-ink',
+            o.value === value ? 'border-primary bg-primary text-white' : 'border-line bg-surface text-body hover:border-ink/20 hover:text-ink',
           )}
         >
           {tr(o.label)}
@@ -177,7 +177,7 @@ export function Toggle({ checked, onChange, label }: { checked: boolean; onChang
       <span className={cx('relative h-7 w-12 rounded-full transition-colors duration-200', checked ? 'bg-primary' : 'bg-line')}>
         <span
           className={cx(
-            'absolute top-0.5 h-6 w-6 rounded-full bg-white shadow transition-all duration-200',
+            'absolute top-0.5 h-6 w-6 rounded-full bg-surface shadow transition-all duration-200',
             checked ? 'left-[22px]' : 'left-0.5',
           )}
         />

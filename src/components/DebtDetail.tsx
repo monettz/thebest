@@ -114,7 +114,7 @@ function DebtBody({ d, onClose, onPay }: { d: Detail; onClose: () => void; onPay
             <div className="hidden overflow-x-auto rounded-field border border-line sm:block">
               <table className="w-full text-[13px]">
                 <thead>
-                  <tr className="bg-slate-50 text-left text-[11.5px] font-bold uppercase tracking-wide text-slate-500">
+                  <tr className="bg-app text-left text-[11.5px] font-bold uppercase tracking-wide text-muted">
                     <th className="px-3 py-2">{tr('Tarehe')}</th>
                     <th className="py-2">{tr('Aina')}</th>
                     <th className="py-2">{tr('Njia')}</th>
@@ -144,8 +144,8 @@ function DebtBody({ d, onClose, onPay }: { d: Detail; onClose: () => void; onPay
       </section>
 
       {/* Sticks to the bottom of the sheet while it scrolls, so the actions are never hidden */}
-      <div className="sticky -bottom-4 -mx-4 grid grid-cols-2 gap-2.5 border-t border-line-soft bg-white px-4 pb-1 pt-3 sm:static sm:mx-0 sm:border-0 sm:p-0">
-        <Link to={`/sales/${d.id}`} className="inline-flex min-h-touch items-center justify-center rounded-xl border border-line bg-white px-4 text-[14px] font-semibold text-slate-700 shadow-sm hover:bg-slate-50">{tr('Tazama mauzo')}</Link>
+      <div className="sticky -bottom-4 -mx-4 grid grid-cols-2 gap-2.5 border-t border-line-soft bg-surface px-4 pb-1 pt-3 sm:static sm:mx-0 sm:border-0 sm:p-0">
+        <Link to={`/sales/${d.id}`} className="inline-flex min-h-touch items-center justify-center rounded-xl border border-line bg-surface px-4 text-[14px] font-semibold text-body shadow-sm hover:bg-app">{tr('Tazama mauzo')}</Link>
         {onPay && d.balance > 0 ? <Button onClick={onPay}>{tr('Pokea malipo')}</Button> : <Button variant="outline" onClick={onClose}>{tr('Funga')}</Button>}
       </div>
     </div>
@@ -154,7 +154,7 @@ function DebtBody({ d, onClose, onPay }: { d: Detail; onClose: () => void; onPay
 
 function Stat({ label, value, tone, note, box }: { label: string; value: string; tone?: string; note?: string; box?: string }) {
   return (
-    <div className={`rounded-field border px-3 py-2 ${box ?? 'border-line-soft bg-slate-50/60'}`}>
+    <div className={`rounded-field border px-3 py-2 ${box ?? 'border-line-soft bg-app/60'}`}>
       <dt className="text-[11.5px] text-muted">{label}</dt>
       <dd className={`tabular mt-0.5 text-[15px] font-extrabold leading-tight ${tone ?? 'text-ink'}`}>{value}</dd>
       {note && <p className={`text-[11.5px] font-medium ${tone ?? 'text-muted'}`}>{note}</p>}

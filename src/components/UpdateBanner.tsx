@@ -33,13 +33,13 @@ export function UpdateBanner() {
   return (
     <div
       role="status"
-      className="fixed inset-x-3 bottom-24 z-[70] mx-auto flex max-w-md items-center gap-3 rounded-2xl bg-ink px-4 py-3 text-white shadow-xl animate-fade-in md:bottom-6"
+      className="fixed inset-x-3 bottom-24 z-[70] mx-auto flex max-w-md items-center gap-3 rounded-2xl bg-ink px-4 py-3 text-app shadow-xl animate-fade-in md:bottom-6"
     >
       <span className="flex-1 text-[13.5px] font-medium">{tr('Toleo jipya la app lipo.')}</span>
       <button
         type="button"
         onClick={() => window.location.reload()}
-        className="min-h-[40px] rounded-xl bg-white px-4 text-[13.5px] font-bold text-ink"
+        className="min-h-[40px] rounded-xl bg-surface px-4 text-[13.5px] font-bold text-ink"
       >
         {tr('Sasisha')}
       </button>

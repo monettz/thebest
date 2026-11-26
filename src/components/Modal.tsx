@@ -29,7 +29,7 @@ export default function Modal({
         aria-label={title}
         onClick={(e) => e.stopPropagation()}
         className={cx(
-          'pb-safe max-h-[94dvh] w-full overflow-x-hidden overflow-y-auto overscroll-contain animate-sheet rounded-t-[24px] bg-white p-4 sm:max-h-[92vh] sm:rounded-[24px] sm:p-6',
+          'pb-safe max-h-[94dvh] w-full overflow-x-hidden overflow-y-auto overscroll-contain animate-sheet rounded-t-[24px] bg-surface p-4 sm:max-h-[92vh] sm:rounded-[24px] sm:p-6',
           wide ? 'sm:max-w-3xl' : 'sm:max-w-md',
         )}
       >

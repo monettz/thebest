@@ -255,7 +255,7 @@ export default function Products() {
 
         {/* 1. Four Summary Cards: 2-column grid on mobile/tablet, 4-column on desktop */}
         <div className="mb-5 grid grid-cols-2 gap-2.5 sm:gap-3 md:mb-6 lg:grid-cols-4">
-          <div className="flex min-h-[96px] flex-col justify-between rounded-[14px] border border-line bg-white p-3.5 shadow-2xs sm:p-4">
+          <div className="flex min-h-[96px] flex-col justify-between rounded-[14px] border border-line bg-surface p-3.5 shadow-2xs sm:p-4">
             <p className="text-[11px] font-semibold uppercase tracking-wide text-muted sm:text-[12px]">
               {tr('Aina za bidhaa')}
             </p>
@@ -267,7 +267,7 @@ export default function Products() {
 
           {isOwner ? (
             <>
-              <div className="flex min-h-[96px] flex-col justify-between rounded-[14px] border border-line bg-white p-3.5 shadow-2xs sm:p-4">
+              <div className="flex min-h-[96px] flex-col justify-between rounded-[14px] border border-line bg-surface p-3.5 shadow-2xs sm:p-4">
                 <p className="text-[11px] font-semibold uppercase tracking-wide text-muted sm:text-[12px]">
                   {tr('Thamani store')}
                 </p>
@@ -276,7 +276,7 @@ export default function Products() {
                 </p>
                 <p className="mt-1.5 text-[12px] leading-snug text-muted">{tr('kwa bei ya kununua')}</p>
               </div>
-              <div className="flex min-h-[96px] flex-col justify-between rounded-[14px] border border-line bg-white p-3.5 shadow-2xs sm:p-4">
+              <div className="flex min-h-[96px] flex-col justify-between rounded-[14px] border border-line bg-surface p-3.5 shadow-2xs sm:p-4">
                 <p className="text-[11px] font-semibold uppercase tracking-wide text-muted sm:text-[12px]">
                   {tr('Thamani dukani')}
                 </p>
@@ -288,7 +288,7 @@ export default function Products() {
             </>
           ) : (
             <>
-              <div className="flex min-h-[96px] flex-col justify-between rounded-[14px] border border-line bg-white p-3.5 shadow-2xs sm:p-4">
+              <div className="flex min-h-[96px] flex-col justify-between rounded-[14px] border border-line bg-surface p-3.5 shadow-2xs sm:p-4">
                 <p className="text-[11px] font-semibold uppercase tracking-wide text-muted sm:text-[12px]">
                   {tr('Store')}
                 </p>
@@ -297,7 +297,7 @@ export default function Products() {
                 </p>
                 <p className="mt-1.5 text-[12px] leading-snug text-muted">{tr('jumla ya vifaa store')}</p>
               </div>
-              <div className="flex min-h-[96px] flex-col justify-between rounded-[14px] border border-line bg-white p-3.5 shadow-2xs sm:p-4">
+              <div className="flex min-h-[96px] flex-col justify-between rounded-[14px] border border-line bg-surface p-3.5 shadow-2xs sm:p-4">
                 <p className="text-[11px] font-semibold uppercase tracking-wide text-muted sm:text-[12px]">
                   {tr('Dukani')}
                 </p>
@@ -309,7 +309,7 @@ export default function Products() {
             </>
           )}
 
-          <div className="flex min-h-[96px] flex-col justify-between rounded-[14px] border border-line bg-white p-3.5 shadow-2xs sm:p-4">
+          <div className="flex min-h-[96px] flex-col justify-between rounded-[14px] border border-line bg-surface p-3.5 shadow-2xs sm:p-4">
             <p className="text-[11px] font-semibold uppercase tracking-wide text-muted sm:text-[12px]">
               {tr('Chini ya kiwango')}
             </p>
@@ -344,7 +344,7 @@ export default function Products() {
                 onClick={() => setShowArchived((v) => !v)}
                 className={cx(
                   'min-h-[36px] rounded-[10px] border px-3 text-[12.5px] font-semibold',
-                  showArchived ? 'border-primary bg-primary-tint text-primary' : 'border-line bg-white text-muted',
+                  showArchived ? 'border-primary bg-primary-tint text-primary' : 'border-line bg-surface text-muted',
                 )}
               >
                 {showArchived ? tr('Rudi kwenye bidhaa zinazotumika') : tr('Zilizofichwa ({n})', { n: archivedCount })}
@@ -354,7 +354,7 @@ export default function Products() {
           <div className="relative w-full md:max-w-[320px]">
             <SearchIcon width={16} height={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted" />
             <input
-              className="h-[42px] w-full rounded-[12px] border border-line bg-white pl-10 pr-3.5 text-[14px] text-ink shadow-2xs outline-none placeholder:text-muted focus:border-primary focus:ring-2 focus:ring-primary/15"
+              className="h-[42px] w-full rounded-[12px] border border-line bg-surface pl-10 pr-3.5 text-[14px] text-ink shadow-2xs outline-none placeholder:text-muted focus:border-primary focus:ring-2 focus:ring-primary/15"
               placeholder={tr('Tafuta bidhaa, model, SKU, barcode au IMEI…')}
               value={q}
               onChange={(e) => setQ(e.target.value)}
@@ -428,7 +428,7 @@ export default function Products() {
                                     type="button"
                                     onClick={() => triggerAddImageForProduct(p, false)}
                                     title={tr('Badilisha picha')}
-                                    className="inline-flex items-center gap-1 rounded border border-line bg-white px-1.5 py-0.5 text-[11px] font-medium text-ink hover:border-primary"
+                                    className="inline-flex items-center gap-1 rounded border border-line bg-surface px-1.5 py-0.5 text-[11px] font-medium text-ink hover:border-primary"
                                   >
                                     <img
                                       src={p.imageUrl}
@@ -545,7 +545,7 @@ export default function Products() {
             return (
               <div
                 key={p.id}
-                className="rounded-[14px] border border-line bg-white p-3.5 shadow-[0_1px_2px_rgba(15,23,42,0.03)]"
+                className="rounded-[14px] border border-line bg-surface p-3.5 shadow-[0_1px_2px_rgba(15,23,42,0.03)]"
               >
                 {/* Top Row: Thumbnail on left, Name & Specs beside thumbnail, Stock status badge visible */}
                 <div className="flex items-start justify-between gap-3">
@@ -631,8 +631,8 @@ export default function Products() {
                       className={cx(
                         'flex items-center justify-between rounded-[8px] border px-2.5 py-1.5',
                         storeView
-                          ? 'border-blue-200 bg-blue-50/70'
-                          : 'border-line bg-white',
+                          ? 'border-bar-2 bg-primary-tint/70'
+                          : 'border-line bg-surface',
                       )}
                     >
                       <span className="text-[12.5px] font-medium text-muted">{tr('Store')}</span>
@@ -644,8 +644,8 @@ export default function Products() {
                       className={cx(
                         'flex items-center justify-between rounded-[8px] border px-2.5 py-1.5',
                         !storeView
-                          ? 'border-blue-200 bg-blue-50/70'
-                          : 'border-line bg-white',
+                          ? 'border-bar-2 bg-primary-tint/70'
+                          : 'border-line bg-surface',
                       )}
                     >
                       <span className="text-[12.5px] font-medium text-muted">{tr('Dukani')}</span>
@@ -695,7 +695,7 @@ export default function Products() {
             );
           })}
           {rows.length === 0 && (
-            <p className="rounded-[14px] border border-line bg-white p-6 text-center text-[13.5px] text-muted">
+            <p className="rounded-[14px] border border-line bg-surface p-6 text-center text-[13.5px] text-muted">
               {tr('Hakuna bidhaa iliyopatikana.')}
             </p>
           )}
@@ -724,7 +724,7 @@ export default function Products() {
             <div
               role="dialog"
               aria-label={`${tr('Picha ya bidhaa')}: ${imageModalProduct.name}`}
-              className="flex h-[100dvh] w-full flex-col justify-between overflow-y-auto overscroll-contain bg-white p-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-[max(1rem,env(safe-area-inset-top))] shadow-xl sm:h-auto sm:max-h-[min(90dvh,820px)] sm:max-w-md sm:rounded-[20px] sm:border sm:border-line sm:p-5"
+              className="flex h-[100dvh] w-full flex-col justify-between overflow-y-auto overscroll-contain bg-surface p-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-[max(1rem,env(safe-area-inset-top))] shadow-xl sm:h-auto sm:max-h-[min(90dvh,820px)] sm:max-w-md sm:rounded-[20px] sm:border sm:border-line sm:p-5"
               onClick={(e) => e.stopPropagation()}
             >
               <div>
@@ -744,7 +744,7 @@ export default function Products() {
 
                 {/* Image Preview Box */}
                 <div className="flex flex-col items-center justify-center rounded-[12px] border border-line bg-app p-4">
-                  <div className="flex h-48 w-full items-center justify-center overflow-hidden rounded-[8px] border border-line/70 bg-white p-2 sm:h-36">
+                  <div className="flex h-48 w-full items-center justify-center overflow-hidden rounded-[8px] border border-line/70 bg-surface p-2 sm:h-36">
                     {imagePreview.trim() ? (
                       <img
                         src={imagePreview}
@@ -771,7 +771,7 @@ export default function Products() {
                       <span>{tr('Inapakia picha…')}</span>
                       <span>{uploadProgress}%</span>
                     </div>
-                    <div className="h-2 w-full overflow-hidden rounded-full bg-blue-100">
+                    <div className="h-2 w-full overflow-hidden rounded-full bg-primary-tint">
                       <div
                         className="h-full rounded-full bg-primary transition-all duration-150"
                         style={{ width: `${uploadProgress}%` }}
@@ -788,7 +788,7 @@ export default function Products() {
               </div>
 
               {confirmRemoveImage ? (
-                <div className="mt-4 rounded-[10px] border border-red-200 bg-bad-bg/60 p-3.5">
+                <div className="mt-4 rounded-[10px] border border-bad-fg/30 bg-bad-bg/60 p-3.5">
                   <p className="text-[13px] font-medium text-bad-fg">
                     {tr('Una uhakika unataka kuondoa picha ya {1}? Bidhaa na stock hazitafutwa.', {
                       1: imageModalProduct.name,
@@ -819,7 +819,7 @@ export default function Products() {
                     <button
                       type="button"
                       onClick={() => rowFileInputRef.current?.click()}
-                      className="inline-flex min-h-[42px] items-center rounded-[10px] border border-line bg-white px-3.5 text-[13px] font-semibold text-ink hover:bg-slate-50"
+                      className="inline-flex min-h-[42px] items-center rounded-[10px] border border-line bg-surface px-3.5 text-[13px] font-semibold text-ink hover:bg-app"
                     >
                       {tr(imagePreview ? 'Chagua picha mpya' : 'Chagua picha')}
                     </button>
@@ -896,7 +896,7 @@ export default function Products() {
             <div
               role="dialog"
               aria-label={tr('Futa bidhaa')}
-              className="w-full max-w-sm rounded-[16px] border border-line bg-white p-5 shadow-xl"
+              className="w-full max-w-sm rounded-[16px] border border-line bg-surface p-5 shadow-xl"
               onClick={(e) => e.stopPropagation()}
             >
               <h3 className="text-[16px] font-bold text-ink">{tr('Futa bidhaa')}</h3>
@@ -946,7 +946,7 @@ function ProductDetailsModal({
       <div
         role="dialog"
         aria-label={`${tr('Maelezo ya bidhaa')}: ${p.name}`}
-        className="flex h-[100dvh] w-full flex-col overflow-hidden bg-white shadow-xl sm:h-auto sm:max-h-[88dvh] sm:max-w-lg sm:rounded-[16px] sm:border sm:border-line"
+        className="flex h-[100dvh] w-full flex-col overflow-hidden bg-surface shadow-xl sm:h-auto sm:max-h-[88dvh] sm:max-w-lg sm:rounded-[16px] sm:border sm:border-line"
         onClick={(e) => e.stopPropagation()}
       >
         <header className="flex shrink-0 items-center justify-between border-b border-line px-4 py-3.5 sm:px-5">
@@ -1029,7 +1029,7 @@ function ProductDetailsModal({
                     {p.shopImeis.map((imei) => (
                       <span
                         key={imei}
-                        className="rounded border border-line bg-white px-2 py-1 font-mono text-[12px] text-ink"
+                        className="rounded border border-line bg-surface px-2 py-1 font-mono text-[12px] text-ink"
                       >
                         {imei}
                       </span>
@@ -1049,7 +1049,7 @@ function ProductDetailsModal({
                     {p.storeImeis.map((imei) => (
                       <span
                         key={imei}
-                        className="rounded border border-line bg-white px-2 py-1 font-mono text-[12px] text-ink"
+                        className="rounded border border-line bg-surface px-2 py-1 font-mono text-[12px] text-ink"
                       >
                         {imei}
                       </span>
@@ -1063,7 +1063,7 @@ function ProductDetailsModal({
           )}
         </div>
 
-        <footer className="shrink-0 border-t border-line bg-white p-4 sm:hidden">
+        <footer className="shrink-0 border-t border-line bg-surface p-4 sm:hidden">
           <Button variant="outline" block className="min-h-[44px]" onClick={onClose}>
             {tr('Funga')}
           </Button>
@@ -1121,7 +1121,7 @@ function EditProductModal({
         role="dialog"
         aria-label={`${tr('Hariri bidhaa')}: ${p.name}`}
         // Never taller than the screen: the title and the buttons stay put, only the fields scroll.
-        className="flex h-[100dvh] w-full flex-col overflow-hidden bg-white shadow-xl sm:h-auto sm:max-h-[min(90dvh,820px)] sm:max-w-md sm:rounded-[20px] sm:border sm:border-line"
+        className="flex h-[100dvh] w-full flex-col overflow-hidden bg-surface shadow-xl sm:h-auto sm:max-h-[min(90dvh,820px)] sm:max-w-md sm:rounded-[20px] sm:border sm:border-line"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex shrink-0 items-center justify-between border-b border-line px-4 pb-3 pt-[max(0.75rem,env(safe-area-inset-top))] sm:px-5 sm:pt-4">
@@ -1154,7 +1154,7 @@ function EditProductModal({
                     onClick={() => setValue('type', t)}
                     className={cx(
                       'min-h-[40px] rounded-[8px] text-[13.5px] font-semibold',
-                      type === t ? 'bg-white text-ink shadow-sm' : 'text-muted',
+                      type === t ? 'bg-surface text-ink shadow-sm' : 'text-muted',
                     )}
                   >
                     {t === 'phone' ? tr('Simu') : tr('Accessory')}
@@ -1195,7 +1195,7 @@ function EditProductModal({
             )}
           </div>
 
-          <div className="flex shrink-0 justify-end gap-2 border-t border-line bg-white px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 sm:px-5 sm:pb-4">
+          <div className="flex shrink-0 justify-end gap-2 border-t border-line bg-surface px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 sm:px-5 sm:pb-4">
             <Button variant="outline" className="min-h-[44px] flex-1 sm:flex-initial" onClick={onClose}>
               {tr('Ghairi')}
             </Button>
@@ -1369,7 +1369,7 @@ export function CreateProductForm({
               }}
               className={cx(
                 'min-h-[40px] rounded-[8px] text-[13.5px] font-semibold transition-colors',
-                type === t ? 'bg-white text-ink shadow-sm' : 'text-muted',
+                type === t ? 'bg-surface text-ink shadow-sm' : 'text-muted',
               )}
             >
               {t === 'phone' ? tr('Simu') : tr('Accessory')}
@@ -1440,7 +1440,7 @@ export function CreateProductForm({
                   handleAddImeis(imeiDraft);
                 }
               }}
-              className="h-[40px] flex-1 rounded-[8px] border border-line bg-white px-3 font-mono text-[13px] text-ink outline-none focus:border-primary"
+              className="h-[40px] flex-1 rounded-[8px] border border-line bg-surface px-3 font-mono text-[13px] text-ink outline-none focus:border-primary"
             />
             <Button
               type="button"
@@ -1466,7 +1466,7 @@ export function CreateProductForm({
                   type="button"
                   title={tr('Bonyeza kuondoa')}
                   onClick={() => removeImei(imei)}
-                  className="inline-flex items-center gap-1.5 rounded-[7px] border border-line bg-white px-2.5 py-1 font-mono text-[12px] text-ink hover:border-red-300 hover:bg-bad-bg/40"
+                  className="inline-flex items-center gap-1.5 rounded-[7px] border border-line bg-surface px-2.5 py-1 font-mono text-[12px] text-ink hover:border-bad-fg/40 hover:bg-bad-bg/40"
                 >
                   <span>{imei}</span>
                   <span className="font-sans font-bold text-bad-fg">×</span>
@@ -1487,7 +1487,7 @@ export function CreateProductForm({
       <Field label="Picha ya bidhaa (hiari)" error={formImageError || undefined}>
         <div className="space-y-2">
           <div className="flex flex-wrap items-center gap-2">
-            <label className="inline-flex min-h-[38px] cursor-pointer items-center rounded-[8px] border border-line bg-white px-3 py-1.5 text-[12.5px] font-semibold text-ink hover:bg-slate-50">
+            <label className="inline-flex min-h-[38px] cursor-pointer items-center rounded-[8px] border border-line bg-surface px-3 py-1.5 text-[12.5px] font-semibold text-ink hover:bg-app">
               {tr('Chagua picha')}
               <input
                 type="file"
@@ -1502,7 +1502,7 @@ export function CreateProductForm({
           </div>
           {formImageUrl && (
             <div className="flex items-center gap-3 rounded-[8px] border border-line bg-app p-2">
-              <span className="inline-flex h-10 w-12 items-center justify-center overflow-hidden rounded border border-line bg-white">
+              <span className="inline-flex h-10 w-12 items-center justify-center overflow-hidden rounded border border-line bg-surface">
                 <img src={formImageUrl} alt="" className="h-full w-full object-contain p-0.5" />
               </span>
               <button
@@ -1519,7 +1519,7 @@ export function CreateProductForm({
       <p className="text-[12.5px] text-muted">{tr('Bei ya kununua inaonekana kwa mmiliki tu.')}</p>
 
       {add.isError && (
-        <div role="alert" className="rounded-[10px] border border-red-200 bg-bad-bg px-3.5 py-2.5 text-[13px] font-medium text-bad-fg space-y-1.5">
+        <div role="alert" className="rounded-[10px] border border-bad-fg/30 bg-bad-bg px-3.5 py-2.5 text-[13px] font-medium text-bad-fg space-y-1.5">
           <p>{tr((add.error as Error).message)}</p>
           {onSwitchToStore && (
             <button

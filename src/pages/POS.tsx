@@ -309,7 +309,7 @@ export default function POS() {
             type="button"
             aria-label={tr('Rudi')}
             onClick={() => navigate('/')}
-            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white text-ink"
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-surface text-ink"
           >
             <ChevronRight className="rotate-180" />
           </button>
@@ -351,7 +351,7 @@ export default function POS() {
             <SearchIcon width={16} height={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted" />
             <input
               ref={searchRef}
-              className="h-10 w-full rounded-[10px] border border-line bg-white pl-10 pr-3 text-[13.5px] text-ink outline-none placeholder:text-muted/70 focus:border-primary focus:ring-2 focus:ring-primary/15"
+              className="h-10 w-full rounded-[10px] border border-line bg-surface pl-10 pr-3 text-[13.5px] text-ink outline-none placeholder:text-muted/70 focus:border-primary focus:ring-2 focus:ring-primary/15"
               placeholder={tr('Tafuta bidhaa, model au IMEI…')}
               value={q}
               onChange={(e) => onSearch(e.target.value)}
@@ -361,7 +361,7 @@ export default function POS() {
           <Tabs value={filter} onChange={setFilter} options={FILTERS} />
         </div>
         {notice && (
-          <p role="status" className="mt-2.5 rounded-[10px] border border-amber-200 bg-warn-bg px-3.5 py-2 text-[13px] font-medium text-warn-fg">
+          <p role="status" className="mt-2.5 rounded-[10px] border border-warn-fg/30 bg-warn-bg px-3.5 py-2 text-[13px] font-medium text-warn-fg">
             {tr(notice)}
           </p>
         )}
@@ -391,8 +391,8 @@ export default function POS() {
                   }
                 }}
                 className={cx(
-                  'group flex min-h-[148px] max-h-[175px] flex-col justify-between rounded-[12px] border bg-white p-3 text-left transition-colors duration-150 select-none',
-                  out ? 'cursor-not-allowed opacity-60 border-line' : 'cursor-pointer hover:border-slate-300',
+                  'group flex min-h-[148px] max-h-[175px] flex-col justify-between rounded-[12px] border bg-surface p-3 text-left transition-colors duration-150 select-none',
+                  out ? 'cursor-not-allowed opacity-60 border-line' : 'cursor-pointer hover:border-line',
                   n > 0 ? 'border-primary ring-1 ring-primary/20' : 'border-line',
                 )}
               >
@@ -462,7 +462,7 @@ export default function POS() {
       {/* Bottom Cart Summary Bar (starts after the 256px sidebar on desktop) */}
       {/* A floating white card on the canvas, inset from the edges like the rest of the app. */}
       <div
-        className="fixed inset-x-3 z-30 rounded-[22px] bg-white px-4 py-3 shadow-[0_12px_32px_-12px_rgba(20,18,23,0.25)] md:left-[280px] md:right-8 lg:right-10"
+        className="fixed inset-x-3 z-30 rounded-[22px] bg-surface px-4 py-3 shadow-[0_12px_32px_-12px_rgba(20,18,23,0.25)] md:left-[280px] md:right-8 lg:right-10"
         style={{ bottom: 'max(12px, env(safe-area-inset-bottom))' }}
       >
         <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-3">
@@ -495,7 +495,7 @@ export default function POS() {
           <div
             role="dialog"
             aria-label={tr('Kikapu')}
-            className="flex h-[92dvh] max-h-[92dvh] w-full flex-col overflow-hidden rounded-t-[20px] bg-white shadow-[0_-8px_30px_rgba(15,23,42,0.12)] md:h-dvh md:max-h-dvh md:w-[500px] md:max-w-[95vw] md:rounded-none md:border-l md:border-line md:shadow-[-8px_0_24px_rgba(15,23,42,0.08)]"
+            className="flex h-[92dvh] max-h-[92dvh] w-full flex-col overflow-hidden rounded-t-[20px] bg-surface shadow-[0_-8px_30px_rgba(15,23,42,0.12)] md:h-dvh md:max-h-dvh md:w-[500px] md:max-w-[95vw] md:rounded-none md:border-l md:border-line md:shadow-[-8px_0_24px_rgba(15,23,42,0.08)]"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="mx-auto mt-2.5 mb-1 h-1.5 w-12 shrink-0 rounded-full bg-line md:hidden" />
@@ -600,7 +600,7 @@ function ScanImeiModal({
       <div
         role="dialog"
         aria-label={tr('Scan IMEI')}
-        className="flex max-h-[88dvh] w-full flex-col overflow-hidden rounded-t-[20px] border border-line bg-white shadow-xl sm:max-w-[480px] sm:rounded-[16px]"
+        className="flex max-h-[88dvh] w-full flex-col overflow-hidden rounded-t-[20px] border border-line bg-surface shadow-xl sm:max-w-[480px] sm:rounded-[16px]"
         onClick={(e) => e.stopPropagation()}
       >
         <header className="flex shrink-0 items-center justify-between border-b border-line px-4 py-3.5">
@@ -639,7 +639,7 @@ function ScanImeiModal({
                 'shrink-0 rounded-[10px] border px-3 text-[12.5px] font-semibold transition-colors',
                 camActive
                   ? 'border-bad-fg bg-bad-bg text-bad-fg'
-                  : 'border-primary bg-blue-50/80 text-primary hover:bg-blue-100/70',
+                  : 'border-primary bg-primary-tint/80 text-primary hover:bg-primary-tint/70',
               )}
             >
               {tr(camActive ? 'Zima kamera' : 'Washa kamera')}
@@ -673,7 +673,7 @@ function ScanImeiModal({
                   <button
                     type="button"
                     onClick={() => onScan(product, imei)}
-                    className="flex w-full items-center justify-between gap-3 px-3 py-2.5 text-left transition-colors hover:bg-blue-50/50"
+                    className="flex w-full items-center justify-between gap-3 px-3 py-2.5 text-left transition-colors hover:bg-primary-tint/50"
                   >
                     <div className="min-w-0">
                       <p className="truncate text-[13.5px] font-semibold text-ink">{product.name}</p>

@@ -109,7 +109,7 @@ function ReceiptShell({
   };
 
   return (
-    <div className="min-h-screen bg-app py-6 print:bg-white print:py-0">
+    <div className="theme-light min-h-screen bg-app py-6 print:bg-surface print:py-0">
       <div className="mx-auto mb-4 flex max-w-[360px] flex-wrap gap-2 px-4 print:hidden">
         <Button onClick={() => setSheet(true)} className="min-w-[120px] flex-1 gap-2">
           <ShareIcon width={18} height={18} /> {tr('Shiriki')}
@@ -127,7 +127,7 @@ function ReceiptShell({
           <div
             role="dialog"
             aria-label={tr('Shiriki risiti')}
-            className="w-full max-w-[420px] rounded-t-[20px] bg-white p-4 shadow-xl sm:rounded-[20px]"
+            className="w-full max-w-[420px] rounded-t-[20px] bg-surface p-4 shadow-xl sm:rounded-[20px]"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="mb-3 flex items-center justify-between">
@@ -185,7 +185,7 @@ function ReceiptShell({
           <div
             role="dialog"
             aria-label={tr('Hakiki ya risiti')}
-            className="flex h-[100dvh] w-full max-w-[460px] flex-col overflow-hidden bg-white shadow-xl sm:h-[90dvh] sm:rounded-[20px]"
+            className="flex h-[100dvh] w-full max-w-[460px] flex-col overflow-hidden bg-surface shadow-xl sm:h-[90dvh] sm:rounded-[20px]"
             onClick={(e) => e.stopPropagation()}
           >
             <header className="flex shrink-0 items-center justify-between border-b border-line px-4 py-3">
@@ -216,7 +216,7 @@ function ReceiptShell({
 }
 
 const linkClass =
-  'inline-flex min-h-touch min-w-[120px] flex-1 items-center justify-center rounded-field border border-line bg-white text-[14px] font-semibold text-primary-link';
+  'inline-flex min-h-touch min-w-[120px] flex-1 items-center justify-center rounded-field border border-line bg-surface text-[14px] font-semibold text-primary-link';
 
 function PaymentReceipt() {
   const { saleId } = useParams();
@@ -326,7 +326,7 @@ function SaleArticle({ r, settings }: { r: ReceiptView; settings: Settings }) {
       <style>{`@page { size: ${width} auto; margin: 0 }`}</style>
       <article
         aria-label="Risiti"
-        className="mx-auto bg-white p-4 font-mono text-[12px] leading-snug text-black shadow-sm print:shadow-none"
+        className="mx-auto bg-surface p-4 font-mono text-[12px] leading-snug text-black shadow-sm print:shadow-none"
         style={{ width }}
       >
         <header className="text-center">
@@ -381,7 +381,7 @@ function PaymentArticle({ r, settings }: { r: PaymentReceiptView; settings: Sett
       <style>{`@page { size: ${width} auto; margin: 0 }`}</style>
       <article
         aria-label="Risiti ya malipo ya deni"
-        className="mx-auto bg-white p-4 font-mono text-[12px] leading-snug text-black shadow-sm print:shadow-none"
+        className="mx-auto bg-surface p-4 font-mono text-[12px] leading-snug text-black shadow-sm print:shadow-none"
         style={{ width }}
       >
         <header className="text-center">

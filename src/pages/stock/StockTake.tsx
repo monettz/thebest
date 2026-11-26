@@ -62,7 +62,7 @@ export default function StockTake() {
         subtitle="Hesabu bidhaa zilizopo kwa mkono, weka tofauti na sababu, kisha mtumie mmiliki aidhinishe."
       />
 
-      <div className="rounded-[20px] border border-line bg-white shadow-sm overflow-hidden mb-6">
+      <div className="rounded-[20px] border border-line bg-surface shadow-sm overflow-hidden mb-6">
         <div className={cx('grid divide-y divide-line-soft sm:divide-y-0 sm:divide-x', isOwner ? 'sm:grid-cols-3' : 'sm:grid-cols-2')}>
           <div className="p-5">
             <p className="text-[13px] font-medium text-muted">{tr('Bidhaa')}</p>
@@ -176,7 +176,7 @@ export default function StockTake() {
                       type="button"
                       aria-pressed={picked}
                       onClick={() => patch(l.productId, { missingImeis: picked ? l.missingImeis!.filter((i) => i !== imei) : [...(l.missingImeis ?? []), imei] })}
-                      className={cx('rounded-chip border px-3 py-1.5 font-mono text-[12.5px]', picked ? 'border-bad-fg bg-bad-bg text-bad-fg' : 'border-line bg-white text-body')}
+                      className={cx('rounded-chip border px-3 py-1.5 font-mono text-[12.5px]', picked ? 'border-bad-fg bg-bad-bg text-bad-fg' : 'border-line bg-surface text-body')}
                     >
                       {shortImei(imei)}
                     </button>

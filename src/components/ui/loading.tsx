@@ -27,7 +27,7 @@ export function InlineSpinner({ className }: { className?: string }) {
 }
 
 const Card = ({ className, children }: { className?: string; children?: React.ReactNode }) => (
-  <div aria-hidden className={join('rounded-2xl border border-line bg-white', className)}>{children}</div>
+  <div aria-hidden className={join('rounded-2xl border border-line bg-surface', className)}>{children}</div>
 );
 
 /* ---------- Shapes that mirror real content ---------- */
@@ -230,7 +230,7 @@ export function PageLoader({ variant = 'cards', label = 'Inapakia…' }: { varia
 
   if (failed) {
     return (
-      <div role="alert" className="mx-auto mt-10 max-w-md rounded-2xl border border-line bg-white p-6 text-center">
+      <div role="alert" className="mx-auto mt-10 max-w-md rounded-2xl border border-line bg-surface p-6 text-center">
         <p className="text-[15px] font-bold text-ink">{tr('Imeshindikana kupakia data')}</p>
         <p className="mt-1 text-[13px] text-muted">{tr('Kuna tatizo wakati wa kupakia taarifa hizi. Jaribu tena.')}</p>
         <button type="button" onClick={retry} className="mt-4 inline-flex min-h-touch items-center justify-center rounded-xl bg-primary px-5 text-[14px] font-semibold text-white transition hover:bg-primary-link focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 active:scale-[0.98]">

@@ -51,9 +51,9 @@ export default function Login() {
     // Phones: start at the top (below the clock and battery) instead of centring, so the keypad and the
     // keyboard never push the logo off screen. Desktop keeps the centred card.
     <div className="flex min-h-dvh items-start justify-center bg-app md:items-center md:p-8">
-      <div className="grid w-full max-w-[1100px] overflow-hidden bg-white md:min-h-[560px] md:grid-cols-2 md:rounded-[28px] md:border md:border-line md:shadow-[0_20px_50px_rgba(15,23,42,0.08)]">
+      <div className="grid w-full max-w-[1100px] overflow-hidden bg-surface md:min-h-[560px] md:grid-cols-2 md:rounded-[28px] md:border md:border-line md:shadow-[0_20px_50px_rgba(15,23,42,0.08)]">
         {/* Brand panel */}
-        <div className="hidden flex-col justify-between bg-navy p-12 text-white md:flex">
+        <div className="hidden flex-col justify-between bg-[#141217] p-12 text-white md:flex">
           <div className="flex items-center gap-3">
             <BrandMark size={44} />
             <span className="text-[19px] font-extrabold tracking-wide">{tr('THE BEST')}</span>
@@ -64,7 +64,7 @@ export default function Login() {
               <br />
               {tr('mahali pamoja.')}
             </h2>
-            <p className="mt-4 text-[15px] text-slate-300">{tr('Mfumo wa mauzo kwa simu na accessories.')}</p>
+            <p className="mt-4 text-[15px] text-slate-400">{tr('Mfumo wa mauzo kwa simu na accessories.')}</p>
             <div className="mt-6 flex flex-wrap gap-2">
               {CHIPS.map((c) => (
                 <span key={c} className="rounded-full border border-white/20 px-3.5 py-1.5 text-[13px] text-slate-200">

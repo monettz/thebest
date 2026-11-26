@@ -100,7 +100,7 @@ export default function SaleDetail() {
           <Card className="overflow-x-auto">
             <table className="w-full min-w-[480px] text-[14px]">
               <thead>
-                <tr className="bg-slate-50/80 text-left text-[11.5px] font-bold uppercase tracking-wider text-slate-500">
+                <tr className="bg-app/80 text-left text-[11.5px] font-bold uppercase tracking-wider text-muted">
                   <th className="px-5 py-3.5">{tr('Bidhaa')}</th>
                   <th className="py-3.5 text-right">{tr('Idadi')}</th>
                   <th className="py-3.5 text-right">{tr('Bei')}</th>
@@ -111,7 +111,7 @@ export default function SaleDetail() {
                 {sale.lines.map((l) => {
                   const left = l.qty - l.returnedQty;
                   return (
-                    <tr key={l.index} className="border-t border-line-soft transition hover:bg-slate-50/70">
+                    <tr key={l.index} className="border-t border-line-soft transition hover:bg-app/70">
                       <td className="px-4 py-3">
                         <p className="font-semibold">{l.name}</p>
                         {l.imei && <p className="font-mono text-[12px] text-muted">IMEI {l.imei}</p>}
@@ -212,7 +212,7 @@ export default function SaleDetail() {
                 <div className="grid grid-cols-2 gap-1 rounded-field bg-app p-1" role="tablist">
                   {(['RESTOCK', 'DAMAGED'] as const).map((c) => (
                     <button key={c} type="button" role="tab" aria-selected={condition === c} onClick={() => setCondition(c)}
-                      className={cx('min-h-[40px] rounded-chip text-[13.5px] font-semibold', condition === c ? 'bg-white shadow-sm' : 'text-muted')}>
+                      className={cx('min-h-[40px] rounded-chip text-[13.5px] font-semibold', condition === c ? 'bg-surface shadow-sm' : 'text-muted')}>
                       {c === 'RESTOCK' ? tr('Rudi stock') : tr('Imeharibika')}
                     </button>
                   ))}
@@ -224,7 +224,7 @@ export default function SaleDetail() {
                   <div className="flex flex-wrap gap-2">
                     {PAYMENT_METHODS.map((m) => (
                       <button key={m} type="button" aria-pressed={method === m} onClick={() => setMethod(m)}
-                        className={cx('min-h-[38px] rounded-chip border px-3 text-[13px] font-semibold', method === m ? 'border-primary bg-primary-tint text-primary-link' : 'border-line bg-white text-body')}>
+                        className={cx('min-h-[38px] rounded-chip border px-3 text-[13px] font-semibold', method === m ? 'border-primary bg-primary-tint text-primary-link' : 'border-line bg-surface text-body')}>
                         {tr(PAYMENT_LABEL[m])}
                       </button>
                     ))}

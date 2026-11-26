@@ -77,7 +77,7 @@ export default function StoreDashboard() {
         }
       />
 
-      <div className="overflow-hidden rounded-[20px] border border-line bg-white shadow-sm">
+      <div className="overflow-hidden rounded-[20px] border border-line bg-surface shadow-sm">
         <div className="grid grid-cols-2 divide-y divide-line-soft md:divide-y-0 md:divide-x xl:grid-cols-4">
           {isOwner && data.stockValue !== undefined ? (
             <Kpi label="Thamani ya stock store" value={<AnimatedNumber id="store.value" value={data.stockValue} format={formatTZSCompact} />} note="kwa bei ya kununua" />

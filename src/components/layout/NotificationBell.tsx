@@ -59,11 +59,11 @@ export function NotificationBell({ className, dot }: { className?: string; /** A
         aria-label={unread.length ? `${tr('Arifa')} (${unread.length})` : tr('Arifa')}
         aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
-        className={cx('relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-line bg-white text-slate-600 shadow-sm hover:bg-slate-50', className)}
+        className={cx('relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-line bg-surface text-body shadow-sm hover:bg-app', className)}
       >
         <BellIcon width={19} height={19} />
         {unread.length > 0 && dot && (
-          <span className="absolute right-[11px] top-[10px] h-2 w-2 rounded-full border-2 border-white bg-red-600 box-content" data-testid="unread-count" />
+          <span className="absolute right-[11px] top-[10px] h-2 w-2 rounded-full border-2 border-surface bg-red-600 box-content" data-testid="unread-count" />
         )}
         {unread.length > 0 && !dot && (
           <span className="absolute -right-1 -top-1 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-red-500 px-1 text-[10.5px] font-bold leading-none text-white" data-testid="unread-count">
@@ -79,14 +79,14 @@ export function NotificationBell({ className, dot }: { className?: string; /** A
               role="dialog"
               aria-label={tr('Arifa')}
               onClick={(e) => e.stopPropagation()}
-              className="absolute inset-x-3 top-[60px] flex max-h-[min(78dvh,640px)] flex-col overflow-hidden rounded-2xl border border-line bg-white shadow-xl md:inset-x-auto md:right-8 md:top-[72px] md:w-[400px]"
+              className="absolute inset-x-3 top-[60px] flex max-h-[min(78dvh,640px)] flex-col overflow-hidden rounded-2xl border border-line bg-surface shadow-xl md:inset-x-auto md:right-8 md:top-[72px] md:w-[400px]"
             >
               <header className="flex items-center justify-between gap-3 border-b border-line-soft px-4 py-3">
                 <h2 className="text-[15px] font-extrabold text-ink">
                   {tr('Arifa')} {unread.length > 0 && <span className="ml-1 text-[13px] font-semibold text-muted">· {tr('{n} mpya', { n: unread.length })}</span>}
                 </h2>
                 <div className="flex items-center gap-1">
-                  <button type="button" disabled={unread.length === 0} onClick={readAll} className="min-h-[34px] rounded-lg px-2.5 text-[12.5px] font-semibold text-primary-link hover:bg-primary-tint disabled:text-slate-400 disabled:hover:bg-transparent">
+                  <button type="button" disabled={unread.length === 0} onClick={readAll} className="min-h-[34px] rounded-lg px-2.5 text-[12.5px] font-semibold text-primary-link hover:bg-primary-tint disabled:text-muted disabled:hover:bg-transparent">
                     {tr('Soma zote')}
                   </button>
                   <button type="button" onClick={() => setOpen(false)} className="min-h-[34px] rounded-lg px-2.5 text-[12.5px] font-semibold text-muted hover:bg-app">{tr('Funga')}</button>
@@ -112,7 +112,7 @@ export function NotificationBell({ className, dot }: { className?: string; /** A
                           <span className="min-w-0 flex-1">
                             <span className={cx('block break-words text-[13.5px] leading-snug text-ink', !n.read && 'font-bold')}>{tr(n.title)}</span>
                             <span className="mt-0.5 block break-words text-[12.5px] text-muted">{tr(n.detail)}</span>
-                            {n.at && <span className="mt-0.5 block text-[11.5px] text-slate-400">{formatDate(new Date(n.at))}</span>}
+                            {n.at && <span className="mt-0.5 block text-[11.5px] text-muted">{formatDate(new Date(n.at))}</span>}
                           </span>
                           {!n.read && <span aria-label={tr('Haijasomwa')} className="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-primary" />}
                         </button>

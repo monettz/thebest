@@ -139,7 +139,7 @@ export function CameraScanner({
   }, []);
 
   return (
-    <div className={cx('overflow-hidden rounded-[14px] bg-ink', className)}>
+    <div className={cx('overflow-hidden rounded-[14px] bg-black', className)}>
       <div className="relative" style={{ height }}>
         <video ref={videoRef} className="h-full w-full object-cover" muted playsInline autoPlay />
         {status === 'scanning' && (

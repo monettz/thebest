@@ -167,7 +167,7 @@ export default function ReceiveForm({ location }: { location: 'STORE' | 'SHOP' }
           </Field>
         </div>
         {newSupplier !== null && (
-          <div className="flex flex-col gap-2 rounded-field border border-line bg-white p-3 sm:flex-row">
+          <div className="flex flex-col gap-2 rounded-field border border-line bg-surface p-3 sm:flex-row">
             <input className="input flex-1" autoFocus placeholder={tr('Jina la supplier')} value={newSupplier} onChange={(e) => setNewSupplier(e.target.value)} />
             <div className="flex gap-2">
               <Button loading={addSupplier.isPending}
@@ -309,8 +309,8 @@ export default function ReceiveForm({ location }: { location: 'STORE' | 'SHOP' }
                   )}
                   {scanError && <p role="alert" className="mt-2 text-[12.5px] font-medium text-bad-fg">{tr(scanError)}</p>}
                   <div className="mt-3.5 relative flex items-center">
-                    <div className="h-3.5 flex-1 overflow-hidden rounded-full bg-blue-50/80">
-                      <div className="h-full rounded-full bg-gradient-to-r from-blue-300 via-primary to-blue-600 transition-all duration-300" style={{ width: `${pct}%` }} />
+                    <div className="h-3.5 flex-1 overflow-hidden rounded-full bg-primary-tint/80">
+                      <div className="h-full rounded-full bg-gradient-to-r from-bar-1 via-primary to-primary transition-all duration-300" style={{ width: `${pct}%` }} />
                     </div>
                     <span className="ml-2.5 flex h-6 w-11 shrink-0 items-center justify-center rounded-full bg-primary text-[11px] font-bold text-white shadow-sm">
                       {pct}%
@@ -353,7 +353,7 @@ export default function ReceiveForm({ location }: { location: 'STORE' | 'SHOP' }
               <div className="grid grid-cols-2 gap-1 rounded-field bg-app p-1" role="tablist">
                 {(['all', 'owe'] as const).map((m) => (
                   <button key={m} type="button" role="tab" aria-selected={payMode === m} onClick={() => setPayMode(m)}
-                    className={cx('min-h-[40px] rounded-chip text-[13.5px] font-semibold', payMode === m ? 'bg-white shadow-sm' : 'text-muted')}>
+                    className={cx('min-h-[40px] rounded-chip text-[13.5px] font-semibold', payMode === m ? 'bg-surface shadow-sm' : 'text-muted')}>
                     {m === 'all' ? tr('Nimelipa yote') : tr('Nadaiwa')}
                   </button>
                 ))}

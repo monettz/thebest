@@ -65,9 +65,9 @@ export function Cart(p: Props) {
   };
 
   return (
-    <div className="flex h-full min-h-0 w-full flex-col overflow-hidden bg-white">
+    <div className="flex h-full min-h-0 w-full flex-col overflow-hidden bg-surface">
       {/* 1. HEADER: Cart title and Clear all action */}
-      <header className="flex shrink-0 items-center justify-between gap-3 border-b border-line bg-white px-4 py-3.5">
+      <header className="flex shrink-0 items-center justify-between gap-3 border-b border-line bg-surface px-4 py-3.5">
         <div className="flex min-w-0 items-center gap-2">
           <h2 className="text-[17px] font-bold leading-tight text-ink">{tr('Kikapu')}</h2>
           {itemCount > 0 && (
@@ -91,7 +91,7 @@ export function Cart(p: Props) {
               type="button"
               onClick={p.onClose}
               aria-label={tr('Funga')}
-              className="inline-flex h-8 items-center justify-center rounded-[8px] border border-line bg-app px-2.5 text-[12.5px] font-semibold text-muted hover:bg-slate-100 hover:text-ink"
+              className="inline-flex h-8 items-center justify-center rounded-[8px] border border-line bg-app px-2.5 text-[12.5px] font-semibold text-muted hover:bg-line-soft hover:text-ink"
             >
               {tr('Funga')}
             </button>
@@ -194,7 +194,7 @@ export function Cart(p: Props) {
                   </div>
 
                   {l.type === 'phone' && isEditingImei && (
-                    <div className="mt-2.5 rounded-[8px] border border-line bg-white p-2.5">
+                    <div className="mt-2.5 rounded-[8px] border border-line bg-surface p-2.5">
                       <div className="mb-1.5 flex items-center justify-between">
                         <span className="text-[11px] font-semibold text-muted">
                           {tr('Chagua IMEI ({n} zinapatikana)', { n: availableForLine.length })}
@@ -217,7 +217,7 @@ export function Cart(p: Props) {
                             if (e.target.value) p.onChangeImei?.(i, e.target.value);
                             setOpenImeiIndex(null);
                           }}
-                          className="h-8 w-full rounded-[6px] border border-line bg-white px-2 font-mono text-[12px] text-ink outline-none focus:border-primary"
+                          className="h-8 w-full rounded-[6px] border border-line bg-surface px-2 font-mono text-[12px] text-ink outline-none focus:border-primary"
                         >
                           {!l.imei && <option value="">{tr('Chagua IMEI')}</option>}
                           {availableForLine.map((imei) => (
@@ -254,7 +254,7 @@ export function Cart(p: Props) {
           <input
             id="sold-on"
             type="date"
-            className="input mt-1.5 h-10 bg-white"
+            className="input mt-1.5 h-10 bg-surface"
             max={p.today}
             value={s.soldOn}
             onChange={(e) => patch({ soldOn: e.target.value || p.today })}
@@ -286,8 +286,8 @@ export function Cart(p: Props) {
                   className={cx(
                     'flex min-h-[38px] items-center justify-center rounded-[10px] border px-2.5 text-[13px] font-semibold transition-colors',
                     active
-                      ? 'border-primary bg-blue-50/80 text-primary'
-                      : 'border-line bg-white text-ink hover:border-slate-300',
+                      ? 'border-primary bg-primary-tint/80 text-primary'
+                      : 'border-line bg-surface text-ink hover:border-line',
                   )}
                 >
                   {tr(PAYMENT_LABEL[m])}
@@ -311,7 +311,7 @@ export function Cart(p: Props) {
               onClick={() => patch({ mode: m, paid: m === 'full' ? '' : s.paid })}
               className={cx(
                 'min-h-[36px] rounded-[8px] text-[13px] font-semibold transition-colors',
-                s.mode === m ? 'bg-white text-ink shadow-sm' : 'text-muted hover:text-ink',
+                s.mode === m ? 'bg-surface text-ink shadow-sm' : 'text-muted hover:text-ink',
               )}
             >
               {m === 'full' ? tr('Malipo kamili') : tr('Deni (sehemu)')}
@@ -406,7 +406,7 @@ export function Cart(p: Props) {
       </div>
 
       {/* 3. FIXED FOOTER: Final total and Complete Sale button */}
-      <footer className="shrink-0 border-t border-line bg-white px-4 py-3.5 pb-safe">
+      <footer className="shrink-0 border-t border-line bg-surface px-4 py-3.5 pb-safe">
         <dl className="mb-3 space-y-1 text-[13px]">
           {p.discount > 0 && (
             <>
@@ -472,7 +472,7 @@ export function Stepper({
           onMinus();
         }}
         className={cx(
-          'flex items-center justify-center rounded-[6px] bg-white font-bold text-ink border border-line hover:bg-slate-50',
+          'flex items-center justify-center rounded-[6px] bg-surface font-bold text-ink border border-line hover:bg-app',
           compact ? 'h-6 w-6 text-[14px]' : 'h-8 w-8 text-[16px]',
         )}
       >
@@ -494,7 +494,7 @@ export function Stepper({
           onPlus();
         }}
         className={cx(
-          'flex items-center justify-center rounded-[6px] bg-primary font-bold text-white hover:bg-blue-700',
+          'flex items-center justify-center rounded-[6px] bg-primary font-bold text-white hover:bg-primary-link',
           compact ? 'h-6 w-6 text-[14px]' : 'h-8 w-8 text-[16px]',
         )}
       >
@@ -653,12 +653,12 @@ function CustomerPicker({
             onChange={(e) => setQ(e.target.value)}
           />
           {q.trim() && (
-            <ul className="absolute z-10 mt-1 w-full overflow-hidden rounded-[10px] border border-line bg-white shadow-lg">
+            <ul className="absolute z-10 mt-1 w-full overflow-hidden rounded-[10px] border border-line bg-surface shadow-lg">
               {results.map((c) => (
                 <li key={c.id}>
                   <button
                     type="button"
-                    className="flex min-h-[40px] w-full items-center justify-between gap-2 px-3 text-left text-[13.5px] hover:bg-slate-50"
+                    className="flex min-h-[40px] w-full items-center justify-between gap-2 px-3 text-left text-[13.5px] hover:bg-app"
                     onClick={() => pick(c)}
                   >
                     <span className="truncate font-medium text-ink">{c.name}</span>
@@ -669,7 +669,7 @@ function CustomerPicker({
               <li>
                 <button
                   type="button"
-                  className="min-h-[40px] w-full border-t border-line px-3 text-left text-[13.5px] font-semibold text-primary hover:bg-slate-50"
+                  className="min-h-[40px] w-full border-t border-line px-3 text-left text-[13.5px] font-semibold text-primary hover:bg-app"
                   onClick={() => {
                     const isPhone = /^[\d\s+]+$/.test(q);
                     onChange({ ...value, creating: true, name: isPhone ? '' : q, phone: isPhone ? q : '' });

@@ -48,7 +48,7 @@ export default function Users() {
       <Card className="hidden overflow-hidden md:block">
         <table className="w-full text-[13.5px]">
           <thead>
-            <tr className="bg-slate-50/80 text-left text-[11.5px] font-bold uppercase tracking-wider text-slate-500">
+            <tr className="bg-app/80 text-left text-[11.5px] font-bold uppercase tracking-wider text-muted">
               <th className="px-4 py-3">{tr('Mtumiaji')}</th>
               <th className="py-3">{tr('Namba ya simu')}</th>
               <th className="py-3">{tr('Jukumu')}</th>

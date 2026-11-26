@@ -10,6 +10,7 @@ import { LogoutIcon, MenuIcon, PlusIcon } from '@/components/ui/icons';
 import { BrandMark } from '@/components/BrandMark';
 import { LocationSwitch } from './LocationSwitch';
 import { NotificationBell } from './NotificationBell';
+import { ThemeToggle } from '@/components/ThemeToggle';
 import { drawerGroups, sectionsOf } from './nav';
 import { LANG_PILL, NavSections, Sidebar, TopBar, useNavCounts } from './Sidebar';
 import { tr } from '@/i18n';
@@ -64,14 +65,15 @@ export function AppShell() {
                 aria-label={tr('Menyu kuu')}
                 aria-expanded={menuOpen}
                 onClick={() => setMenuOpen(true)}
-                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white text-ink active:scale-[0.98]"
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-surface text-ink active:scale-[0.98]"
               >
                 <MenuIcon width={20} height={20} />
               </button>
-              <Link to={code === 'STORE' ? '/store' : '/'} className="flex h-11 min-w-0 flex-1 items-center gap-2 rounded-full bg-white pl-1 pr-4">
+              <Link to={code === 'STORE' ? '/store' : '/'} className="flex h-11 min-w-0 flex-1 items-center gap-2 rounded-full bg-surface pl-1 pr-4">
                 <BrandMark size={36} className="!rounded-full" />
                 <span className="truncate text-[15px] font-bold tracking-[0.02em] text-ink">{tr('THE BEST')}</span>
               </Link>
+              <ThemeToggle />
               <NotificationBell className="!h-11 !w-11 !border-0 !shadow-none" />
             </header>
           )}
@@ -113,14 +115,14 @@ export function AppShell() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between gap-2">
-              <div className="flex h-12 min-w-0 flex-1 items-center gap-2.5 rounded-full bg-white pl-1.5 pr-4">
+              <div className="flex h-12 min-w-0 flex-1 items-center gap-2.5 rounded-full bg-surface pl-1.5 pr-4">
                 <BrandMark size={38} className="!rounded-full" />
                 <span className="truncate text-[15px] font-bold tracking-[0.02em] text-ink">{tr('THE BEST')}</span>
               </div>
               <button
                 type="button"
                 onClick={() => setMenuOpen(false)}
-                className="inline-flex h-12 shrink-0 items-center justify-center rounded-full bg-white px-4 text-[12.5px] font-semibold text-muted"
+                className="inline-flex h-12 shrink-0 items-center justify-center rounded-full bg-surface px-4 text-[12.5px] font-semibold text-muted"
               >
                 {tr('Funga')}
               </button>
@@ -135,7 +137,7 @@ export function AppShell() {
 
             <div className="mt-3 space-y-2.5 pt-1">
               <LanguageSwitch compact className={`${LANG_PILL} [&>button]:!min-h-[38px] [&>button]:!text-[12.5px]`} />
-              <div className="flex items-center gap-2.5 rounded-full bg-white p-1.5 pr-2">
+              <div className="flex items-center gap-2.5 rounded-full bg-surface p-1.5 pr-2">
                 <Avatar name={user.name} size={36} />
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-[13px] font-bold text-ink">{user.name}</p>

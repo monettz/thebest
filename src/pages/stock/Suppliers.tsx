@@ -30,7 +30,7 @@ export default function Suppliers() {
         actions={<Button onClick={() => setAdding(true)}>{tr('+ Ongeza supplier')}</Button>}
       />
 
-      <div className="rounded-[20px] border border-line bg-white shadow-sm overflow-hidden mb-6">
+      <div className="rounded-[20px] border border-line bg-surface shadow-sm overflow-hidden mb-6">
         <div className="grid divide-y divide-line-soft sm:divide-y-0 sm:divide-x sm:grid-cols-3">
           <div className="p-5">
             <p className="text-[13px] font-medium text-muted">{tr('Suppliers')}</p>
@@ -42,10 +42,10 @@ export default function Suppliers() {
             <p className="mt-2 text-[26px] font-extrabold tracking-tight text-ink tabular-nums">{formatTZSCompact(data.monthTotal)}</p>
             <p className="mt-2 text-[12px] text-muted">{tr('thamani ya mizigo mwezi huu')}</p>
           </div>
-          <div className="p-5 bg-amber-50/40">
-            <p className="text-[13px] font-medium text-amber-800">{tr('Tunadaiwa na suppliers')}</p>
+          <div className="p-5 bg-warn-bg/40">
+            <p className="text-[13px] font-medium text-warn-fg">{tr('Tunadaiwa na suppliers')}</p>
             <p className="mt-2 text-[26px] font-extrabold tracking-tight text-warn-fg tabular-nums">{formatTZS(data.owedTotal)}</p>
-            <p className="mt-2 text-[12px] text-amber-700 font-medium">{tr('inayopaswa kulipwa')}</p>
+            <p className="mt-2 text-[12px] text-warn-fg font-medium">{tr('inayopaswa kulipwa')}</p>
           </div>
         </div>
       </div>
@@ -113,7 +113,7 @@ export default function Suppliers() {
 function Dialog({ title, onClose, children }: { title: string; onClose: () => void; children: React.ReactNode }) {
   return (
     <div className="fixed inset-0 z-40 flex items-end justify-center bg-navy/50 animate-fade-in sm:items-center" onClick={onClose}>
-      <div role="dialog" aria-label={title} onClick={(e) => e.stopPropagation()} className="pb-safe max-h-[92vh] w-full max-w-md space-y-4 overflow-y-auto animate-sheet rounded-t-[28px] bg-white p-6 sm:rounded-[28px]">
+      <div role="dialog" aria-label={title} onClick={(e) => e.stopPropagation()} className="pb-safe max-h-[92vh] w-full max-w-md space-y-4 overflow-y-auto animate-sheet rounded-t-[28px] bg-surface p-6 sm:rounded-[28px]">
         <h2 className="text-[18px] font-extrabold">{title}</h2>
         {children}
       </div>

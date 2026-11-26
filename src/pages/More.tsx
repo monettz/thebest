@@ -48,7 +48,7 @@ export default function More() {
   return (
     <div className="mx-auto max-w-xl">
       <h1 className="mb-4 text-[24px] font-bold tracking-[-0.02em]">{tr('Zaidi')}</h1>
-      <div className="mb-6 flex items-center gap-3.5 rounded-full bg-white p-2 pr-5">
+      <div className="mb-6 flex items-center gap-3.5 rounded-full bg-surface p-2 pr-5">
         <Avatar name={user!.name} size={52} />
         <div className="min-w-0">
           <p className="truncate text-[16px] font-bold text-ink">{user!.name}</p>
@@ -68,7 +68,7 @@ export default function More() {
                   <span
                     className={cx(
                       'flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-[12.5px] font-bold',
-                      sec.dark ? 'bg-ink text-white' : 'bg-app text-ink',
+                      sec.dark ? 'bg-ink text-app' : 'bg-app text-ink',
                     )}
                   >
                     {it.code}

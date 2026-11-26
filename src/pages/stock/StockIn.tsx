@@ -218,7 +218,7 @@ export default function StockIn() {
         subtitle={storeSide ? 'Hamisha bidhaa zilizopo Store kwenda Dukani.' : 'Hamisha bidhaa kutoka Store kwenda Dukani au ongeza stock mpya moja kwa moja Dukani.'}
         actions={
           storeSide ? (
-            <Link to="/store/receive" className="inline-flex min-h-touch items-center rounded-xl border border-line bg-white px-4 text-[14px] font-semibold text-slate-700 shadow-sm hover:bg-slate-50">
+            <Link to="/store/receive" className="inline-flex min-h-touch items-center rounded-xl border border-line bg-surface px-4 text-[14px] font-semibold text-body shadow-sm hover:bg-app">
               {tr('Bidhaa mpya? Pokea mzigo')}
             </Link>
           ) : undefined
@@ -228,7 +228,7 @@ export default function StockIn() {
       {successMsg && (
         <div
           role="status"
-          className="flex flex-wrap items-center justify-between gap-2 rounded-[12px] border border-emerald-200 bg-ok-bg px-4 py-3 text-[13.5px] font-medium text-ok-fg"
+          className="flex flex-wrap items-center justify-between gap-2 rounded-[12px] border border-ok-fg/30 bg-ok-bg px-4 py-3 text-[13.5px] font-medium text-ok-fg"
         >
           <span>{successMsg()}</span>
           <Link to="/products" className="font-bold underline">
@@ -256,7 +256,7 @@ export default function StockIn() {
               'flex h-full items-start gap-3.5 rounded-[14px] border-2 p-4 text-left transition-all',
               source === 'store'
                 ? 'border-primary bg-primary-tint/70 shadow-xs'
-                : 'border-line bg-white hover:border-slate-300 hover:bg-app',
+                : 'border-line bg-surface hover:border-line hover:bg-app',
             )}
           >
             <span
@@ -293,7 +293,7 @@ export default function StockIn() {
               'flex h-full items-start gap-3.5 rounded-[14px] border-2 p-4 text-left transition-all',
               source === 'new'
                 ? 'border-primary bg-primary-tint/70 shadow-xs'
-                : 'border-line bg-white hover:border-slate-300 hover:bg-app',
+                : 'border-line bg-surface hover:border-line hover:bg-app',
             )}
           >
             <span
@@ -338,7 +338,7 @@ export default function StockIn() {
                 <SearchIcon width={16} height={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted" />
                 <input
                   type="text"
-                  className="h-[42px] w-full rounded-[10px] border border-line bg-white pl-10 pr-3.5 text-[13.5px] text-ink outline-none placeholder:text-muted focus:border-primary focus:ring-2 focus:ring-primary/15"
+                  className="h-[42px] w-full rounded-[10px] border border-line bg-surface pl-10 pr-3.5 text-[13.5px] text-ink outline-none placeholder:text-muted focus:border-primary focus:ring-2 focus:ring-primary/15"
                   placeholder={tr('Tafuta bidhaa kwa jina, model, SKU, barcode au IMEI...')}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
@@ -354,7 +354,7 @@ export default function StockIn() {
               <div className="flex gap-2">
                 <select
                   aria-label={tr('Bidhaa za kuhamisha kutoka Store')}
-                  className="h-[42px] min-w-[180px] flex-1 rounded-[10px] border border-line bg-white px-3 text-[13.5px] font-medium text-ink outline-none focus:border-primary sm:max-w-[260px]"
+                  className="h-[42px] min-w-[180px] flex-1 rounded-[10px] border border-line bg-surface px-3 text-[13.5px] font-medium text-ink outline-none focus:border-primary sm:max-w-[260px]"
                   value={selectedDropdownId}
                   onChange={(e) => {
                     const val = e.target.value;
@@ -401,8 +401,8 @@ export default function StockIn() {
                         className={cx(
                           'flex items-center justify-between gap-2 rounded-[8px] border px-2.5 py-2 transition',
                           added
-                            ? 'border-blue-200 bg-primary-tint/60'
-                            : 'border-line bg-white hover:border-primary',
+                            ? 'border-bar-2 bg-primary-tint/60'
+                            : 'border-line bg-surface hover:border-primary',
                         )}
                       >
                         <div className="flex min-w-0 items-center gap-2">
@@ -431,7 +431,7 @@ export default function StockIn() {
                           className={cx(
                             'shrink-0 rounded-[7px] px-2.5 py-1 text-[12px] font-semibold transition',
                             added
-                              ? 'cursor-default bg-blue-100 text-primary'
+                              ? 'cursor-default bg-primary-tint text-primary'
                               : 'bg-primary text-white hover:bg-primary-link',
                           )}
                         >
@@ -479,8 +479,8 @@ export default function StockIn() {
                       <div
                         key={l.productId}
                         className={cx(
-                          'rounded-[12px] border bg-white p-3.5 transition',
-                          rowErrors.length > 0 ? 'border-red-300' : 'border-line',
+                          'rounded-[12px] border bg-surface p-3.5 transition',
+                          rowErrors.length > 0 ? 'border-bad-fg/40' : 'border-line',
                         )}
                       >
                         <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
@@ -520,7 +520,7 @@ export default function StockIn() {
                                   type="button"
                                   aria-label={tr('Punguza')}
                                   onClick={() => handleStoreQtyChange(l, Math.max(1, l.qty - 1))}
-                                  className="flex h-9 w-9 items-center justify-center rounded-[8px] bg-white text-[16px] font-bold text-ink shadow-2xs hover:bg-slate-50"
+                                  className="flex h-9 w-9 items-center justify-center rounded-[8px] bg-surface text-[16px] font-bold text-ink shadow-2xs hover:bg-app"
                                 >
                                   −
                                 </button>
@@ -538,7 +538,7 @@ export default function StockIn() {
                                   aria-label={tr('Ongeza')}
                                   disabled={l.qty >= p.storeQty}
                                   onClick={() => handleStoreQtyChange(l, l.qty + 1)}
-                                  className="flex h-9 w-9 items-center justify-center rounded-[8px] bg-primary text-[16px] font-bold text-white shadow-2xs hover:bg-primary-link disabled:bg-slate-200 disabled:text-slate-400"
+                                  className="flex h-9 w-9 items-center justify-center rounded-[8px] bg-primary text-[16px] font-bold text-white shadow-2xs hover:bg-primary-link disabled:bg-line disabled:text-muted"
                                 >
                                   +
                                 </button>
@@ -565,7 +565,7 @@ export default function StockIn() {
                             <button
                               type="button"
                               onClick={() => removeStoreLine(l.productId)}
-                              className="inline-flex min-h-[38px] items-center rounded-[8px] border border-red-200 bg-bad-bg/50 px-3 text-[12.5px] font-semibold text-bad-fg hover:bg-bad-bg"
+                              className="inline-flex min-h-[38px] items-center rounded-[8px] border border-bad-fg/30 bg-bad-bg/50 px-3 text-[12.5px] font-semibold text-bad-fg hover:bg-bad-bg"
                             >
                               {tr('Ondoa')}
                             </button>
@@ -600,7 +600,7 @@ export default function StockIn() {
                                       'rounded-[7px] border px-2.5 py-1 font-mono text-[12px] font-medium transition',
                                       picked
                                         ? 'border-primary bg-primary text-white'
-                                        : 'border-line bg-white text-body hover:border-primary',
+                                        : 'border-line bg-surface text-body hover:border-primary',
                                     )}
                                   >
                                     {imei}
@@ -730,7 +730,7 @@ export default function StockIn() {
             </div>
           ) : (
             <div className="mt-4 max-h-[75dvh] overflow-y-auto pr-0.5 sm:max-h-none sm:overflow-visible">
-              <div className="mx-auto max-w-2xl rounded-[12px] border border-line bg-white p-3.5 sm:p-5">
+              <div className="mx-auto max-w-2xl rounded-[12px] border border-line bg-surface p-3.5 sm:p-5">
                 <CreateProductForm
                   hideHeading
                   onCancel={() => setShowCreateProductForm(false)}

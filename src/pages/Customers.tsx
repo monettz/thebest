@@ -104,7 +104,7 @@ export default function Customers() {
           <Card className="hidden overflow-hidden md:block">
             <table className="w-full text-[13.5px]">
               <thead>
-                <tr className="bg-slate-50/80 text-left text-[11.5px] font-bold uppercase tracking-wider text-slate-500">
+                <tr className="bg-app/80 text-left text-[11.5px] font-bold uppercase tracking-wider text-muted">
                   <th className="px-4 py-3">{tr('Mteja')}</th>
                   <th className="py-3">{tr('Namba ya simu')}</th>
                   <th className="py-3 pl-5 text-right">{tr('Manunuzi')}</th>
@@ -116,7 +116,7 @@ export default function Customers() {
               </thead>
               <tbody>
                 {rows.map((x) => (
-                  <tr key={x.customer.id} className="border-t border-line-soft hover:bg-slate-50/70">
+                  <tr key={x.customer.id} className="border-t border-line-soft hover:bg-app/70">
                     <td className="max-w-[220px] px-4 py-2.5">
                       <button type="button" onClick={() => select(x.customer.id)} className="flex min-w-0 items-center gap-2.5 text-left">
                         <Avatar name={x.customer.name} size={32} />
@@ -289,7 +289,7 @@ function History({ rows }: { rows: CustomerSaleRow[] }) {
           <div className="hidden overflow-x-auto rounded-field border border-line md:block">
             <table className="w-full text-[13px]">
               <thead>
-                <tr className="bg-slate-50 text-left text-[11.5px] font-bold uppercase tracking-wide text-slate-500">
+                <tr className="bg-app text-left text-[11.5px] font-bold uppercase tracking-wide text-muted">
                   <th className="px-3 py-2">{tr('Tarehe')}</th>
                   <th className="py-2">{tr('Risiti')}</th>
                   <th className="py-2">{tr('Bidhaa')}</th>

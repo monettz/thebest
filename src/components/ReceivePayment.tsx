@@ -81,7 +81,7 @@ export default function ReceivePayment({ rows, onClose }: { rows: DebtRow[]; onC
           </div>
           <div className="grid grid-cols-2 gap-3">
             {done.applied.length === 1 ? (
-              <Link to={`/receipts/${done.applied[0].saleId}?payment=${done.applied[0].paymentId}&print=1`} className="inline-flex min-h-touch items-center justify-center rounded-xl border border-line bg-white px-4 text-[14px] font-semibold text-slate-700 shadow-sm hover:bg-slate-50">
+              <Link to={`/receipts/${done.applied[0].saleId}?payment=${done.applied[0].paymentId}&print=1`} className="inline-flex min-h-touch items-center justify-center rounded-xl border border-line bg-surface px-4 text-[14px] font-semibold text-body shadow-sm hover:bg-app">
                 {tr('Chapisha risiti')}
               </Link>
             ) : (

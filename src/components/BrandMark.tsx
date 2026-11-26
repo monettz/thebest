@@ -7,7 +7,7 @@ export function BrandMark({ size = 36, className = '' }: { size?: number; classN
       width={size}
       height={size}
       draggable={false}
-      className={`shrink-0 rounded-[11px] border border-line-soft bg-white object-contain ${className}`}
+      className={`shrink-0 rounded-[11px] border border-line-soft bg-surface object-contain ${className}`}
       style={{ width: size, height: size }}
     />
   );
