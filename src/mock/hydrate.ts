@@ -141,6 +141,17 @@ async function loadAll(): Promise<void> {
   const returnsBySale = new Map<number, Row[]>();
   for (const r of returnRows) (returnsBySale.get(Number(r.sale_id)) ?? returnsBySale.set(Number(r.sale_id), []).get(Number(r.sale_id))!).push(r);
 
+  // A sale line whose product was deleted keeps its name, price and cost but has no product (null).
+  // Each such name gets its own stable negative id, so reports keep different deleted products apart
+  // and nothing mistakes it for a live product.
+  const deletedIds = new Map<string, number>();
+  const productIdOf = (l: Row): number => {
+    if (l.product_id != null) return Number(l.product_id);
+    const key = String(l.name);
+    if (!deletedIds.has(key)) deletedIds.set(key, -(deletedIds.size + 1));
+    return deletedIds.get(key)!;
+  };
+
   const sales: SaleRecord[] = saleRows.map((s) => {
     const id = Number(s.id);
     const record: SaleRecord = {
@@ -150,7 +161,7 @@ async function loadAll(): Promise<void> {
       userName: s.user_name,
       customerId: s.customer_id == null ? null : Number(s.customer_id),
       lines: (itemsBySale.get(id) ?? []).map((l) => ({
-        productId: Number(l.product_id),
+        productId: productIdOf(l),
         name: l.name,
         qty: Number(l.qty),
         unitPrice: Number(l.unit_price),

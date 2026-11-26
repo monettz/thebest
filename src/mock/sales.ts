@@ -1307,6 +1307,8 @@ function snapshotOf(s: SaleRecord): SaleSnapshot {
 function restockLines(s: SaleRecord, items: ReturnItem[], condition: 'RESTOCK' | 'DAMAGED') {
   for (const it of items) {
     const line = s.lines[it.lineIndex];
+    // The product may have been deleted since the sale: the sale stays, but there is no stock to put back.
+    if (!internalProducts().some((p) => p.id === line.productId)) continue;
     if (line.imei) setUnitStatus([line.imei], condition === 'RESTOCK' ? 'IN_SHOP' : 'DAMAGED');
     if (condition === 'RESTOCK') deductShopStock(line.productId, -it.qty, s.id);
   }

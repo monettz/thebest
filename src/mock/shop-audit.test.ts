@@ -3,7 +3,7 @@ import { ALL_PAYMENT_METHODS, PAYMENT_LABEL, PAYMENT_METHODS, POS_PAYMENT_METHOD
 import { expenseSchema, periodRange, summarize } from '@shared/money';
 import { hashSecret, sha256, validateSecret, verifySecret } from '@shared/passwords';
 import { createAuthService } from './auth';
-import { createProduct, listProducts } from './api';
+import { createProduct, deleteProduct, listProducts } from './api';
 import { listNotifications, markRead } from './notifications';
 import { addExpense, getReport, getShopDashboardLive } from './ledger';
 import { createTransfer, listStoreImeis, listStockEvents, paySupplier, createPurchase } from './inventory';
@@ -253,5 +253,30 @@ describe('Store: receiving, creating, transferring and notifications', () => {
     // a stock change raises a new alert
     const phone = products.find((p) => p.id === 3)!; // iPhone 11: low in the shop
     expect(list.some((n) => n.id.includes(`:SHOP:${phone.id}:`))).toBe(true);
+  });
+});
+
+describe('deleting a product keeps its sales', () => {
+  it('removes the product and its stock, but its sales, payments and debts stay in reports', async () => {
+    const id = await createProduct(owner, { name: 'Delete Test Holder', type: 'accessory', costPrice: 5_000, sellPrice: 20_000, minStock: 1, initialShopQty: 5 });
+    const line = { productId: id, name: 'Delete Test Holder', type: 'accessory' as const, unitPrice: 20_000, qty: 2 };
+    const salesBefore = (await getReport('owner', 'today')).sales;
+    const sale = await completeSale(owner, {
+      lines: [line], discount: 0, payments: [{ method: 'CASH', amount: 10_000 }],
+      customer: { name: 'Delete Test Customer', phone: '0788 300 400' }, dueDate: '2099-01-01',
+    });
+    const debtBefore = (await getDebtOverview()).totalDebt;
+
+    await deleteProduct(owner, id);
+
+    expect((await listProducts('owner')).some((p) => p.id === id)).toBe(false);
+    // The sale, its debt and the day's total are untouched.
+    expect((await listSales('Delete Test Customer')).items.map((s) => s.id)).toContain(sale.saleId);
+    expect((await getDebtOverview()).totalDebt).toBe(debtBefore);
+    expect((await getReport('owner', 'today')).sales).toBe(salesBefore + 40_000);
+    // A return on that sale still works: it is recorded, there is just no stock to put back.
+    await expect(
+      returnItems(owner, { saleId: sale.saleId, items: [{ lineIndex: 0, qty: 1 }], reason: 'Imeharibika', condition: 'RESTOCK', refundMethod: 'CASH' }),
+    ).resolves.toBeDefined();
   });
 });

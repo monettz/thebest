@@ -902,8 +902,11 @@ export default function Products() {
               <p className="mt-2 text-[13.5px] text-muted">
                 {tr('Una uhakika unataka kufuta {1}?', { 1: deletingProduct.name })}
               </p>
-              <p className="mt-1 text-[12.5px] font-semibold text-bad-fg">
-                {tr('Stock na mauzo yake yote yatafutwa kabisa, haiwezi kurudishwa.')}
+              <p className="mt-2 text-[12.5px] font-semibold text-bad-fg">
+                {tr('Bidhaa na stock yake (Store na Duka) zitafutwa kabisa, haiwezi kurudishwa.')}
+              </p>
+              <p className="mt-1 text-[12.5px] text-body">
+                {tr('Mauzo, malipo na madeni yake yanabaki kwenye ripoti kwa jina lake.')}
               </p>
               <div className="mt-4 flex justify-end gap-2">
                 <Button variant="outline" onClick={() => setDeletingProduct(null)}>
